@@ -1,0 +1,20 @@
+{
+  "name": "pachamama-pipeline",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Pipeline de donnees du pivot : chargement, reconciliation, audits",
+  "scripts": {
+    "charger": "node etl/load_pivot.mjs",
+    "charger:sec": "node etl/load_pivot.mjs --dry-run",
+    "notes": "node etl/load_notes.mjs",
+    "reconcilier": "node etl/reconcilier.mjs",
+    "preseance": "node etl/audit_preseance.mjs",
+    "fusion": "node etl/audit_fusion.mjs",
+    "dump": "node etl/generer_dump.mjs",
+    "test": "node tests/schema.e2e.mjs && node tests/dump.restore.mjs"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.5"
+  }
+}

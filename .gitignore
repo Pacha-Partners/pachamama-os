@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------------------
+# Secrets — jamais versionnés. Les .env.example documentent les variables.
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---------------------------------------------------------------------------
+# DONNÉES PERSONNELLES — le point le plus important de ce fichier.
+#
+# La base de production porte 30 829 personnes physiques. Rien de ce qui
+# contient une donnée nominative ne peut entrer dans un dépôt, a fortiori
+# public. Les exclusions ci-dessous ne sont pas des précautions de confort :
+# chacune vise un fichier qui existe réellement dans l'arbre de travail.
+# ---------------------------------------------------------------------------
+
+# Fichiers d'extraction et de travail (30 829 enregistrements réels)
+*.jsonl
+*.csv
+!**/exemples/*.csv
+
+# Fichier de revue interne : contient 4 noms de personnes et 4 employeurs réels
+backend/database/seeds/revue_fusions.md
+
+# Tout dump SQL, SAUF le dump anonymisé livré volontairement (schéma identique
+# + 400 talents anonymisés, anonymisation déterministe et non réversible,
+# restauration testée par 24 contrôles dont l'absence de donnée réelle).
+*.sql.gz
+backend/database/dump/*.sql
+!backend/database/dump/pivot_dump.sql
+
+# ---------------------------------------------------------------------------
+# Artefacts de construction et dépendances
+# ---------------------------------------------------------------------------
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+*.log
+.turbo/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# Système
+.DS_Store
+Thumbs.db

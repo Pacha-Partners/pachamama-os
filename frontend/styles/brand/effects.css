@@ -1,0 +1,26 @@
+/* ============================================================
+   PACHAMAMA — EFFECTS   (miroir du DS, ne pas modifier)
+   L'ombre rétro décalée EST la signature de marque. Elle s'applique à
+   TOUT élément de type carte : border 2px noir + shadow -8px 8px 0 noir.
+   Aucun flou, aucun étalement, aucun centrage.
+   ============================================================ */
+:root {
+  --shadow-retro: -8px 8px 0px var(--black);
+  --shadow-retro-sm: -5px 5px 0px var(--black);
+
+  --border-card: 2px solid var(--black);
+  --border-frame: 4px solid var(--black);
+  --border-frame-sm: 3px solid var(--black);
+
+  /* Ombre douce data-UI (dashboard uniquement) — prévue par le DS lui-même */
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.10);
+
+  --rot-isolated: -3deg;  /* une pill/CTA isolée s'incline ~3° ; groupées : 0° */
+}
+
+.pm-retro {
+  background: var(--white);
+  border: var(--border-card);
+  box-shadow: var(--shadow-retro);
+  border-radius: var(--radius-pill);
+}

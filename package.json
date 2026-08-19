@@ -1,0 +1,23 @@
+{
+  "name": "pachamama-os",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pachamama OS — base talent unifiee, portails et sourcing. Bachelor Data & BI, RNCP40857.",
+  "scripts": {
+    "front:dev": "npm --prefix frontend run dev",
+    "front:build": "npm --prefix frontend run build",
+    "front:test": "npm --prefix frontend run test --if-present",
+    "api:dev": "cd backend/api && uv run uvicorn pachamama_api.main:app --reload --port 8000",
+    "api:test": "cd backend/api && uv run pytest -q",
+    "api:lint": "cd backend/api && uv run ruff check src tests && uv run mypy src",
+    "db:charger": "npm --prefix backend/pipeline run charger",
+    "db:notes": "npm --prefix backend/pipeline run notes",
+    "db:reconcilier": "npm --prefix backend/pipeline run reconcilier",
+    "db:preseance": "npm --prefix backend/pipeline run preseance",
+    "db:fusion": "npm --prefix backend/pipeline run fusion",
+    "db:dump": "npm --prefix backend/pipeline run dump",
+    "db:test": "npm --prefix backend/pipeline test",
+    "verifier": "npm run db:test && npm run api:lint && npm run api:test && npm run front:build",
+    "installer": "npm --prefix frontend install && npm --prefix backend/pipeline install && (cd backend/api && uv sync)"
+  }
+}

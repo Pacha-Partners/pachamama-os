@@ -1,0 +1,61 @@
+/* ============================================================
+   PACHAMAMA — TYPOGRAPHY   (miroir du DS, ne pas modifier)
+   Le duo de titres est la signature :
+     ligne 1 = Instrument Serif Regular (descriptif / émotionnel)
+     ligne 2 = Bricolage Grotesque SemiBold (impact / mot-clé)
+   Jamais l'un sans l'autre. Les accents ne colorent jamais le texte.
+   ============================================================ */
+:root {
+  --font-serif: 'Instrument Serif', Georgia, serif;               /* JAMAIS en italique */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Host Grotesk', system-ui, sans-serif;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* Tailles d'affichage (formats canvas marketing) */
+  --fs-hero: 90px;
+  --fs-deck: 64px;
+  --fs-banner: 35px;
+  --fs-section: 52px;
+  --fs-pill: 32px;
+
+  /* Tailles de texte (échelle UI) */
+  --fs-xl: 24px;
+  --fs-lg: 20px;
+  --fs-md: 16px;
+  --fs-sm: 14px;
+  --fs-xs: 13px;
+
+  --lh-tight: 1.05;
+  --lh-snug: 1.15;
+  --lh-body: 1.5;
+
+  --tracking-hero: -1.8px;
+  --tracking-display: -1.2px;
+  --tracking-normal: 0;
+}
+
+.pm-title-serif {
+  font-family: var(--font-serif);
+  font-weight: var(--fw-regular);
+  font-style: normal;
+  line-height: var(--lh-tight);
+  color: var(--text-primary);
+}
+.pm-title-impact {
+  font-family: var(--font-display);
+  font-weight: var(--fw-semibold);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-hero);
+  color: var(--text-primary);
+}
+.pm-body {
+  font-family: var(--font-body);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
+  color: var(--text-primary);
+}

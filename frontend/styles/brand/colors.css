@@ -1,0 +1,89 @@
+/* ============================================================
+   PACHAMAMA — COLORS   (miroir du DS, ne pas modifier)
+   3 couleurs structurelles (crème, noir, blanc) + 4 accents de verticale.
+   RÈGLE : un accent ne sert JAMAIS au texte. 1 visuel = 1 verticale = 1 couleur.
+   ============================================================ */
+:root {
+  /* --- Structurel --- */
+  --cream: #fffcf4;
+  --warm-grey: #f9f8f5;
+  --black: #000000;
+  --white: #ffffff;
+  --dark-surface: #1a1a1a;
+
+  --wedge: rgba(237, 228, 208, 0.30);
+
+  /* --- Verticale People (jaune) — RH, Finance, Office --- */
+  --people-500: #ffe94a;
+  --people-300: #fff292;
+  --people-200: #fff6b7;
+  --people-100: #fffbdb;
+  --people-light: rgba(255, 251, 219, 0.8);
+
+  /* --- Verticale Product (orange) — PM, Design, PMM --- */
+  --product-500: #ff8f67;
+  --product-300: #ffbca4;
+  --product-200: #ffd2c2;
+  --product-100: #ffe9e1;
+  --product-light: #ffcebc;
+
+  /* --- Verticale Tech (violet) — Dev, Data, IA --- */
+  --tech-500: #ac8cff;
+  --tech-400: #bda3ff;
+  --tech-300: #cdbaff;
+  --tech-200: #ded1ff;
+  --tech-100: #eee8ff;
+  --tech-light: #d8b9ff;
+
+  /* --- Verticale Revenue (vert) — Sales, CSM, BizDev --- */
+  --revenue-500: #7ae7bf;
+  --revenue-300: #aff1d9;
+  --revenue-200: #caf5e5;
+  --revenue-100: #e4faf2;
+  --revenue-light: #b7fbe2;
+
+  /* --- Rose de marque : accent master/marketing. PAS une verticale, jamais du texte --- */
+  --pink-brand: #ffcff6;
+  --pink-light: #ffe4f8;
+
+  /* --- Échelle de gris (data UI / dashboard) --- */
+  --grey-100: #f1f4f7;
+  --grey-400: #8e9db2;
+  --grey-500: #667085;
+  --grey-600: #5d6878;
+  --grey-800: #2e343c;
+  --grey-900: #171a1e;
+
+  --marker-red: #e8553a;
+  --scribble-orange: #ff8f67;
+
+  /* --- Alias sémantiques --- */
+  --surface-page: var(--cream);
+  --surface-rest: var(--warm-grey);
+  --surface-card: var(--white);
+  --surface-dark: var(--black);
+
+  --text-primary: var(--black);   /* titres + corps — TOUJOURS noir */
+  --text-on-dark: var(--white);
+  --text-muted: #666666;
+  --text-faint: #888888;
+
+  --border-strong: var(--black);
+
+  /* Accent de type de contrat — un poste FREELANCE prend le violet Tech,
+     quelle que soit la verticale du rôle. CDI et Régie gardent la leur. */
+  --freelance: var(--tech-500);
+  --freelance-light: var(--tech-light);
+
+  /* Verticale active — défaut Product. --v-300 est la SEULE teinte admise
+     pour un bouton coloré. */
+  --v: var(--product-500);
+  --v-300: var(--product-300);
+  --v-light: var(--product-light);
+}
+
+.v-people  { --v: var(--people-500);  --v-300: var(--people-300);  --v-light: var(--people-light); }
+.v-product { --v: var(--product-500); --v-300: var(--product-300); --v-light: var(--product-light); }
+.v-tech    { --v: var(--tech-500);    --v-300: var(--tech-300);    --v-light: var(--tech-light); }
+.v-revenue { --v: var(--revenue-500); --v-300: var(--revenue-300); --v-light: var(--revenue-light); }
+.job-freelance { --v: var(--freelance); --v-300: var(--tech-300); --v-light: var(--freelance-light); }

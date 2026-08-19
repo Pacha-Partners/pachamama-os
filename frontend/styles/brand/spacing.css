@@ -1,0 +1,17 @@
+/* ============================================================
+   PACHAMAMA — SPACING & RADII   (miroir du DS, ne pas modifier)
+   Échelle reprise de la collection de variables Figma (8 → 80).
+   ============================================================ */
+:root {
+  --space-8: 8px;   --space-12: 12px; --space-14: 14px; --space-16: 16px;
+  --space-18: 18px; --space-20: 20px; --space-24: 24px; --space-32: 32px;
+  --space-40: 40px; --space-48: 48px; --space-64: 64px; --space-80: 80px;
+
+  --radius-pill: 12px;       /* pills de métadonnées */
+  --radius-tag: 20px;        /* tags catégoriels noirs */
+  --radius-cta: 14px;
+  --radius-subtitle: 10px;
+  --radius-frame: 32px;
+  --radius-frame-sm: 22px;
+  --radius-card: 16px;
+}

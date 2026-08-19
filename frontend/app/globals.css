@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* Miroir du design system de marque — ne pas modifier, voir styles/brand/_SOURCE.md */
+@import "../styles/brand/colors.css";
+@import "../styles/brand/typography.css";
+@import "../styles/brand/spacing.css";
+@import "../styles/brand/effects.css";
+
+/* Couche interface, extraite du Figma de l'application */
+@import "../styles/app.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-serif);
+  --font-display: var(--font-display);
+  --font-heading: var(--font-display);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: var(--r-xs);
+  --radius-md: var(--r-sm);
+  --radius-lg: var(--r-md);
+  --radius-xl: var(--r-lg);
+}
+
+/* ============================================================================
+   MAPPAGE — les jetons sémantiques de shadcn pointés sur la marque
+   ============================================================================
+   Ce bloc vient APRÈS les imports pour écraser les valeurs par défaut de
+   shadcn. Les composants shadcn restent donc interchangeables : c'est le
+   mappage qui porte la marque, pas des surcharges dispersées dans le code.
+
+   PAS DE MODE SOMBRE. Le design system n'en définit aucun pour l'application
+   — le seul fond sombre de la charte est une couverture de deck. En inventer
+   un ici ferait diverger l'app de la marque sans que personne ne l'ait décidé.
+   ============================================================================ */
+:root {
+  --radius: var(--r-md);
+
+  --background: var(--fond-page);          /* crème */
+  --foreground: var(--black);              /* le texte est TOUJOURS noir */
+
+  --card: var(--fond-carte);
+  --card-foreground: var(--black);
+  --popover: var(--fond-carte);
+  --popover-foreground: var(--black);
+
+  /* Le noir est la couleur d'action : boutons pleins, cases cochées. */
+  --primary: var(--black);
+  --primary-foreground: var(--white);
+
+  --secondary: var(--encre-050);
+  --secondary-foreground: var(--encre-800);
+
+  --muted: var(--encre-050);
+  --muted-foreground: var(--encre-500);
+
+  /* L'accent est le violet interactif du Figma, jamais une verticale :
+     les verticales qualifient un métier, elles ne signalent pas une action. */
+  --accent: var(--violet-100);
+  --accent-foreground: var(--violet-900);
+
+  --destructive: #e8553a;
+
+  --border: var(--encre-100);
+  --input: var(--black);                   /* les champs ont une bordure noire */
+  --ring: var(--black);                    /* anneau de focus noir */
+
+  --sidebar: var(--fond-carte);
+  --sidebar-foreground: var(--black);
+  --sidebar-primary: var(--violet-500);
+  --sidebar-primary-foreground: var(--white);
+  --sidebar-accent: var(--violet-100);
+  --sidebar-accent-foreground: var(--violet-900);
+  --sidebar-border: var(--encre-100);
+  --sidebar-ring: var(--black);
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { font-family: var(--font-body); }
+}

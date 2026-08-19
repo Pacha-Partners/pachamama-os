@@ -1,0 +1,230 @@
+/* ============================================================================
+   COUCHE INTERFACE — issue du Figma « DS de l'app »
+   ============================================================================
+   Le design system de marque (Claude Design) gouverne l'identité : crème,
+   texte noir, verticales en accent, duo de titres, langage d'ombre rétro.
+   Il ne définit ni états d'interaction, ni densité, ni rampes de couleur
+   utilisables en interface — un visuel marketing n'en a pas besoin.
+
+   Ce fichier porte la couche interface, extraite du Figma de l'application.
+   Les valeurs ne sont pas inventées : elles viennent des blocs Figma.
+
+   ARBITRAGES APPLIQUÉS
+   · `Body/Regular` et `Caption/Regular` apparaissent en Abhaya Libre dans une
+     ancienne génération du fichier, alors que leurs propres bold et highlight
+     sont en Host Grotesk, et que le specimen canonique les montre en sans.
+     → substitution accidentelle, écartée. Host Grotesk partout.
+   · `Roboto`, `M3/*`, `state-layer`, `WF Base/*` et les rayons sous-pixel
+     viennent d'un sélecteur de date Material Design importé. → écartés.
+   · `Montserrat` sur `Button text` est hors charte. → Host Grotesk.
+   · Couleurs quasi-doublons (#FFFBF0 vs crème, #FFEA4D vs jaune People,
+     #79E6BE vs vert Revenue) → la charte de marque tranche.
+   ============================================================================ */
+
+:root {
+  /* ==========================================================================
+     1. RAMPE VIOLETTE — l'interactif
+     ==========================================================================
+     La charte ne fournit que cinq teintes Tech, pensées pour de l'accent
+     décoratif. Une interface a besoin d'une rampe complète : survol, actif,
+     sélection, focus. Elle est ancrée sur #AB8AFF, qui est le `--tech-500` de
+     la marque à un point près.                                              */
+  --violet-900: #371b7e;   /* texte sur fond violet clair, titres de section */
+  --violet-700: #5022c3;   /* actif, pressé */
+  --violet-600: #8a38f5;
+  --violet-500: #8657ff;   /* interactif principal : élément de menu actif, statut */
+  --violet-400: #9747ff;
+  --violet-300: #ab8aff;   /* = tech-500 de la charte */
+  --violet-200: #ccb8ff;   /* survol soutenu */
+  --violet-100: #e9e0ff;   /* survol, ligne sélectionnée */
+  --violet-050: #f8f5ff;   /* fond de zone active très léger */
+
+  /* ==========================================================================
+     2. RAMPE DE GRIS — la donnée
+     ==========================================================================
+     Distincte de l'échelle `--grey-*` de la charte : celle-ci vient du Figma
+     de l'app et sert le texte secondaire, les bordures et les fonds inertes. */
+  --encre-900: #1a202c;    /* texte le plus dense */
+  --encre-800: #2d3648;    /* titres de carte, valeurs — le gris le plus utilisé */
+  --encre-700: #2d2b31;
+  --encre-600: #5d6979;    /* libellés */
+  --encre-500: #738296;    /* texte secondaire */
+  --encre-400: #a0abc0;
+  --encre-300: #a8b1bd;    /* texte désactivé */
+  --encre-250: #adabb3;    /* légendes */
+  --encre-200: #cac9cd;
+  --encre-100: #e7e6eb;    /* bordures, séparateurs */
+  --encre-050: #f1f0f5;    /* fonds inertes, champs désactivés */
+
+  /* ==========================================================================
+     3. SURFACES
+     ========================================================================== */
+  --fond-page: var(--cream);        /* crème de marque, jamais blanc */
+  --fond-carte: var(--white);
+  --fond-entete: #fffbf0;           /* la barre du haut, crème plus chaud */
+  --fond-inerte: var(--encre-050);
+
+  /* ==========================================================================
+     4. STATUTS DE PROCESS — le vocabulaire métier
+     ==========================================================================
+     Onze statuts, en pastilles pleines à texte noir. Les teintes reprennent
+     les verticales de la marque plutôt que d'introduire des couleurs
+     étrangères : jaune People pour les étapes de contact et d'entretien, vert
+     Revenue pour les issues positives, violet pour les étapes pilotées par
+     l'outil, rouge pour l'échec.                                            */
+  --statut-attente: #ffea4d;        /* à contacter, contacté, screen, entretiens */
+  --statut-avance: #8657ff;         /* applicants, send out */
+  --statut-positif: #79e6be;        /* send out validé, recruté */
+  --statut-echec: #f4728a;          /* KO */
+
+  /* ==========================================================================
+     5. FORMES — les rayons de l'interface
+     ==========================================================================
+     Bien plus serrés que ceux de la marque (12 à 32) : une interface dense
+     respire par l'espacement, pas par l'arrondi.                            */
+  --r-xs: 4px;
+  --r-sm: 6px;
+  /* Pas de rayon 5px : les 35 « border-radius: 5px » du Figma sont TOUS
+     précédés de « border: 1px dashed #9747FF » — la couleur d'annotation de
+     Figma. Ce sont les cadres pointillés autour des jeux de variantes, pas des
+     composants. Rayons réels relevés : bouton 6px, bouton icône 4px, tags 8px.
+     J'avais compté des artefacts d'outil ; le lot 3 l'a réfuté, vérifié 35/35. */
+  --r-md: 8px;      /* le rayon d'interface par défaut : champs, tags, cartes */
+  --r-lg: 16px;     /* modales, panneaux */
+  --r-full: 9999px; /* pastilles de statut, éléments de menu */
+
+  /* ==========================================================================
+     6. OMBRES — la signature rétro, à l'échelle de l'interface
+     ==========================================================================
+     Le Figma a déjà fait l'adaptation : le même décalage sans flou que la
+     marque, mais réduit. C'est ce qui permet de garder la signature sur un
+     tag de 27px de haut sans écraser l'écran.                               */
+  --ombre-1: -1px 1px 0px var(--black);   /* tags, petites pastilles */
+  --ombre-2: -2px 2px 0px var(--black);
+  --ombre-3: -3px 3px 0px var(--black);   /* boutons, cartes */
+  --ombre-6: -6px 6px 0px var(--black);   /* cartes d'accroche */
+  /* ==========================================================================
+     5 bis. IDENTITÉ DU LOGO — des couleurs qui ne suivent PAS l'interface
+     ==========================================================================
+     Le monogramme n'est pas monochrome : c'est une lettre BLANCHE cerclée de
+     noir, posée sur son ombre rétro déjà dessinée. Le Figma tranche ce qui
+     arrive quand on le reteinte (Figma.md:40881, 40895) : l'encre suit la
+     couleur du texte, le papier reste blanc. D'où deux jetons distincts.
+     `--logo-lila` vaut la même chose que `--tech-500` mais n'a pas le même
+     rôle : le jour où la verticale Tech change de teinte, le logo ne doit pas
+     changer avec elle. Aliaser les deux serait un bug différé.            */
+  --logo-papier: var(--white);
+  --logo-lila: #ac8cff;
+
+  --ombre-1-grise: -1px 1px 0px var(--encre-300); /* tag « Contrat » en
+                        « Light mode » : la même signature décalée, en gris. Les 3
+                        occurrences sont toutes dans des variantes où la bordure,
+                        le texte ET la croix passent aussi à --encre-300 : c'est un
+                        tag ATTÉNUÉ en bloc, pas une adaptation au fond. (J'avais
+                        d'abord écrit l'inverse ; ce n'était pas attesté.)      */
+  --ombre-douce: 0px 0px 3px rgba(0, 0, 0, 0.25);      /* champ de recherche,
+                        menus déroulants. Relevé 13× : la règle « jamais de flou »
+                        vaut pour l'ombre RÉTRO, pas pour l'élévation d'un
+                        élément flottant. */
+  --ombre-portee: 0px 2px 8px -2px rgba(0, 0, 0, 0.08); /* survol de ligne */
+
+  /* ==========================================================================
+     7. BORDURES
+     ========================================================================== */
+  --bord-fin: 1px solid var(--encre-100);
+  --bord-noir: 1px solid var(--black);
+  --bord-noir-fort: 2px solid var(--black);
+  --bord-erreur: 1px solid #e8553a;
+
+  /* ==========================================================================
+     8. DENSITÉ ET GABARIT
+     ========================================================================== */
+  --h-champ: 36px;          /* hauteur d'un champ, mesurée dans le Figma */
+  --h-menu-item: 31px;
+  --h-tag: 27px;
+  --h-statut: 35px;
+  --h-ligne-compacte: 36px;
+  --h-ligne: 44px;
+  --nav-hauteur: 64px;
+  --panneau-largeur: 264px;
+  --contenu-largeur-max: 1440px;
+
+  /* ==========================================================================
+     9. FOCUS CLAVIER
+     ==========================================================================
+     Absent du Figma comme de la charte. Le noir de marque sert d'anneau : il
+     contraste sur crème comme sur blanc, là où une teinte de verticale
+     échouerait — les accents sont clairs par construction.                    */
+  --focus-anneau: var(--black);
+  --focus-epaisseur: 2px;
+  --focus-decalage: 2px;
+}
+
+/* ============================================================================
+   ÉCHELLE TYPOGRAPHIQUE — les onze styles nommés du Figma
+   ============================================================================
+   Le duo de titres est respecté : les deux lignes ont la MÊME taille, la
+   hiérarchie vient du contraste serif/sans, jamais d'un écart de corps.
+   ============================================================================ */
+@layer components {
+  .t-h1        { font-family: var(--font-display); font-weight: 700; font-size: 30px; line-height: 36px; color: var(--black); }
+  .t-h1-comp   { font-family: var(--font-serif);   font-weight: 400; font-size: 30px; line-height: 39px; color: var(--black); font-style: normal; }
+  .t-h2        { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 29px; color: var(--black); }
+  .t-h2-comp   { font-family: var(--font-serif);   font-weight: 400; font-size: 24px; line-height: 31px; color: var(--black); font-style: normal; }
+  .t-h3        { font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 22px; color: var(--black); }
+
+  .t-body      { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 19px; }
+  .t-body-hl   { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 19px; }
+  .t-body-bold { font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 19px; }
+
+  /* Échelle micro — 10px/12px. Relevée 60× dans le Figma, notamment sur la
+     notation candidat en Size=Small. Elle manquait à mon échelle « exhaustive »
+     de 11 styles : elle en compte donc 14. En dessous de 10px, rien n'est
+     lisible — c'est le plancher, pas une invitation à descendre. */
+  .t-micro      { font-family: var(--font-body); font-weight: 400; font-size: 10px; line-height: 12px; }
+  .t-micro-hl   { font-family: var(--font-body); font-weight: 500; font-size: 10px; line-height: 12px; }
+  .t-micro-bold { font-family: var(--font-body); font-weight: 700; font-size: 10px; line-height: 12px; }
+
+  .t-caption      { font-family: var(--font-body); font-weight: 400; font-size: 12px; line-height: 16px; }
+  .t-caption-hl   { font-family: var(--font-body); font-weight: 500; font-size: 12px; line-height: 16px; }
+  .t-caption-bold { font-family: var(--font-body); font-weight: 700; font-size: 12px; line-height: 16px; }
+}
+
+@layer base {
+  /* Règle 1 de la marque : fond crème, jamais blanc. */
+  body {
+    background: var(--fond-page);
+    color: var(--black);
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  /* L'anneau de focus est visible partout, jamais supprimé. */
+  :focus-visible {
+    outline: var(--focus-epaisseur) solid var(--focus-anneau);
+    outline-offset: var(--focus-decalage);
+  }
+
+  /* Le DS ne définit aucun langage de mouvement (« keep transitions
+     minimal ») : on s'y tient, et on honore la préférence système. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   Les familles du miroir de marque nomment les polices par leur nom Google.
+   L'application les auto-héberge : on redirige les variables sur les
+   identifiants produits par next/font, en gardant les mêmes familles et les
+   mêmes replis.
+   ---------------------------------------------------------------------------- */
+:root {
+  --font-serif: var(--police-serif), Georgia, serif;
+  --font-display: var(--police-display), system-ui, sans-serif;
+  --font-body: var(--police-body), system-ui, sans-serif;
+}
