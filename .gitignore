@@ -55,3 +55,6 @@ venv/
 # Système
 .DS_Store
 Thumbs.db
+
+# Identifiants de démonstration : transmis dans le rendu, jamais versionnés
+IDENTIFIANTS_DEMO.md

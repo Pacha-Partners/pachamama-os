@@ -1,15 +1,10 @@
-export const metadata = { title: 'Connexion' };
+import { redirect } from 'next/navigation';
 
+/**
+ * L’écran de connexion vit à la racine. Cette route est conservée parce qu’elle
+ * est encore la cible de redirections existantes, et parce qu’un lien
+ * `/connexion` partagé ne doit pas se casser : elle renvoie vers la racine.
+ */
 export default function Connexion() {
-  return (
-    <main id="contenu" className="mx-auto flex min-h-dvh max-w-md flex-col justify-center p-8">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--pacha-violet)]">
-        Pachamama OS
-      </p>
-      <h1 className="mt-2 text-4xl font-semibold">Connexion</h1>
-      <p className="mt-2 text-sm text-[var(--pacha-ardoise)]">
-        Authentification à brancher sur le fournisseur d’identité.
-      </p>
-    </main>
-  );
+  redirect('/');
 }

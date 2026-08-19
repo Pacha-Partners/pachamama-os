@@ -14,6 +14,6 @@ export default async function LayoutPrive({ children }: { children: React.ReactN
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) redirect('/connexion');
+  if (!user) redirect('/');
   return <>{children}</>;
 }

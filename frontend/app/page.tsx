@@ -3,27 +3,27 @@ import { redirect } from 'next/navigation';
 import { Carte } from '@/components/pacha/Carte';
 import { FormeEtoiles } from '@/components/pacha/Illustration';
 import { LogoComplet } from '@/components/pacha/Logo';
-import { Titre, TitreSection } from '@/components/pacha/Titre';
+import { Titre } from '@/components/pacha/Titre';
+import { FormulaireConnexion } from '@/components/vues/FormulaireConnexion';
 import { rolesDe, utilisateurCourant } from '@/lib/session';
 
 export const metadata = {
-  title: 'Pachamama OS',
+  title: 'Pachamama OS — connexion',
   description:
-    "Le système d’information du collectif Pachamama : une base de talents unifiée, trois portails et un agent de sourcing.",
+    "Système d’information du collectif Pachamama : une base de talents unifiée, trois portails et un agent de sourcing.",
 };
 
 /**
- * Racine de l’application.
+ * Racine de l’application : l’écran de connexion.
  *
- * Deux comportements, selon qu’un utilisateur est identifié ou non :
+ * Un utilisateur identifié n’a rien à faire ici — il est orienté vers SON
+ * portail. Le rôle est lu dans `app_metadata`, contrôlé côté serveur, et jamais
+ * dans `user_metadata` que l’utilisateur peut modifier lui-même.
  *
- * — identifié, il est orienté vers SON portail. Le rôle est lu dans
- *   `app_metadata`, contrôlé côté serveur, et jamais dans `user_metadata` que
- *   l’utilisateur peut modifier lui-même ;
- * — anonyme, il voit cette page. C’est le changement par rapport à la version
- *   précédente, qui le redirigeait vers l’écran de connexion : une adresse
- *   publique qui n’affiche qu’un formulaire de connexion n’apprend rien à un
- *   visiteur, et le Job Board, lui, est destiné à être public et indexé.
+ * Pour tout le monde d’autre, cette page a deux fonctions à tenir en même temps,
+ * et c’est ce qui dicte sa mise en page en deux colonnes : offrir la connexion
+ * réelle à ceux qui ont un compte, et expliquer à un évaluateur pourquoi il n’en
+ * recevra pas — puis l’envoyer là où il peut réellement voir le produit.
  */
 export default async function Racine() {
   const utilisateur = await utilisateurCourant();
@@ -37,151 +37,108 @@ export default async function Racine() {
   }
 
   return (
-    <main id="contenu" className="mx-auto max-w-[1000px] px-6 py-16 md:px-8">
-      <header className="flex items-center justify-between gap-4">
-        <LogoComplet className="h-7 w-auto text-black" />
-        <Link
-          href="/connexion"
-          className="t-caption-hl rounded-[var(--r-sm)] border border-black px-3 py-2 hover:bg-[var(--violet-050)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-        >
-          Se connecter
-        </Link>
-      </header>
+    <main id="contenu" className="min-h-dvh">
+      <div className="mx-auto grid max-w-[1180px] gap-10 px-6 py-10 md:px-8 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-16">
+        {/* ---------------------------------------------- colonne de présentation */}
+        <section className="flex flex-col">
+          <LogoComplet className="h-7 w-auto text-black" />
 
-      <div className="relative mt-16">
-        {/* Export NOMMÉ, pas `Illustration` : l’accès dynamique embarque les
-            34 formes (119 Ko de tracés) même pour un seul ornement. Ici la
-            forme est connue à l’écriture, donc elle est tree-shakable — 905 o. */}
-        <FormeEtoiles className="pointer-events-none absolute -top-8 right-0 hidden h-24 w-24 text-[var(--violet-200)] md:block" />
-        <Titre
-          niveau={1}
-          descriptif="Faire du vivier de talents"
-          impact="le moteur du cabinet"
-        />
-        <p className="t-body mt-5 max-w-[58ch] text-[var(--encre-600)]">
-          Pachamama est un collectif de recruteurs spécialisés Product, Tech et Sales.
-          Sa valeur tient à la relation qu’il entretient avec les talents — et cette
-          relation vivait jusqu’ici dans les têtes, et dans deux bases qui s’ignoraient.
-          Pachamama OS la transforme en actif exploitable.
-        </p>
+          <div className="relative mt-10">
+            <FormeEtoiles
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-6 right-0 hidden h-20 w-20 text-[var(--violet-200)] lg:block"
+            />
+            <Titre niveau={1} descriptif="Faire du vivier de talents" impact="le moteur du cabinet" />
+            <p className="t-body mt-4 max-w-[52ch] text-[var(--encre-600)]">
+              Une base de talents unifiée, trois portails qui s’y adossent, et un agent
+              de sourcing qui travaille sur la base entière. La donnée d’abord : on ne
+              branche pas un moteur de rapprochement sur deux bases qui se contredisent.
+            </p>
+          </div>
+
+          {/* ------------------------------------- l’avertissement sur les données */}
+          <Carte
+            regime="accroche"
+            className="mt-10 flex flex-col gap-4 border-2 bg-[var(--people-100)] p-5"
+          >
+            <div className="flex items-start gap-2">
+              <span aria-hidden="true" className="text-lg leading-none">
+                🔒
+              </span>
+              <div>
+                <h2 className="t-h3">Vous évaluez ce projet&nbsp;? Lisez ceci d’abord.</h2>
+                <p className="t-caption mt-2 text-black">
+                  Cette application interroge une base contenant{' '}
+                  <strong className="t-caption-bold">30&nbsp;829 personnes physiques</strong> —
+                  des candidats réels, avec leurs coordonnées, leurs prétentions et les
+                  notes prises par les recruteurs.
+                </p>
+                <p className="t-caption mt-2 text-black">
+                  <strong className="t-caption-bold">
+                    Je ne peux donc transmettre aucun jeton d’accès à cette base.
+                  </strong>{' '}
+                  Ce serait une communication de données personnelles sans base légale, et
+                  aucune échéance d’examen ne justifie de l’accorder. Le code livré
+                  documente les variables d’environnement attendues, sans leurs valeurs :
+                  il ne peut pas être lancé contre les données réelles, et c’est
+                  volontaire.
+                </p>
+                <p className="t-caption mt-2 text-black">
+                  Pour voir le produit, utilisez la{' '}
+                  <strong className="t-caption-bold">version de démonstration</strong> :
+                  les mêmes écrans, les mêmes composants, alimentés par des données
+                  fictives. Aucun compte n’est nécessaire.
+                </p>
+              </div>
+            </div>
+
+            <Link
+              href="/demo"
+              className="t-body-hl inline-flex items-center justify-center gap-2 rounded-[var(--r-sm)] border-2 border-black bg-black px-4 py-2.5 text-white shadow-[var(--ombre-3)] transition-shadow hover:shadow-[var(--ombre-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
+              Accéder à la version de démonstration
+              <span aria-hidden="true">→</span>
+            </Link>
+          </Carte>
+
+          <p className="t-caption mt-6 text-[var(--encre-500)]">
+            <Link href="/offres" className="underline">
+              Le Job&nbsp;Board public
+            </Link>{' '}
+            et{' '}
+            <Link href="/design-system" className="underline">
+              le design system
+            </Link>{' '}
+            sont également consultables sans compte.
+          </p>
+        </section>
+
+        {/* --------------------------------------------- colonne de connexion */}
+        <section aria-labelledby="titre-connexion" className="lg:pt-20">
+          <Carte regime="accroche" className="border-2 p-6 md:p-8">
+            <h2 id="titre-connexion" className="t-h2">
+              Connexion
+            </h2>
+            <p className="t-caption mt-1 mb-6 text-[var(--encre-500)]">
+              Réservée aux talents suivis par le cabinet, aux entreprises clientes et aux
+              recruteurs.
+            </p>
+            <FormulaireConnexion />
+          </Carte>
+
+          <p className="t-caption mt-4 text-[var(--encre-500)]">
+            L’autorisation ne vit pas dans ce formulaire : elle vit dans les policies
+            PostgreSQL. Un compte connecté ne voit que ce que la base l’autorise à voir,
+            et non ce que l’interface accepte de lui afficher.
+          </p>
+        </section>
       </div>
 
-      <section aria-labelledby="etapes" className="mt-16">
-        <h2 id="etapes" className="t-h2">
-          Trois étapes, une seule dépendance
-        </h2>
-        <p className="t-body mt-3 max-w-[58ch] text-[var(--encre-600)]">
-          L’ordre n’est pas une préférence, c’est une contrainte : on ne branche pas un
-          moteur de rapprochement sur deux bases qui se contredisent, il hériterait de
-          leurs contradictions et produirait des recommandations fausses avec assurance.
-        </p>
-
-        <ol className="mt-8 grid gap-4 md:grid-cols-3">
-          <Etape
-            rang="01"
-            titre="La base de talents unifiée"
-            statut="réalisé"
-            texte="Un enregistrement unique par personne, alimenté par les deux sources, où chaque champ conserve la trace de sa provenance. 30 829 enregistrements dorés, réconciliés et audités."
-          />
-          <Etape
-            rang="02"
-            titre="Les portails"
-            statut="en cours"
-            texte="Un Job Board public, un espace talent, un suivi anonymisé pour les entreprises clientes. Le design system est en place et vérifiable."
-          />
-          <Etape
-            rang="03"
-            titre="Le Chasseur de Talents"
-            statut="conçu"
-            texte="Un agent qui cible et qualifie sur la base entière, par rapprochement sémantique. Il propose, le recruteur décide."
-          />
-        </ol>
-      </section>
-
-      <section aria-labelledby="voir" className="mt-16">
-        <h2 id="voir" className="t-h2">
-          Ce qui est visible aujourd’hui
-        </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
-          <LienCarte
-            href="/offres"
-            titre="Le Job Board"
-            texte="Les offres ouvertes, filtrables et accessibles sans compte. C’est la seule vue destinée à être indexée."
-          />
-          <LienCarte
-            href="/design-system"
-            titre="Le design system"
-            texte="Chaque composant dans chacun de ses états, avec les règles qui le gouvernent. Un design system qu’on ne peut pas regarder n’est pas vérifiable."
-          />
-        </div>
-        <p className="t-caption mt-6 text-[var(--encre-500)]">
-          Les espaces talent, entreprise et recruteur sont derrière authentification :
-          leur donnée est cloisonnée au niveau de la base, pas par une condition dans le
-          code.
-        </p>
-      </section>
-
-      <footer className="mt-20 border-t border-[var(--encre-100)] pt-6">
+      <footer className="mx-auto max-w-[1180px] border-t border-[var(--encre-100)] px-6 py-6 md:px-8">
         <p className="t-caption text-[var(--encre-500)]">
           Pachamama OS — projet annuel, Bachelor Data &amp; Business Intelligence.
         </p>
       </footer>
     </main>
-  );
-}
-
-/** Une étape, avec son statut réel — jamais « livré » pour ce qui ne l’est pas. */
-function Etape({
-  rang,
-  titre,
-  statut,
-  texte,
-}: {
-  rang: string;
-  titre: string;
-  statut: 'réalisé' | 'en cours' | 'conçu';
-  texte: string;
-}) {
-  // Le statut est porté par du TEXTE, et la couleur ne fait que le doubler :
-  // une information d’avancement lisible du seul œil valide ne serait pas une
-  // information.
-  const teinte =
-    statut === 'réalisé'
-      ? 'bg-[var(--revenue-200)]'
-      : statut === 'en cours'
-        ? 'bg-[var(--people-200)]'
-        : 'bg-[var(--encre-100)]';
-  return (
-    <li>
-      <Carte regime="accroche" className="flex h-full flex-col gap-3 p-5">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="t-caption-bold text-[var(--encre-400)]">{rang}</span>
-          <span className={`t-caption-hl rounded-[var(--r-full)] px-2 py-0.5 text-black ${teinte}`}>
-            {statut}
-          </span>
-        </div>
-        <TitreSection>{titre}</TitreSection>
-        <p className="t-caption text-[var(--encre-600)]">{texte}</p>
-      </Carte>
-    </li>
-  );
-}
-
-function LienCarte({ href, titre, texte }: { href: string; titre: string; texte: string }) {
-  return (
-    <Link
-      href={href}
-      className="group rounded-[var(--r-md)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-    >
-      <Carte regime="accroche" survol className="flex h-full flex-col gap-2 p-5">
-        <div className="flex items-center gap-2">
-          <TitreSection>{titre}</TitreSection>
-          <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-            →
-          </span>
-        </div>
-        <p className="t-caption text-[var(--encre-600)]">{texte}</p>
-      </Carte>
-    </Link>
   );
 }
