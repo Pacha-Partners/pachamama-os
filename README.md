@@ -94,6 +94,25 @@ Trois mots, employés sans complaisance dans toute la documentation de ce projet
 
 ## 4. Installation
 
+### 4.0 Le plus court chemin — les scripts de la racine
+
+Le dépôt réunit trois projets autonomes, **un langage par sous-arbre, un
+manifeste de dépendances par projet**. Ils se lancent séparément, et les scripts
+de la racine les orchestrent :
+
+| Commande | Effet |
+|---|---|
+| `npm run installer` | installe les trois projets |
+| `npm run front:dev` | le front-end en développement |
+| `npm run api:dev` | l'API en développement, rechargement à chaud |
+| `npm run db:charger` · `db:notes` | chargement du pivot et du journal de notes |
+| `npm run db:reconcilier` · `db:preseance` · `db:fusion` | les trois audits |
+| `npm run db:dump` | régénère le dump anonymisé |
+| `npm run verifier` | **tout** : tests base, lint et tests API, build front-end |
+
+Les sections suivantes détaillent chaque projet, si vous préférez les lancer à la
+main.
+
 ### 4.1 Le front-end
 
 ```bash
@@ -225,7 +244,7 @@ backend/
   pipeline/lib/           modules purs et testables
   api/                    FastAPI — lecture cloisonnée par RLS
 
-docs/decisions/           décisions d'architecture, datées
+docs/decisions/           décisions d'architecture, datées et justifiées
 docs/journal.md           journal de bord
 ```
 
@@ -236,7 +255,21 @@ une seule implémentation, deux sources.
 
 ---
 
-## 8. Ce que ce dépôt ne contient pas, et pourquoi
+## 8. Les décisions d'architecture
+
+Elles sont écrites, datées et justifiées plutôt que reconstituées après coup :
+
+- [`docs/decisions/0001-stack-technique.md`](docs/decisions/0001-stack-technique.md)
+  — le choix de la pile, avec les alternatives écartées.
+- [`docs/decisions/0002-technos-reservees-chasseur.md`](docs/decisions/0002-technos-reservees-chasseur.md)
+  — les technologies réservées à l'agent de sourcing : identifiées, et
+  **volontairement pas installées**. Installer une dépendance dont on n'a pas
+  encore l'usage, c'est s'engager sans contrepartie.
+- [`docs/journal.md`](docs/journal.md) — le journal de bord du projet.
+
+---
+
+## 9. Ce que ce dépôt ne contient pas, et pourquoi
 
 - **Aucune donnée personnelle.** Les extractions de travail (44 Mo et 19 Mo) et
   le fichier de revue interne des fusions — qui contient des noms de personnes et
