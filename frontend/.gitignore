@@ -30,8 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Fichiers d'environnement : jamais versionnés, SAUF le modèle.
+# Sans l'exception, `.env.example` était exclu lui aussi — et le README demande
+# de le copier pour démarrer. Une instruction d'installation qui renvoie vers un
+# fichier absent est un défaut de livrable, pas un détail.
 .env*
+!.env.example
 
 # vercel
 .vercel
