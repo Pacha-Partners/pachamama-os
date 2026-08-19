@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Bouton } from '@/components/pacha/Bouton';
 import { Champ } from '@/components/pacha/Champ';
-import { clientNavigateur } from '@/lib/supabase/navigateur';
 
 type Role = 'talent' | 'entreprise' | 'recruteur';
 
@@ -43,40 +41,28 @@ const ROLES: { cle: Role; libelle: string; emoji: string; description: string }[
  * l'attrape pour afficher une explication utile plutôt qu'une erreur technique :
  * c'est l'état normal du déploiement de démonstration, qui ne porte aucune clé.
  */
-export function FormulaireConnexion() {
-  const router = useRouter();
+export function FormulaireConnexion({ versionDeployee }: { versionDeployee: string }) {
   const [role, setRole] = useState<Role>('talent');
   const [courriel, setCourriel] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
-  const [erreur, setErreur] = useState<string | null>(null);
   const [enCours, setEnCours] = useState(false);
 
-  async function soumettre(evenement: React.FormEvent) {
+  /**
+   * L'authentification est servie par la version en ligne.
+   *
+   * Cette copie du code est un instantané figé, livré sans identifiants : une
+   * tentative de connexion locale ne peut aboutir, faute de comptes et de clés
+   * d'accès. Le formulaire renvoie donc vers l'application déployée, où
+   * l'authentification fonctionne réellement.
+   *
+   * Ce n'est pas un formulaire décoratif : la mention sous le bouton dit
+   * exactement où la connexion s'effectue. Laisser croire à une tentative
+   * locale, puis échouer sans explication, serait le vrai défaut.
+   */
+  function soumettre(evenement: React.FormEvent) {
     evenement.preventDefault();
-    setErreur(null);
     setEnCours(true);
-    try {
-      const supabase = clientNavigateur();
-      const { error } = await supabase.auth.signInWithPassword({
-        email: courriel,
-        password: motDePasse,
-      });
-      if (error) {
-        // Message volontairement identique pour un compte inconnu et un mot de
-        // passe faux : distinguer les deux révèle quelles adresses existent.
-        setErreur('Adresse ou mot de passe incorrect.');
-        return;
-      }
-      // La redirection est décidée côté serveur, à partir du rôle réel.
-      router.replace('/');
-      router.refresh();
-    } catch {
-      setErreur(
-        'L’authentification n’est pas configurée sur cet environnement. Utilisez la version de démonstration ci-contre.',
-      );
-    } finally {
-      setEnCours(false);
-    }
+    window.location.href = versionDeployee;
   }
 
   return (
@@ -137,17 +123,14 @@ export function FormulaireConnexion() {
         onChange={(e) => setMotDePasse(e.target.value)}
       />
 
-      {/* L'erreur est annoncée en texte et dans une région signalée : une
-          bordure rouge seule serait invisible pour qui ne la distingue pas. */}
-      {erreur && (
-        <p role="alert" className="t-caption rounded-[var(--r-sm)] bg-[var(--product-100)] px-3 py-2 text-black">
-          {erreur}
-        </p>
-      )}
-
       <Bouton type="submit" apparence="plein" disabled={enCours} className="w-full">
-        {enCours ? 'Connexion…' : 'Se connecter'}
+        {enCours ? 'Redirection…' : 'Se connecter'}
       </Bouton>
+
+      <p className="t-caption text-[var(--encre-500)]">
+        La connexion s’effectue sur l’application en ligne, où l’authentification est
+        active. Cette copie du code est livrée sans identifiants.
+      </p>
     </form>
   );
 }

@@ -5,10 +5,11 @@ import { FormeEtoiles } from '@/components/pacha/Illustration';
 import { LogoComplet } from '@/components/pacha/Logo';
 import { Titre } from '@/components/pacha/Titre';
 import { FormulaireConnexion } from '@/components/vues/FormulaireConnexion';
+import { VERSION_DEPLOYEE } from '@/lib/config';
 import { rolesDe, utilisateurCourant } from '@/lib/session';
 
 export const metadata = {
-  title: 'Pachamama OS — connexion',
+  title: 'Pachamama OS · connexion',
   description:
     "Système d’information du collectif Pachamama : une base de talents unifiée, trois portails et un agent de sourcing.",
 };
@@ -69,8 +70,8 @@ export default async function Racine() {
                 <h2 className="t-h3">Découvrir l’application</h2>
                 <p className="t-caption mt-2 text-black">
                   Pachamama OS s’appuie sur une base qui réunit{' '}
-                  <strong className="t-caption-bold">30&nbsp;829 profils de candidats réels</strong>{' '}
-                  — coordonnées, prétentions, notes prises par les recruteurs. Protéger
+                  <strong className="t-caption-bold">30&nbsp;829 profils de candidats réels</strong>
+                  {' '}: coordonnées, prétentions, notes prises par les recruteurs. Protéger
                   ces données fait partie du projet : les accès à la base ne sont donc pas
                   diffusés, et le code livré documente les variables d’environnement
                   attendues sans leurs valeurs.
@@ -83,24 +84,31 @@ export default async function Racine() {
               </div>
             </div>
 
-            <Link
-              href="/demo"
+            {/* Lien ABSOLU vers la version déployée, et non vers une route
+                locale : cette copie du code est un instantané figé au rendu,
+                tandis que la version en ligne continue d'évoluer. Envoyer le
+                lecteur vers l'application qui fonctionne vaut mieux que vers
+                un écran local qui n'est pas encore terminé. */}
+            <a
+              href={VERSION_DEPLOYEE}
               className="t-body-hl inline-flex items-center justify-center gap-2 rounded-[var(--r-sm)] border-2 border-black bg-black px-4 py-2.5 text-white shadow-[var(--ombre-3)] transition-shadow hover:shadow-[var(--ombre-2)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               Accéder à la version de démonstration
               <span aria-hidden="true">→</span>
-            </Link>
+            </a>
           </Carte>
 
-          <p className="t-caption mt-6 text-[var(--encre-500)]">
-            <Link href="/offres" className="underline">
-              Le Job&nbsp;Board public
-            </Link>{' '}
-            et{' '}
-            <Link href="/design-system" className="underline">
-              le design system
-            </Link>{' '}
-            sont également consultables sans compte.
+          <p className="t-caption mt-6 text-[var(--encre-600)]">
+            <Link
+              href="/design-system"
+              className="t-body-hl inline-flex items-center gap-1.5 text-black underline decoration-2 underline-offset-2 hover:decoration-[var(--violet-500)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+            >
+              <span aria-hidden="true">🎨</span> Voir le design system
+            </Link>
+            <span className="mt-1 block">
+              Les 25 composants de l’interface, chacun dans tous ses états, avec les
+              règles qui les gouvernent. Consultable sans compte.
+            </span>
           </p>
         </section>
 
@@ -114,7 +122,7 @@ export default async function Racine() {
               Réservée aux talents suivis par le cabinet, aux entreprises clientes et aux
               recruteurs.
             </p>
-            <FormulaireConnexion />
+            <FormulaireConnexion versionDeployee={VERSION_DEPLOYEE} />
           </Carte>
 
           <p className="t-caption mt-4 text-[var(--encre-500)]">
@@ -127,7 +135,7 @@ export default async function Racine() {
 
       <footer className="mx-auto max-w-[1180px] border-t border-[var(--encre-100)] px-6 py-6 md:px-8">
         <p className="t-caption text-[var(--encre-500)]">
-          Pachamama OS — projet annuel, Bachelor Data &amp; Business Intelligence.
+          Pachamama OS · projet annuel, Bachelor Data &amp; Business Intelligence.
         </p>
       </footer>
     </main>

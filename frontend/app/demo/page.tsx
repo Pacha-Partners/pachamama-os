@@ -1,3 +1,5 @@
+import { EST_VERSION_EN_LIGNE, VERSION_DEPLOYEE } from '@/lib/config';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Carte } from '@/components/pacha/Carte';
 import { LogoComplet } from '@/components/pacha/Logo';
@@ -8,6 +10,9 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
+/* Le portail entreprise et le Chasseur de Talents ne sont pas encore écrits :
+   ils ne figurent pas ici. Une carte qui mène à une page absente dessert la
+   démonstration plus qu'une liste courte. */
 const VUES = [
   {
     href: '/demo/talent',
@@ -15,20 +20,6 @@ const VUES = [
     titre: 'Espace talent',
     texte:
       'Le candidat voit son profil, ses attentes, l’état de ses candidatures et l’étape où il en est dans chaque process.',
-  },
-  {
-    href: '/demo/entreprise',
-    emoji: '🏢',
-    titre: 'Portail entreprise',
-    texte:
-      'Le client suit ses candidats sans jamais voir leur identité. L’anonymat est une promesse contractuelle, garantie au niveau de la base.',
-  },
-  {
-    href: '/demo/recruteur',
-    emoji: '🎯',
-    titre: 'Chasseur de Talents',
-    texte:
-      'Le recruteur décrit un besoin, l’agent propose des profils classés avec le motif du rapprochement. L’IA propose, le recruteur décide.',
   },
   {
     href: '/offres',
@@ -47,6 +38,10 @@ const VUES = [
  * démontre rien.
  */
 export default function Demo() {
+  // Instantané figé : cette vue n'est pas encore présentable. On renvoie vers
+  // l'application en ligne plutôt que de montrer un écran incomplet.
+  if (!EST_VERSION_EN_LIGNE) redirect(VERSION_DEPLOYEE);
+
   return (
     <main id="contenu" className="mx-auto max-w-[1000px] px-6 py-12 md:px-8">
       <div className="flex items-center justify-between gap-4">

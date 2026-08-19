@@ -1,3 +1,5 @@
+import { EST_VERSION_EN_LIGNE, VERSION_DEPLOYEE } from '@/lib/config';
+import { redirect } from 'next/navigation';
 import { JobBoard } from '@/components/vues/JobBoard';
 import { filtrer, LOCALISATIONS, OFFRES, UNIVERS } from '@/lib/demo/offres';
 
@@ -16,6 +18,10 @@ export default async function Offres({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  // Instantané figé : cette vue n'est pas encore présentable. On renvoie vers
+  // l'application en ligne plutôt que de montrer un écran incomplet.
+  if (!EST_VERSION_EN_LIGNE) redirect(VERSION_DEPLOYEE);
+
   const p = await searchParams;
   const unique = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) || undefined;
   const filtres = {
