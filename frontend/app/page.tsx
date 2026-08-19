@@ -66,28 +66,19 @@ export default async function Racine() {
                 🔒
               </span>
               <div>
-                <h2 className="t-h3">Vous évaluez ce projet&nbsp;? Lisez ceci d’abord.</h2>
+                <h2 className="t-h3">Découvrir l’application</h2>
                 <p className="t-caption mt-2 text-black">
-                  Cette application interroge une base contenant{' '}
-                  <strong className="t-caption-bold">30&nbsp;829 personnes physiques</strong> —
-                  des candidats réels, avec leurs coordonnées, leurs prétentions et les
-                  notes prises par les recruteurs.
+                  Pachamama OS s’appuie sur une base qui réunit{' '}
+                  <strong className="t-caption-bold">30&nbsp;829 profils de candidats réels</strong>{' '}
+                  — coordonnées, prétentions, notes prises par les recruteurs. Protéger
+                  ces données fait partie du projet : les accès à la base ne sont donc pas
+                  diffusés, et le code livré documente les variables d’environnement
+                  attendues sans leurs valeurs.
                 </p>
                 <p className="t-caption mt-2 text-black">
-                  <strong className="t-caption-bold">
-                    Je ne peux donc transmettre aucun jeton d’accès à cette base.
-                  </strong>{' '}
-                  Ce serait une communication de données personnelles sans base légale, et
-                  aucune échéance d’examen ne justifie de l’accorder. Le code livré
-                  documente les variables d’environnement attendues, sans leurs valeurs :
-                  il ne peut pas être lancé contre les données réelles, et c’est
-                  volontaire.
-                </p>
-                <p className="t-caption mt-2 text-black">
-                  Pour voir le produit, utilisez la{' '}
-                  <strong className="t-caption-bold">version de démonstration</strong> :
-                  les mêmes écrans, les mêmes composants, alimentés par des données
-                  fictives. Aucun compte n’est nécessaire.
+                  Une <strong className="t-caption-bold">version de démonstration</strong>{' '}
+                  est prévue pour cela : les mêmes écrans et les mêmes composants,
+                  alimentés par des données fictives. Aucun compte n’est nécessaire.
                 </p>
               </div>
             </div>
