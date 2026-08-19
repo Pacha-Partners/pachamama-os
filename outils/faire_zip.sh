@@ -184,6 +184,9 @@ if f.exists():
     # On retire le titre et l'avertissement interne de non-versionnement, sans
     # objet dans un document destiné à être transmis.
     garde = [l for l in lignes if not l.startswith('# Identifiants') and not l.startswith('> ')]
+    # Les titres du fichier source sont de niveau 2 ; ici ils sont le CONTENU de
+    # la section 3. Sans les abaisser, ils s'afficheraient comme ses frères.
+    garde = ['#' + l if l.startswith('## ') else l for l in garde]
     bloc = "\n".join(garde).strip()
 s = s.replace('@@IDENTIFIANTS@@', bloc)
 p.write_text(s)
