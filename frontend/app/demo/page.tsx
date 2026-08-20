@@ -10,9 +10,9 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-/* Le portail entreprise et le Chasseur de Talents ne sont pas encore écrits :
-   ils ne figurent pas ici. Une carte qui mène à une page absente dessert la
-   démonstration plus qu'une liste courte. */
+/* Le Chasseur de Talents n'est pas encore écrit : il ne figure pas ici. Une
+   carte qui mène à une page absente dessert la démonstration plus qu'une liste
+   courte. */
 const VUES = [
   {
     href: '/demo/talent',
@@ -20,6 +20,13 @@ const VUES = [
     titre: 'Espace talent',
     texte:
       'Le candidat voit son profil, ses attentes, l’état de ses candidatures et l’étape où il en est dans chaque process.',
+  },
+  {
+    href: '/demo/entreprise',
+    emoji: '🏢',
+    titre: 'Portail entreprise',
+    texte:
+      'Le client suit ses candidats sans jamais voir leur identité, et n’entre dans le process qu’au send-out. L’anonymat est une promesse contractuelle, garantie au niveau de la base.',
   },
   {
     href: '/offres',
