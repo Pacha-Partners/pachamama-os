@@ -18,6 +18,9 @@
     "db:dump": "npm --prefix backend/pipeline run dump",
     "db:test": "npm --prefix backend/pipeline test",
     "verifier": "npm run db:test && npm run api:lint && npm run api:test && npm run front:build",
-    "installer": "npm --prefix frontend install && npm --prefix backend/pipeline install && (cd backend/api && uv sync)"
+    "installer": "npm --prefix frontend install && npm --prefix backend/pipeline install && (cd backend/api && uv sync)",
+    "build": "npm --prefix frontend run build",
+    "dev": "npm --prefix frontend run dev",
+    "start": "npm --prefix frontend run start"
   }
 }
