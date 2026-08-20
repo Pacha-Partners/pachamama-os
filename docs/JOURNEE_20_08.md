@@ -15,7 +15,7 @@
 
 Sept étapes. Les durées sont des ordres de grandeur, pas des engagements.
 
-### 0 · Rotation du jeton — *vous, 5 min*
+### 0 · Rotation du jeton — **reportée, décision du 20/08**
 
 Le jeton actuel est un **jeton maître** : il contourne les règles de
 confidentialité de l'outil. Il a existé en clair dans des scripts.
@@ -24,10 +24,17 @@ confidentialité de l'outil. Il a existé en clair dans des scripts.
 git, le jeton n'apparaît dans aucun commit ni fichier suivi, et aucun script ne
 le porte en dur — ils le lisent tous depuis l'environnement.
 
-C'est donc de l'hygiène, pas une urgence. Mais on va s'en servir intensivement
-aujourd'hui, et c'est le bon moment.
+**Décision : reportée.** Le risque actuel est théorique — pas de fuite, et le
+jeton ne sert aujourd'hui qu'à **lire**. La manipulation de jetons dans l'outil
+no-code est fastidieuse et ralentirait le chantier sans réduire de risque réel.
 
-**Preuve que c'est fait** : l'ancien jeton renvoie 401, le nouveau répond.
+**Le seuil qui la rend non négociable est identifié : le dual-write.** Le jour où
+le pivot écrit vers les producteurs, le même jeton passe de la lecture à
+l'écriture — une compromission cesserait d'être une fuite de données pour devenir
+une corruption de la production. À faire **avant** cette bascule, pas après.
+
+**Preuve, le jour venu** : l'ancien jeton renvoie 401, le nouveau répond, et les
+identifiants n8n sont à jour des deux côtés.
 
 ---
 
@@ -46,8 +53,27 @@ la synchronisation le reproduirait à chaque run, en silence.
 `process`, `note` ou `job_actuel` mais absents du point d'accès révèlent l'écart.
 C'est la technique qui avait démasqué l'angle mort sur `mandat`.
 
-**Preuve** : un chiffre. Soit l'écart est nul et on avance sereinement, soit il
-ne l'est pas et **le chantier change** — il faudra d'abord ouvrir l'exposition.
+**RÉSULTAT — 20/08, aucun angle mort.**
+
+```
+candidats visibles dans la liste     7 006
+candidats cités par process /
+  job_actuel / experience            7 006
+cités mais ABSENTS de la liste           0
+```
+
+La couverture est totale, pas échantillonnée : `job_actuel` étant en 1-1 avec
+`candidat`, le croisement porte sur 100 % des candidats. Le pivot n'a donc pas
+été bâti sur une vue partielle de l'app.
+
+Réserve : un candidat cité par aucun des trois types **et** caché échapperait au
+test. Un tel enregistrement est inerte, et les comptes s'égalisent exactement.
+
+Script rejouable : `Bubble migration/verif_angle_mort_candidat.py`.
+
+**Effet de bord relevé** : le type `note_archivee` renvoie 404 — il n'est **pas
+exposé** à l'API, alors qu'il porte ~25 000 notes archivées. À instruire hors de
+ce chantier.
 
 ---
 
