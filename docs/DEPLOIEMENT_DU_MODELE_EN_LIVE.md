@@ -78,8 +78,17 @@ voulu** — ce sont elles qui construisent `core`.
 
 ## 4. Ce que la répétition a trouvé
 
-Répétition conduite sur une base **locale**, chargée avec le miroir du **dev**
-(70 Mo), amenée à l'état exact du live, puis soumise aux 126 migrations.
+Répétition conduite sur une base **locale**, chargée avec le miroir du **LIVE**
+(75 Mo, `pg_dump --data-only`, lecture seule), sur un socle qui reproduit la
+production à l'objet près — `public.mandat.localisations` absente, comme là-bas.
+Puis les 126 migrations, une par une, arrêt au premier échec.
+
+⚠ **UN PREMIER PASSAGE AVAIT ÉTÉ FAIT SUR LE MIROIR DU DEV, ET C'ÉTAIT UNE
+ERREUR DE MÉTHODE.** Une répétition qui ne part pas des données de la CIBLE ne
+répète rien : le live porte 196 candidats, 247 candidatures et 1 355 notes que
+le dev n'a pas, et ce sont les lignes les plus récentes — donc les plus
+susceptibles de porter une saisie fautive. Le second passage a effectivement
+trouvé deux anomalies de plus (§5).
 
 ### Un seul blocage, à la 23ᵉ migration
 
@@ -88,17 +97,16 @@ Répétition conduite sur une base **locale**, chargée avec le miroir du **dev*
     ERROR: new row for relation "fiche_talent"
            violates check constraint "fiche_email_arobase"
 
-**Deux lignes sur 7 023** portent autre chose qu'une adresse dans
+**Deux lignes sur 7 219** portent autre chose qu'une adresse dans
 `public.candidat.email_perso` :
 
-    «Patrick Lambein-Monette»                  ← un nom
-    «https://www.linkedin.com/in/lauradinin/»  ← une URL LinkedIn
+    «https://www.linkedin.com/in/lauradinin/»   ← une URL LinkedIn
+    «Patrick Lambein-Monette»                   ← un nom
 
-Des saisies fautives dans Bubble, arrivées **après** que les migrations ont
-tourné sur le dev — d'où leur invisibilité jusqu'ici.
+Aucune autre table porteuse d'adresse n'est touchée (`public.equipe` : 0).
 
-La contrainte a raison de les refuser. Mais **une reprise qui s'arrête sur deux
-lignes sur sept mille ne peut pas être lancée en production.**
+La contrainte a raison de les refuser. Mais une reprise qui s'arrête sur deux
+lignes sur sept mille ne peut pas être lancée en production.
 
 ### Les 104 suivantes passent toutes
 
@@ -107,65 +115,70 @@ seule erreur.
 
 ---
 
-## 5. Ce que la reprise produit
+## 5. Ce que VOS données produisent
 
-### Vos propres contrôles
+### Dans `core`
 
-`reprise.controle` déclare **6 écarts, tous expliqués** — ce sont des pertes
-assumées, pas des défauts :
+| table | lignes |
+|---|---|
+| `fiche_talent` | 7 219 |
+| `candidature` | 7 483 |
+| `note` | 52 130 |
+| `tache` | 1 167 |
+| `entreprise` | 858 |
+| `mandat` | 551 |
+| `contact_client` | 538 |
+| `analyse` | 501 |
+| `placement` | 232 |
+| `tag` | 110 |
+| `collaborateur` | 42 |
+
+### Les écarts déclarés par `reprise.controle` — tous expliqués
 
 | étape | écart | motif |
 |---|---|---|
-| `core.note` | 5 069 | 51 007 sources fondues en 45 938 notes par empreinte de contenu |
-| `activation_comptes` | 4 159 | comptes dormants : aucun `auth.users` sur une base neuve |
-| `restauration` | 20 | contacts sans nom ni courriel dans `public.equipe` |
+| `core.note` | 6 186 | 53 412 sources fondues en 47 226 notes par empreinte de contenu |
+| `activation_comptes` | 4 299 | comptes dormants : aucun `auth.users` sur une base neuve |
+| `restauration` | 21 | contacts sans nom ni courriel dans `public.equipe` |
 | `core.tache` | 16 | notifications orphelines (`task_id` nul), perte déclarée |
-| `salaire` | 2 | mandats à salaire min > max |
-| `agent` | 2 | les mêmes, écartés par `mandat_salaire_ordre` |
+| **`salaire`** | **4** | mandats à salaire min > max |
+| `agent` | 4 | les mêmes, écartés par `mandat_salaire_ordre` |
 
-### Comparaison avec le dev
+### ⚠ Ce que le miroir du dev cachait
 
-| table | répétition | dev | écart |
+| dans `core` | miroir dev | miroir LIVE | écart |
 |---|---|---|---|
-| `entreprise` | 850 | 850 | — |
-| `collaborateur` | 42 | 42 | — |
-| `fiche_talent` | 7 023 | 7 023 | — |
-| `mandat` | 533 | 533 | — |
-| `candidature` | 7 236 | 7 237 | −1 |
-| `placement` | 227 | 227 | — |
-| `tache` | 1 136 | 1 136 | — |
-| `analyse` | 501 | 501 | — |
-| `contact_client` | 523 | 525 | −2 |
-| `note` | 50 775 | 45 713 | **+5 062** |
+| `fiche_talent` | 7 023 | 7 219 | +196 |
+| `candidature` | 7 236 | 7 483 | +247 |
+| `note` | 50 775 | 52 130 | +1 355 |
+| **mandats à salaire inversé** | **2** | **4** | **+2** |
+| contacts sans identité | 20 | 21 | +1 |
 
-**7 tables sur 10 reproduisent le dev à la ligne près.**
-
-Les trois écarts s'expliquent : les deux contacts sont les lignes neutralisées
-et leur candidature ; les notes sont **plus nombreuses parce que la répétition
-reflète le miroir d'aujourd'hui**, tandis que le `core` du dev a été construit
-le 08/09 et n'a pas été reconstruit depuis (45 938 de la reprise + 4 837 des
-colonnes qualitatives de la fiche = 50 775, exactement).
-
----
+Deux mandats de plus portent un salaire minimum supérieur au maximum :
+**Soongo - Sales Executive** et **SOPHT-MANDAT-FULLSTACK** (les deux connus
+étaient *Prose-D7-Tech-ML Engineer* et *Weda-D1-Product-PM*). Ils ne bloquent
+pas — la migration les écarte et le déclare — mais ils **partiront sans agent**.
+Une répétition sur le dev ne les aurait jamais montrés.
 
 ## 6. Ce qu'il reste à décider
 
-**La reprise doit-elle survivre aux données sales ?**
+**A — corriger les deux fiches dans Bubble.** *Recommandé.* Deux saisies. La
+reprise passe alors **sans modifier une seule migration**, et la règle 1 reste
+intacte. L'information retourne au bon endroit : l'URL LinkedIn a déjà sa
+colonne dédiée, et un nom n'a rien à faire dans un champ courriel.
 
-Deux gestes, et je recommande les deux :
+La mesure rend cette option évidente : il n'y a pas un cas général à traiter,
+il y a **deux fautes de frappe**, identifiées, corrigeables à la source.
 
-1. **Rendre `20260908201003` défensive** — écarter ce qui n'est pas une adresse
-   et le **consigner dans `reprise.controle`** plutôt que de le perdre en
-   silence.
+**B — rendre `20260908201003` défensive**, plus tard. Écarter ce qui n'est pas
+une adresse et le **consigner dans `reprise.controle`** plutôt que de le perdre
+en silence. Souhaitable pour que la reprise ne retombe pas le jour où n8n
+réimportera une troisième faute — mais cela demande de **modifier une migration
+déjà poussée**, contraire à la règle 1. À décider séparément, et pas dans
+l'urgence d'un déploiement.
 
-   ⚠ Cela demande de **modifier une migration déjà poussée**, contraire à la
-   règle 1 de `CONTRIBUTING.md`. L'exception se défend : cette migration n'a
-   jamais tourné sur sa cible, et une reprise qui tombe sur deux lignes sur
-   sept mille n'est pas déployable. À décider explicitement, pas à glisser.
-
-2. **Corriger les deux fiches dans Bubble** — une adresse LinkedIn dans un
-   champ courriel est une vraie perte d'information, et n8n réimportera la
-   faute suivante.
+**Et à traiter à part** : les 4 mandats à salaire inversé, qui partiront sans
+agent.
 
 ---
 
@@ -185,7 +198,8 @@ Deux gestes, et je recommande les deux :
 
 - Sonde de schéma **en lecture seule stricte**, avec un garde dans le code qui
   refuse toute requête n'étant pas un `select` (scratchpad, `sonde.mjs`).
-- Données extraites du **dev**, jamais du live.
+- Données extraites du **live**, en lecture seule (`pg_dump --data-only`),
+  après qu'un premier passage sur le miroir du dev se soit révélé non fidèle.
 - Base locale isolée, ports décalés de 1000, conteneur nommé
   `pachamama-repetition`.
 - **Aucune écriture sur la production.**
