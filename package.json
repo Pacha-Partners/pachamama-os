@@ -17,10 +17,13 @@
     "db:fusion": "npm --prefix backend/pipeline run fusion",
     "db:dump": "npm --prefix backend/pipeline run dump",
     "db:test": "npm --prefix backend/pipeline test",
-    "verifier": "npm run db:test && npm run api:lint && npm run api:test && npm run front:build",
+    "verifier": "npm run cible && npm run db:test && npm run api:lint && npm run api:test && npm run front:build",
     "installer": "npm --prefix frontend install && npm --prefix backend/pipeline install && (cd backend/api && uv sync)",
     "build": "npm --prefix frontend run build",
     "dev": "npm --prefix frontend run dev",
-    "start": "npm --prefix frontend run start"
+    "start": "npm --prefix frontend run start",
+    "cible": "python3 outils/cible.py",
+    "cible:dev": "python3 outils/cible.py dev",
+    "cible:live": "python3 outils/cible.py live"
   }
 }
