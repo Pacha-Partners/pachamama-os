@@ -75,6 +75,15 @@ jobs:
       # La protection au push de GitHub couvre ~69 formats de jetons connus.
       # gitleaks couvre le reste — dont les formats propres au projet. Le dépôt
       # est PUBLIC : une fuite y est définitive, un `force-push` ne dépublie rien.
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #
+      # ⚠ LE BINAIRE, PAS L'ACTION `gitleaks/gitleaks-action`. Celle-ci exige
+      # une licence pour les comptes d'ORGANISATION. Le dépôt appartient
+      # aujourd'hui à un utilisateur, donc elle passerait — mais le jour où il
+      # migrerait vers une organisation, la CI casserait sans raison lisible.
+      - name: Installer gitleaks
+        run: |
+          V=8.28.0
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_linux_x64.tar.gz" | tar -xz gitleaks
+          sudo mv gitleaks /usr/local/bin/
+      - name: Chercher un secret dans tout l'historique
+        run: gitleaks detect --no-banner --redact --verbose
