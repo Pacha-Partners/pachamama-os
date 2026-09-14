@@ -57,21 +57,42 @@ sont atteignables depuis `dev`, donc conservés pour toujours.
 
 ### Le cycle de `recette`
 
+**1. Avancer `recette`** — par une pull request `dev → recette`, fusionnée avec
+un **commit de fusion** (jamais un squash : il écraserait vingt commits en un,
+et `main` en hériterait).
+
 ```bash
-# 1. On désigne l'état validé. Pas forcément la pointe de dev.
-git switch recette && git merge --ff-only <le commit validé>
-
-# 2. Un défaut trouvé sur la beta se corrige ICI, et repart DANS dev tout de suite
-git commit -am "fix(entreprise): …"
-git switch dev && git merge --no-ff recette
-
-# 3. Mise en ligne
-git switch main && git merge --no-ff recette
+gh pr create --base recette --head dev --title "Livraison …"
+# CI verte → « Create a merge commit »
 ```
 
-`--ff-only` à l'étape 1 **refuse** que `recette` diverge. Si la commande
-échoue, c'est qu'un commit y traîne sans avoir été reporté dans `dev` : c'est
-exactement l'erreur qu'on veut voir échouer bruyamment.
+⚠ **Pas de `--ff-only`, et c'est une correction.** Ce document a d'abord
+prescrit `git merge --ff-only`, qui est le geste juste en local mais que la
+protection de branche rend impossible : `recette` n'accepte que des pull
+requests, et GitHub ne sait pas fusionner en avance rapide. Elle reçoit donc un
+commit de fusion.
+
+Ce qu'on perd : l'identité des graphes. Ce qu'on garde — et c'est ce qui
+compte : **le contenu**. Juste après la fusion, `recette` et `dev` portent le
+même arbre. Le contrôle de non-divergence devient donc :
+
+```bash
+git diff recette dev                  # vide juste après la fusion
+git log dev..recette --no-merges      # vide : aucun commit propre à recette
+```
+
+Si la seconde commande rend quelque chose, c'est un correctif de beta qui n'a
+pas été reporté dans `dev`.
+
+**2. Un défaut trouvé sur la beta** se corrige sur `recette` et repart **dans
+`dev` tout de suite** — sans le report, la livraison suivante le ramène.
+
+```bash
+git switch recette && git commit -am "fix(entreprise): …"
+gh pr create --base dev --head recette --title "Report du correctif de beta"
+```
+
+**3. Mise en ligne** — pull request `recette → main`, commit de fusion.
 
 ---
 
