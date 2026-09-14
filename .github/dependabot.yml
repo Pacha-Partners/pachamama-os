@@ -1,0 +1,64 @@
+# ════════════════════════════════════════════════════════════════════════
+# Les mises à jour de dépendances.
+#
+# ⚠ `target-branch: dev`, ET C'EST LE POINT ENTIER DE CE FICHIER.
+# Par défaut Dependabot ouvre ses pull requests contre la branche PAR DÉFAUT,
+# ici `main`. Ce serait contraire au modèle du dépôt : rien n'entre dans `main`
+# sauf depuis `recette`. Ses propositions passent donc par `dev` comme tout le
+# reste, et subissent la même CI — typage, lint, 270 tests, build, rejeu des
+# migrations, gitleaks.
+#
+# GROUPÉES, et pas une par paquet. Treize vulnérabilités mesurées le 14/09
+# donneraient treize pull requests, donc treize exécutions de CI et treize
+# relectures pour un seul geste. Les correctifs de sécurité forment un lot, les
+# mises à jour ordinaires un autre.
+#
+# ⚠ LES CORRECTIFS DE SÉCURITÉ NE SONT PAS SOUMIS À `open-pull-requests-limit`.
+# GitHub les ouvre en plus du quota. La limite ne bride donc que le bruit
+# ordinaire, jamais l'urgent.
+# ════════════════════════════════════════════════════════════════════════
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /frontend
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Paris
+    open-pull-requests-limit: 3
+    commit-message:
+      # La portée `deps` entre dans la convention du dépôt, donc dans le
+      # calcul de version par release-please — où elle ne compte pour rien,
+      # ce qui est le comportement voulu : mettre à jour lodash n'est pas
+      # une fonctionnalité.
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
+    groups:
+      securite:
+        applies-to: security-updates
+        patterns: ["*"]
+      ordinaires:
+        applies-to: version-updates
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: npm
+    directory: /backend/pipeline
+    target-branch: dev
+    schedule: { interval: monthly }
+    open-pull-requests-limit: 2
+    commit-message: { prefix: "chore(deps)" }
+    groups:
+      tout:
+        patterns: ["*"]
+
+  # Les actions elles-mêmes vieillissent : `actions/checkout@v4` forçait déjà
+  # Node 20, déprécié, et il a fallu le voir dans un journal pour s'en rendre
+  # compte.
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule: { interval: monthly }
+    commit-message: { prefix: "chore(ci)" }

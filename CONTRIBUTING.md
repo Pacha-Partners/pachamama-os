@@ -147,8 +147,16 @@ un `db push` y tenterait d'appliquer 125 migrations, dont toute la reprise
 Bubble, l'amorçage, les comptes de test et les fixtures. Sur 30 829 personnes
 physiques.
 
-**`main.yml` porte un garde du NOMBRE** : au-delà de 20 migrations pour une
-livraison, il refuse et le dit. Une livraison normale en porte zéro à quelques
+**`main.yml` porte DEUX serrures**, et elles ne sont pas du même ordre :
+
+1. un garde **automatique** du NOMBRE — au-delà de 20 migrations pour une
+   livraison, il refuse et le dit ;
+2. un garde **humain** — le job passe par l'environnement GitHub
+   `base-de-production`, qui exige une approbation explicite. Le job attend,
+   GitHub notifie, rien ne bouge tant que personne n'a cliqué.
+
+Il faut les deux erreurs pour qu'une migration fautive atteigne la production :
+une mesure qui se trompe, et un humain qui approuve sans lire. Une livraison normale en porte zéro à quelques
 unes ; 125 n'est pas une livraison, c'est un historique désaccordé.
 
 **Avant la première mise en ligne**, il faut réconcilier : pour chaque migration

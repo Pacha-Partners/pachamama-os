@@ -32,6 +32,17 @@ jobs:
   migrations:
     name: Migrations → projet LIVE
     runs-on: ubuntu-latest
+    # ⚠ DEUXIÈME SERRURE, ET ELLE EST D'UN AUTRE ORDRE QUE LA PREMIÈRE.
+    # Le garde du nombre, plus bas, est un contrôle AUTOMATIQUE : il attrape un
+    # historique désaccordé. Celui-ci est un contrôle HUMAIN : l'environnement
+    # `base-de-production` exige une approbation explicite avant que ce job ne
+    # démarre. Le job attend, GitHub notifie, et rien ne touche les 30 829
+    # personnes physiques tant que quelqu'un n'a pas cliqué.
+    #
+    # Les deux sont nécessaires et ne se remplacent pas : une automatisation
+    # peut se tromper sur ce qu'elle mesure, un humain peut approuver sans lire.
+    # Ensemble, il faut les deux erreurs pour que ça passe.
+    environment: base-de-production
     steps:
       - uses: actions/checkout@v5
       - uses: supabase/setup-cli@v1
