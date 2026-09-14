@@ -1,0 +1,6338 @@
+{
+ "genere_le": "2026-08-25",
+ "source": "supabase/migrations/20260825111210_remote_schema.sql",
+ "regle": "Ce qui identifie une personne est substitué. Ce qui décrit une offre, une entreprise ou un référentiel reste réel.",
+ "cle_de_substitution": "la VALEUR réelle, pas l'identifiant de ligne — deux tables portant le même nom réel reçoivent le même substitut, sans jointure",
+ "tables": [
+  {
+   "schema": "public",
+   "table": "_fk_backup",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Clé technique de la sauvegarde des FK supprimées.",
+     "contrainte": "PK, not null, séquence _fk_backup_id_seq"
+    },
+    {
+     "nom": "constraint_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "table_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "column_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "ref_table",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "ref_column",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "on_delete",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "on_update",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Métadonnée de schéma.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "_sync_ecart",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "Table d'exploitation du sync prod. Idéalement NE PAS charger en dev : les écarts constatés en prod n'ont aucun sens dans une base dev.",
+     "contrainte": "PK, not null, séquence"
+    },
+    {
+     "nom": "type_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Nom de data type Bubble, technique.",
+     "contrainte": "not null"
+    },
+    {
+     "nom": "supa_table",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Nom de table cible, technique.",
+     "contrainte": "not null, unique(supa_table,bubble_id,nature)"
+    },
+    {
+     "nom": "bubble_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant Bubble opaque, n'identifie pas une personne.",
+     "contrainte": "not null, unique composite"
+    },
+    {
+     "nom": "nature",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Classification technique de l'écart.",
+     "contrainte": "not null, CHECK ∈ (fantome, manquante, perimee)"
+    },
+    {
+     "nom": "classement",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Classification technique.",
+     "contrainte": "CHECK NULL ou ∈ (doublon_archive, sans_jumeau, ambigu)"
+    },
+    {
+     "nom": "detail",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Diagnostic libre : peut recopier un extrait de fiche réelle (nom, email) dans le message.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "premiere_passe",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique vers la passe de réconciliation.",
+     "contrainte": "FK _sync_passe(id)"
+    },
+    {
+     "nom": "derniere_passe",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique vers la passe de réconciliation.",
+     "contrainte": "FK _sync_passe(id)"
+    },
+    {
+     "nom": "premier_constat",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "dernier_constat",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "constats_consecutifs",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Compteur technique.",
+     "contrainte": "not null, défaut 1"
+    },
+    {
+     "nom": "constats_cumules",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Compteur technique.",
+     "contrainte": "not null, défaut 1"
+    },
+    {
+     "nom": "resolu_le",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "nullable"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "_sync_passe",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "Journal d'exécution du sync prod ; table à laisser vide en dev de préférence.",
+     "contrainte": "PK, not null, séquence"
+    },
+    {
+     "nom": "debut",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "fin",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "types_demandes",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Compteur technique.",
+     "contrainte": "not null, défaut 0"
+    },
+    {
+     "nom": "types_analyses",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Compteur technique.",
+     "contrainte": "not null, défaut 0"
+    },
+    {
+     "nom": "complete",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "incidents",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Log libre : peut contenir des extraits de fiches réelles.",
+     "contrainte": "nullable"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "_sync_quarantine",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "Journal append-only du sync prod ; table à laisser vide en dev de préférence.",
+     "contrainte": "PK, not null, séquence"
+    },
+    {
+     "nom": "type_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Nom de data type Bubble.",
+     "contrainte": "not null"
+    },
+    {
+     "nom": "bubble_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "not null"
+    },
+    {
+     "nom": "modified_date",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "motif",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Motif libre : peut recopier le contenu de la fiche sautée.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "detecte_le",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "not null, défaut now()"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "_sync_state",
+   "cle_primaire": "type_name",
+   "colonnes": [
+    {
+     "nom": "type_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Watermarks du sync prod. Charger cette table en dev ferait reprendre un sync dev à un curseur de production : la remettre à zéro plutôt que la copier.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "supa_table",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Nom de table cible.",
+     "contrainte": "not null"
+    },
+    {
+     "nom": "last_modified",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Watermark ; à réinitialiser plutôt qu'à copier.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "last_cursor",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Curseur de pagination.",
+     "contrainte": "not null, défaut 0"
+    },
+    {
+     "nom": "last_run_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "last_run_status",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Statut technique.",
+     "contrainte": "not null, défaut 'pending', CHECK ∈ (pending, running, ok, partial, error)"
+    },
+    {
+     "nom": "items_synced",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Compteur technique.",
+     "contrainte": "not null, défaut 0"
+    },
+    {
+     "nom": "error_message",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Message d'erreur libre : peut contenir une charge utile de fiche réelle.",
+     "contrainte": "nullable"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "analyse",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id Bubble opaque, cible de mandat_analyse.analyse_id.",
+     "contrainte": "PK, not null, cible FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Appréciation libre d'un agent sur un mandat ; cite nommément des personnes de l'équipe cliente.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien applicatif vers une offre (donnée d'affaires).",
+     "contrainte": "aucune FK déclarée — intégrité applicative à préserver"
+    },
+    {
+     "nom": "niveau",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_niveau_analyse.value (Bien/Moyen/Vigilance), pas de FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique sans nom de personne.",
+     "contrainte": "aucun index unique en base"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id Bubble d'un user, opaque ; l'identité est substituée dans user.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "business_maker",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque référencé par candidat, mandat et mandatclose.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien applicatif vers le candidat correspondant.",
+     "contrainte": "aucune FK déclarée ; doit rester cohérent avec candidat.id"
+    },
+    {
+     "nom": "prenom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Prénom d'une personne physique (apporteur d'affaires).",
+     "contrainte": "cohérence exigée avec candidat.prenom quand candidat_id est renseigné"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Nom d'une personne physique.",
+     "contrainte": "cohérence exigée avec candidat.nom quand candidat_id est renseigné"
+    },
+    {
+     "nom": "email",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Adresse nominative.",
+     "contrainte": "format email, domaine neutre @exemple.test ; unicité de fait attendue par l'app"
+    },
+    {
+     "nom": "company_label",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Raison sociale de l'apporteur : très souvent « Prénom Nom EI/Consulting », donc identifiante.",
+     "contrainte": "doit rester cohérente avec prenom/nom substitués"
+    },
+    {
+     "nom": "picture_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Photo de visage = identification directe.",
+     "contrainte": "format URL, pointer un avatar générique"
+    },
+    {
+     "nom": "siret",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Sur une entreprise individuelle, le SIRET remonte à la personne via l'annuaire INSEE.",
+     "contrainte": "14 chiffres ; clé de Luhn si l'app valide"
+    },
+    {
+     "nom": "slug",
+     "type": "SUBSTITUER",
+     "traitement": "SUBSTITUER",
+     "raison": "Dérivé du nom de la personne.",
+     "contrainte": "regénérer depuis prenom/nom substitués ; aucun index unique en base"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id Bubble opaque ; cible de 9 FK M2M ON DELETE CASCADE, le substituer casserait toute la base.",
+     "contrainte": "PK, not null ; cible de candidat_contrat/expertise/jobtype/mandat/note/profile/remote/secteur/tag"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Identité directe.",
+     "contrainte": "substitut déterministe dérivé de id ; ne doit collisionner avec aucune valeur réelle de l'échantillon"
+    },
+    {
+     "nom": "prenom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Identité directe.",
+     "contrainte": "idem ; cohérence avec user.prenom si un user pointe ce candidat"
+    },
+    {
+     "nom": "prenom_lower",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Copie minuscule du prénom, sert la recherche.",
+     "contrainte": "doit rester strictement lower(prenom) substitué"
+    },
+    {
+     "nom": "nom_lower",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Copie minuscule du nom.",
+     "contrainte": "doit rester strictement lower(nom) substitué"
+    },
+    {
+     "nom": "email_perso",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Coordonnée personnelle.",
+     "contrainte": "format email, domaine @exemple.test ; unicité de fait attendue par l'app (pas d'index unique en base)"
+    },
+    {
+     "nom": "linkedin",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Une URL LinkedIn réelle réidentifie à 100 %.",
+     "contrainte": "format URL https://www.linkedin.com/in/<slug> ; cohérence avec le nom substitué"
+    },
+    {
+     "nom": "telephone",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Coordonnée personnelle.",
+     "contrainte": "format FR 0X XX XX XX XX ou E.164 ; plage non attribuée de préférence"
+    },
+    {
+     "nom": "photo_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Visage = identification directe.",
+     "contrainte": "format URL, avatar générique"
+    },
+    {
+     "nom": "cv_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Le PDF pointé contient l'intégralité du dossier réel.",
+     "contrainte": "format URL, pointer un fichier factice ; ne jamais recopier l'URL S3/Bubble d'origine"
+    },
+    {
+     "nom": "portfolio_file_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Même risque que le CV.",
+     "contrainte": "format URL, fichier factice"
+    },
+    {
+     "nom": "genre",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Donnée sensible attachée à une personne.",
+     "contrainte": "valeur tirée de ref_gender.value ; pas de FK déclarée"
+    },
+    {
+     "nom": "niveau_anglais",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Attribut professionnel, non identifiant.",
+     "contrainte": "doit appartenir à ref_niveau_anglais.value"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel métier.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "opento",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau d'ouverture au marché, non identifiant.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "metier_actuel",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel métier.",
+     "contrainte": "doit appartenir à ref_metier.value"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Statut de suivi.",
+     "contrainte": "doit appartenir à ref_statut_candidat.value"
+    },
+    {
+     "nom": "mindset",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_mindset.value"
+    },
+    {
+     "nom": "emoji_statut",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_emoji.value"
+    },
+    {
+     "nom": "contrat_actuel",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_contrat.value (CDI, Freelance)"
+    },
+    {
+     "nom": "salaire_max_souhait",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Prétention salariale rattachée à une personne : quasi-identifiant quand on la croise avec métier et localisation.",
+     "contrainte": "unité K€ depuis 07/2025 ; tranche de 5 K€ ; conserver l'ordre min ≤ max"
+    },
+    {
+     "nom": "salaire_min_souhait",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 5 K€ ; min ≤ max après généralisation"
+    },
+    {
+     "nom": "tjm_max_souhait",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem, côté freelance.",
+     "contrainte": "tranche de 50 € ; TJM exclu de la conversion K€"
+    },
+    {
+     "nom": "tjm_min_souhait",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 50 € ; min ≤ max"
+    },
+    {
+     "nom": "est_qualifie",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de pipeline, non identifiant.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "localisations",
+     "type": "jsonb",
+     "traitement": "GENERALISER",
+     "raison": "Peut porter adresse et coordonnées géographiques.",
+     "contrainte": "retirer address/lat/lng ; ne garder que département ou région ; conserver la forme JSON attendue par l'app"
+    },
+    {
+     "nom": "localisations_filtre",
+     "type": "text",
+     "traitement": "GENERALISER",
+     "raison": "C'est cette colonne — et non le JSON — que l'app lit réellement pour filtrer.",
+     "contrainte": "ville → département ; format texte attendu par le filtre à préserver"
+    },
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à experience.id"
+    },
+    {
+     "nom": "job_actuel_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à job_actuel.id"
+    },
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à job_reve.id"
+    },
+    {
+     "nom": "business_maker_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à business_maker.id"
+    },
+    {
+     "nom": "ajout_par_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "agent_pachamama_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "early_stage",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Appétence pour les startups early stage, non identifiante.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "grandes_ecoles",
+     "type": "text",
+     "traitement": "GENERALISER",
+     "raison": "Si la colonne porte le nom de l'établissement, école + promo + métier + ville est un quasi-identifiant fort.",
+     "contrainte": "ramener à un indicateur oui/non ou à une école tirée d'une liste courte ; vérifier le contenu réel avant d'écrire la règle"
+    },
+    {
+     "nom": "pachamama_like",
+     "type": "VIDER",
+     "traitement": "VIDER",
+     "raison": "Appréciation libre rédigée sur la personne, aucune valeur pour le dev.",
+     "contrainte": "nullable — substituer par un texte factice seulement si un écran l'affiche"
+    },
+    {
+     "nom": "pachamama_personnalite",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Appréciation libre sur la personnalité : peut relever des données sensibles.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "note_interne",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Note interne libre : cite des tiers, porte des opinions, parfois des éléments de santé ou de vie privée.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "portfolio",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "URL d'un site personnel, généralement au nom de la personne.",
+     "contrainte": "format URL, domaine neutre"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Dérivé du prénom et du nom, et exposé comme route.",
+     "contrainte": "regénérer depuis l'identité substituée ; aucun index unique en base mais unicité de fait attendue"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_contrat",
+   "cle_primaire": "candidat_id, contrat",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Table de liaison : identifiant opaque uniquement.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_contrat.value — attention, AUCUNE FK n'est déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_expanded",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "agent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "is_complete",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_contrat.value"
+    },
+    {
+     "nom": "ecole",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Nom d'établissement : quasi-identifiant fort combiné au métier et à la tranche d'âge.",
+     "contrainte": "tirer d'une liste d'écoles fictives ou banalisées ; substitution déterministe par candidat"
+    },
+    {
+     "nom": "emoji",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_emoji.value"
+    },
+    {
+     "nom": "mindset",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "doit appartenir à ref_mindset.value"
+    },
+    {
+     "nom": "perso",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre sur la vie personnelle du candidat.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "portfolio",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "URL personnelle nominative.",
+     "contrainte": "format URL, domaine neutre"
+    },
+    {
+     "nom": "stage",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Appétence early stage, non identifiante.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Statut de suivi.",
+     "contrainte": "doit appartenir à ref_statut_candidat.value"
+    },
+    {
+     "nom": "note_1",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Note libre d'un agent sur la personne.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "note_2",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Note libre d'un agent sur la personne.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Peut reprendre l'identité du candidat.",
+     "contrainte": "regénérer après substitution de candidat"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_expertise",
+   "cle_primaire": "candidat_id, expertise",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "expertise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_expertise(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_jobtype",
+   "cle_primaire": "candidat_id, jobtype",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "jobtype",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur d'option sans table de référence (jobtype_os introuvable dans les 59 OS).",
+     "contrainte": "PK composite, not null ; AUCUN référentiel cible — recopier les valeurs distinctes telles quelles"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_mandat",
+   "cle_primaire": "candidat_id, mandat_id",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque d'offre.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_note",
+   "cle_primaire": "candidat_id, note_id",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "note_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque ; le contenu de la note est vidé côté note.",
+     "contrainte": "PK composite, not null, FK note(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_profile",
+   "cle_primaire": "candidat_id, profile",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "profile",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_profile(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_remote",
+   "cle_primaire": "candidat_id, remote",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "remote",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_remote.value — AUCUNE FK déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_secteur",
+   "cle_primaire": "candidat_id, secteur",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "secteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_secteur(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "candidat_tag",
+   "cle_primaire": "candidat_id, tag_id",
+   "colonnes": [
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK candidat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "tag_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque de tag.",
+     "contrainte": "PK composite, not null, FK tag(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "email_template",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "label",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Nom du gabarit, donnée de paramétrage.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "subject",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Gabarit : les noms y sont des jetons de fusion, pas des valeurs.",
+     "contrainte": "vérifier qu'aucun nom réel n'est figé en dur"
+    },
+    {
+     "nom": "body",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Gabarit d'email.",
+     "contrainte": "vérifier qu'aucune signature nominative ni adresse réelle n'y est figée en dur"
+    },
+    {
+     "nom": "is_agent_firstname",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de paramétrage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_agent_lastname",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de paramétrage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_company_name",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de paramétrage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_firstname",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de paramétrage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_custom",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de paramétrage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "entreprise",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de 4 FK M2M ON DELETE CASCADE.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Raison sociale : donnée d'affaires, réelle par décision explicite (rendu du Job Board).",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Présentation publique de l'entreprise.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "fondateur",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Nom d'une personne physique.",
+     "contrainte": "substitut nom+prénom cohérent ; pas de collision avec les valeurs réelles"
+    },
+    {
+     "nom": "serie",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Série de levée de fonds, donnée d'affaires publique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "site_internet",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "URL publique de l'entreprise.",
+     "contrainte": "format URL ; c'est aussi la clé de dédoublonnage de l'automation source"
+    },
+    {
+     "nom": "siret",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Donnée de facturation ; sur une entreprise individuelle le SIRET remonte à une personne physique via l'annuaire INSEE.",
+     "contrainte": "14 chiffres ; clé de Luhn si l'app valide"
+    },
+    {
+     "nom": "video",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Vidéo de marque publique.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "note",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Note interne libre sur le client : opinions, noms d'interlocuteurs.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "email_facturation",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Adresse nominative de contact ; conservée, un run de dev pourrait écrire à une vraie personne.",
+     "contrainte": "format email, domaine @exemple.test"
+    },
+    {
+     "nom": "nom_structure_facturation",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Raison sociale de facturation = donnée d'affaires.",
+     "contrainte": "repasser en SUBSTITUER sur les lignes où elle vaut un nom de personne (entreprise individuelle)"
+    },
+    {
+     "nom": "exclu_details",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Clause contractuelle d'exclusivité, donnée d'affaires.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "logo_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Logo public.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "localisation",
+     "type": "jsonb",
+     "traitement": "CONSERVER",
+     "raison": "Siège d'une entreprise : donnée publique, pas une adresse de personne.",
+     "contrainte": "forme JSON attendue par l'app"
+    },
+    {
+     "nom": "nb_employes",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'affaires.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "nb_techs",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'affaires.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "success_fee_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Condition commerciale.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "success_fee_abs",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Condition commerciale.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "success_fee_is_absolute",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de calcul.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "apport_affaires",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau commercial.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "apport_affaires_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Condition commerciale.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "exclu",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau contractuel.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "duree_exclusivite_semaines",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Condition contractuelle.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "nb_mois_garantie",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Condition contractuelle.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_signature_contrat",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Donnée contractuelle.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_fin_contrat",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Donnée contractuelle.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "secteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_secteur.value"
+    },
+    {
+     "nom": "product_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_product_type.value"
+    },
+    {
+     "nom": "type_entreprise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_company_type.value"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Statut commercial.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "statut_contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contract_status.value"
+    },
+    {
+     "nom": "formule",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel commercial.",
+     "contrainte": "doit appartenir à ref_formule.value"
+    },
+    {
+     "nom": "agence",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'affaires.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "niveau_anglais",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Exigence de poste.",
+     "contrainte": "doit appartenir à ref_niveau_anglais.value"
+    },
+    {
+     "nom": "recommandation",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Champ libre qui porte le plus souvent le nom de la personne ayant recommandé le client.",
+     "contrainte": "nullable ; passer en SUBSTITUER si un écran l'affiche"
+    },
+    {
+     "nom": "garantie",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Clause contractuelle.",
+     "contrainte": "CHECK ∈ (Remplacement, Remboursement)"
+    },
+    {
+     "nom": "paiement",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Clause contractuelle.",
+     "contrainte": "CHECK ∈ (Sign date, Start date)"
+    },
+    {
+     "nom": "agent_en_charge_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "produit_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à produit.id"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Dérivé de la raison sociale, elle-même conservée.",
+     "contrainte": "aucun index unique en base"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "entreprise_mandat",
+   "cle_primaire": "entreprise_id, mandat_id",
+   "colonnes": [
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK entreprise(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "entreprise_note",
+   "cle_primaire": "entreprise_id, note_id",
+   "colonnes": [
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK entreprise(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "note_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK note(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "entreprise_remote",
+   "cle_primaire": "entreprise_id, remote",
+   "colonnes": [
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK entreprise(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "remote",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_remote.value — AUCUNE FK déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "entreprise_tag",
+   "cle_primaire": "entreprise_id, tag_id",
+   "colonnes": [
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK entreprise(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "tag_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK tag(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "equipe",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de mandat_equipe.equipe_id.",
+     "contrainte": "PK, not null, cible FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "650 contacts client : ce sont des personnes physiques, rarement pensées comme telles.",
+     "contrainte": "substitution déterministe ; cohérence avec nps_tracking.contact_firstname"
+    },
+    {
+     "nom": "prenom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Identité directe.",
+     "contrainte": "idem"
+    },
+    {
+     "nom": "email",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Adresse professionnelle nominative ; risque d'envoi réel depuis le dev.",
+     "contrainte": "format email, domaine @exemple.test ; ne pas réutiliser le domaine du client"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre sur la personne.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "photo_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Visage = identification directe.",
+     "contrainte": "format URL, avatar générique"
+    },
+    {
+     "nom": "contact_principal",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de rôle sur le mandat.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "metier",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_metier.value"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "type_equipe",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Rôle sur le mandat.",
+     "contrainte": "CHECK ∈ (Manager, Recruteur)"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à mandat.id"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Dérivé du nom de la personne.",
+     "contrainte": "regénérer après substitution"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, référencé par les 5 tables experience_*.",
+     "contrainte": "PK, not null ; AUCUNE FK ne pointe vers lui — les experience_* ne déclarent pas experience_id"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Employeur rattaché à une fiche entreprise réelle : donnée d'affaires conservée par la règle.",
+     "contrainte": "aucune FK déclarée ; à vider si l'on veut couper le lien candidat ↔ employeur réel"
+    },
+    {
+     "nom": "xp_pro",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Date de début de vie professionnelle = séniorité, attribut professionnel non identifiant seul.",
+     "contrainte": "généraliser à l'année si l'on veut réduire le croisement séniorité × métier × ville"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend le nom du candidat"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience_background",
+   "cle_primaire": "experience_id, background",
+   "colonnes": [
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers experience(id)"
+    },
+    {
+     "nom": "background",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_background(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience_expertise",
+   "cle_primaire": "experience_id, expertise",
+   "colonnes": [
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée"
+    },
+    {
+     "nom": "expertise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_expertise.value — AUCUNE FK déclarée (seule table experience_* sans aucune FK)"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience_product",
+   "cle_primaire": "experience_id, product",
+   "colonnes": [
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers experience(id)"
+    },
+    {
+     "nom": "product",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_product(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience_profile",
+   "cle_primaire": "experience_id, profile",
+   "colonnes": [
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers experience(id)"
+    },
+    {
+     "nom": "profile",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_profile(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "experience_secteur",
+   "cle_primaire": "experience_id, secteur",
+   "colonnes": [
+    {
+     "nom": "experience_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers experience(id)"
+    },
+    {
+     "nom": "secteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_secteur(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_actuel",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "entreprise_nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Employeur actuel saisi librement : croisé au métier et à la ville, c'est un quasi-identifiant du candidat, pas une donnée client.",
+     "contrainte": "substitut cohérent et stable par candidat ; pas de collision avec entreprise.nom réel"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Conservé, il annule par simple jointure la substitution de entreprise_nom : il redonne le vrai employeur du candidat.",
+     "contrainte": "nullable ; à ne remettre que si entreprise_nom est conservé aussi"
+    },
+    {
+     "nom": "metier",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_metier.value"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "pourquoi",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre : pourquoi la personne veut partir. Opinions sur son employeur et ses collègues.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend l'employeur ou le nom"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de 5 FK M2M ON DELETE CASCADE.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "metier",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_metier.value"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre du candidat : cite employeurs, collègues, situation personnelle.",
+     "contrainte": "nullable ; texte factice si un écran de matching l'affiche"
+    },
+    {
+     "nom": "disponibilite",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Attribut de recherche, non identifiant — conservé par décision explicite.",
+     "contrainte": "valeur d'option"
+    },
+    {
+     "nom": "info_localisation",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Localisation en texte libre : peut donner le quartier ou l'adresse. L'information exploitable est déjà dans localisations.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "infos_salaire",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre de négociation salariale.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "salaire",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Prétention rattachée à une personne.",
+     "contrainte": "unité K€ ; tranche de 5 K€ ; salaire ≤ salaire_maximum après généralisation"
+    },
+    {
+     "nom": "salaire_maximum",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 5 K€ ; ordre à préserver"
+    },
+    {
+     "nom": "tjm_minimum",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem, côté freelance.",
+     "contrainte": "tranche de 50 € ; TJM hors conversion K€"
+    },
+    {
+     "nom": "tjm_maximum",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 50 € ; ordre à préserver"
+    },
+    {
+     "nom": "localisations",
+     "type": "jsonb",
+     "traitement": "GENERALISER",
+     "raison": "Peut porter adresse et coordonnées.",
+     "contrainte": "retirer address/lat/lng, garder département ; forme JSON attendue par l'app"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend le nom du candidat"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve_contrat",
+   "cle_primaire": "job_reve_id, contrat",
+   "colonnes": [
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK job_reve(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_contrat.value — AUCUNE FK déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve_critere",
+   "cle_primaire": "job_reve_id, critere",
+   "colonnes": [
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK job_reve(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "critere",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel (32 options).",
+     "contrainte": "PK composite, not null, FK ref_criteres(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve_remote",
+   "cle_primaire": "job_reve_id, remote",
+   "colonnes": [
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK job_reve(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "remote",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_remote(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve_secteur",
+   "cle_primaire": "job_reve_id, secteur",
+   "colonnes": [
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK job_reve(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "secteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null, FK ref_secteur(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "job_reve_secteur_nogo",
+   "cle_primaire": "job_reve_id, secteur",
+   "colonnes": [
+    {
+     "nom": "job_reve_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK job_reve(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "secteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Secteur exclu par le candidat : préférence, non identifiante.",
+     "contrainte": "PK composite, not null, FK ref_secteur(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de 7 FK M2M ON DELETE CASCADE.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "titre",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Intitulé de l'offre — c'est le contenu du Job Board, réel par décision.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "description_manager",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Portrait du manager déjà publié sur l'annonce publique.",
+     "contrainte": "vérifier qu'aucun nom de famille ni coordonnée n'y figure sur les mandats non publiés"
+    },
+    {
+     "nom": "description_produit",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "missions",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "process_recrutement",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "vérifier l'absence de noms d'interviewers"
+    },
+    {
+     "nom": "pour_toi",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "pas_pour_toi",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "remote_infos",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Contenu d'annonce publié.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "salaire_infos",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Fourchette publiée de l'offre, pas la rémunération d'une personne.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "format_mission",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'offre.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "duree_mission",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'offre.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_demarrage_mission",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Donnée d'offre (stockée en texte).",
+     "contrainte": "format texte libre, pas de date typée"
+    },
+    {
+     "nom": "video_youtube",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Média public de l'annonce.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "salaire_max",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "Fourchette de l'offre, publiée : donnée d'affaires.",
+     "contrainte": "unité K€"
+    },
+    {
+     "nom": "salaire_min",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "Idem.",
+     "contrainte": "unité K€"
+    },
+    {
+     "nom": "tjm_max",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "Idem.",
+     "contrainte": "TJM hors conversion K€"
+    },
+    {
+     "nom": "tjm_min",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "Idem.",
+     "contrainte": "TJM hors conversion K€"
+    },
+    {
+     "nom": "min_xp",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Exigence de poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "z_legacy_number",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Numéro hérité, technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "delivery",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Pondération du poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "discovery",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Pondération du poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "strategie",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Pondération du poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "ops",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Pondération du poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "management",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Pondération du poste.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "status_sort_order",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "cohérence avec ref_mandate_status.status_sort_order"
+    },
+    {
+     "nom": "kickoff",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon du mandat.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "job_anonyme",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de publication.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "job_off_market",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de publication.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "metier",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_metier.value"
+    },
+    {
+     "nom": "contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contrat.value"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_mandate_status.value"
+    },
+    {
+     "nom": "equity",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Condition de l'offre.",
+     "contrainte": "CHECK ∈ (actions gratuites, bspce, peut-être plus tard, non)"
+    },
+    {
+     "nom": "contributor_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contributor_type.value"
+    },
+    {
+     "nom": "visibilite",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_mandate_visibility.value"
+    },
+    {
+     "nom": "exclu_pachamama",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Clause contractuelle.",
+     "contrainte": "CHECK ∈ (Oui, Non)"
+    },
+    {
+     "nom": "type_deal",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Qualification commerciale.",
+     "contrainte": "CHECK ∈ (New Business, Existing Business)"
+    },
+    {
+     "nom": "source_marketing",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_source_marketing.value"
+    },
+    {
+     "nom": "lead_apporteur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel d'apport d'affaires, pas un nom saisi.",
+     "contrainte": "doit appartenir à ref_apporteur_affaires.value ; passer en SUBSTITUER si des noms libres y figurent"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à entreprise.id"
+    },
+    {
+     "nom": "manager_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id equipe opaque ; l'identité est substituée dans equipe.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à equipe.id"
+    },
+    {
+     "nom": "recruteur_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id equipe opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à equipe.id"
+    },
+    {
+     "nom": "business_maker_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à business_maker.id"
+    },
+    {
+     "nom": "personne_en_charge_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "agent_2_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "account_manager_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route publique du Job Board, dérivée du titre conservé.",
+     "contrainte": "aucun index unique en base mais unicité de fait exigée par le routage"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_analyse",
+   "cle_primaire": "mandat_id, analyse_id",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "analyse_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK analyse(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_cible",
+   "cle_primaire": "mandat_id, cible",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "cible",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel (B2B, B2C…).",
+     "contrainte": "PK composite, not null, FK ref_cible(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_equipe",
+   "cle_primaire": "mandat_id, equipe_id",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "equipe_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque ; l'identité est substituée dans equipe.",
+     "contrainte": "PK composite, not null, FK equipe(id) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_note",
+   "cle_primaire": "mandat_id, note_id",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "note_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers note(id)"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_remote",
+   "cle_primaire": "mandat_id, remote",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "remote",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_remote.value — AUCUNE FK déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandat_tag_job",
+   "cle_primaire": "mandat_id, tag_job",
+   "colonnes": [
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK mandat(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "tag_job",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "PK composite, not null ; doit appartenir à ref_tag_job.value — AUCUNE FK déclarée ici"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandatclose",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque vers un candidat substitué.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à entreprise.id"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à mandat.id"
+    },
+    {
+     "nom": "process_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à process.id"
+    },
+    {
+     "nom": "split_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à mandate_closed_split.id"
+    },
+    {
+     "nom": "business_maker_coo_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à business_maker.id"
+    },
+    {
+     "nom": "business_maker_deal_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à business_maker.id"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "contributor_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contributor_type.value"
+    },
+    {
+     "nom": "contrat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contrat.value"
+    },
+    {
+     "nom": "statut_contrat_freelance",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contract_status.value"
+    },
+    {
+     "nom": "statut_contrat_entreprise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_contract_status.value"
+    },
+    {
+     "nom": "date_closing",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon de facturation.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_debut",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon contractuel.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_fin_garantie",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon contractuel.",
+     "contrainte": "cohérence avec date_debut + entreprise.nb_mois_garantie"
+    },
+    {
+     "nom": "date_fin_mission",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon contractuel.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "salaire_final",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Assiette de la commission : la généraliser casserait l'arithmétique avec commission et mandate_closed_split. Vecteur résiduel de réidentification (entreprise réelle × date × métier) assumé par la décision du 25/08.",
+     "contrainte": "commission doit rester cohérente avec salaire_final × taux ; unité K€"
+    },
+    {
+     "nom": "commission",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Chiffre d'affaires Pachamama.",
+     "contrainte": "cohérence avec mandate_closed_split.total"
+    },
+    {
+     "nom": "commission_nette",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Chiffre d'affaires Pachamama.",
+     "contrainte": "cohérence avec mandate_closed_split.net"
+    },
+    {
+     "nom": "apport_affaires_k",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "cooptation_talent",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "tjm_final_marge_inclus",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "≥ tjm_final_talent"
+    },
+    {
+     "nom": "tjm_final_talent",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière du contrat freelance.",
+     "contrainte": "≤ tjm_final_marge_inclus"
+    },
+    {
+     "nom": "note_user_ids",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "Tableau d'_id user opaques.",
+     "contrainte": "chaque élément doit correspondre à user.id ; aucune FK possible sur un tableau"
+    },
+    {
+     "nom": "est_archive",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "agent_filtre_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "agent_2_filtre_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend le nom du talent placé"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandatclose_note",
+   "cle_primaire": "mandatclose_id, note_id",
+   "colonnes": [
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée"
+    },
+    {
+     "nom": "note_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée (seule table de liaison sans aucune FK avec experience_expertise)"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "mandate_closed_split",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à mandatclose.id"
+    },
+    {
+     "nom": "agent_1_com",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Répartition de commission interne : donnée d'affaires.",
+     "contrainte": "somme des parts = total"
+    },
+    {
+     "nom": "agent_1_com_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "somme des pourcentages = total_pct"
+    },
+    {
+     "nom": "agent_1_com_is_absolute",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de calcul.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "agent_2_com",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "somme des parts = total"
+    },
+    {
+     "nom": "agent_2_com_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "agent_2_com_is_absolute",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de calcul.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "bus_maker_coo_com",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "bus_maker_coo_com_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "bus_maker_deal_com",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "bus_maker_deal_com_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "pacha_com",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "pacha_com_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "net",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "cohérence avec mandatclose.commission_nette"
+    },
+    {
+     "nom": "net_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "total",
+     "type": "numeric(12,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "cohérence avec mandatclose.commission"
+    },
+    {
+     "nom": "total_pct",
+     "type": "numeric(5,2)",
+     "traitement": "CONSERVER",
+     "raison": "Donnée financière.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "note",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de candidat_note et entreprise_note.",
+     "contrainte": "PK, not null, cible de 2 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "commentaire",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "20 018 commentaires libres écrits par des agents sur des personnes : le gisement de risque le plus dense de la base, et sans valeur pour construire les écrans.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "date_note",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage métier, utile aux fils d'activité.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "note_automatique",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "note_event",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel (24 options).",
+     "contrainte": "doit appartenir à ref_note_event.value"
+    },
+    {
+     "nom": "note_event_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel.",
+     "contrainte": "CHECK ∈ (contract, info, archive, task, team) ; doit appartenir à ref_note_event_type.value"
+    },
+    {
+     "nom": "note_event_value_new",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Rejoue en clair la valeur APRÈS du champ modifié : un nom, un email ou un salaire réel que la substitution des tables n'atteint pas. Canal de fuite silencieux.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "note_event_value_prev",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Idem pour la valeur AVANT.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "note_user_tag_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque de la personne mentionnée.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "note_archivee",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque. Rappel : ce sont des doublons archivés de note, avec de nouveaux _id, ~1500/mois.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "commentaire",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "19 778 commentaires libres sur des personnes.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "date_note",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage métier.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "note_automatique",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "nps_tracking",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "uuid",
+     "traitement": "CONSERVER",
+     "raison": "Clé technique générée.",
+     "contrainte": "PK, not null, défaut gen_random_uuid()"
+    },
+    {
+     "nom": "bubble_contact_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque du contact.",
+     "contrainte": "not null ; doit correspondre à equipe.id ou user.id"
+    },
+    {
+     "nom": "bubble_mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque du mandat.",
+     "contrainte": "not null ; doit correspondre à mandat.id"
+    },
+    {
+     "nom": "contact_email",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Adresse nominative d'un contact client ; conservée, une relance NPS lancée depuis le dev partirait à une vraie personne.",
+     "contrainte": "NOT NULL — un substitut est obligatoire, VIDER est impossible ; format email ; cohérence avec equipe.email substitué"
+    },
+    {
+     "nom": "contact_firstname",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Prénom d'une personne physique.",
+     "contrainte": "doit être le prénom substitué du même contact dans equipe"
+    },
+    {
+     "nom": "job_title",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Intitulé de poste, non identifiant seul.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "company_name",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Raison sociale : donnée d'affaires conservée par la règle.",
+     "contrainte": "cohérence avec entreprise.nom"
+    },
+    {
+     "nom": "candidate_firstname",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Prénom du talent placé.",
+     "contrainte": "doit être le prénom substitué du même candidat dans candidat"
+    },
+    {
+     "nom": "nps_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Type de campagne.",
+     "contrainte": "CHECK ∈ (close, termine)"
+    },
+    {
+     "nom": "status",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Statut de campagne.",
+     "contrainte": "défaut 'sent', CHECK ∈ (sent, reminded, responded, ignored)"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "défaut now(), nullable"
+    },
+    {
+     "nom": "responded_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "reminder_sent_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "nullable"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "process",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de process_mandatclose.process_id.",
+     "contrainte": "PK, not null, cible FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "etape",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Étape de pipeline : conservée volontairement, c'est ce qui fait vivre le kanban en dev.",
+     "contrainte": "doit appartenir à ref_process_etape.value"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Compte rendu d'entretien libre sur une personne.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "pachamama_like",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Appréciation libre sur la personne.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "pachamama_personnalite",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Appréciation sur la personnalité : peut relever des données sensibles.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "plus_par_rapport_mission",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Évaluation libre d'une personne identifiée.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "moins_par_rapport_mission",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Évaluation libre — jugement négatif nominatif, risque le plus élevé de la table.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "infos_remuneration",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Texte libre de négociation salariale.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "salaire_minimum",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Prétention d'une personne engagée dans un process identifiable (entreprise réelle × date).",
+     "contrainte": "unité K€, tranche de 5 K€ ; ordre min ≤ souhaité à préserver"
+    },
+    {
+     "nom": "salaire_souhaite",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 5 K€"
+    },
+    {
+     "nom": "tjm_minimum",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem, côté freelance.",
+     "contrainte": "tranche de 50 €"
+    },
+    {
+     "nom": "tjm_souhaite",
+     "type": "numeric",
+     "traitement": "GENERALISER",
+     "raison": "Idem.",
+     "contrainte": "tranche de 50 €"
+    },
+    {
+     "nom": "date_statut_applicant",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon de pipeline.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_statut_ko",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon de pipeline.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "date_update_etape",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon de pipeline.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "next_step_date",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon de pipeline.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend le nom du candidat"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "process_mandatclose",
+   "cle_primaire": "process_id, mandatclose_id",
+   "colonnes": [
+    {
+     "nom": "process_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null, FK process(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque.",
+     "contrainte": "PK composite, not null ; AUCUNE FK déclarée vers mandatclose(id)"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "produit",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Description du produit de l'entreprise cliente : donnée d'affaires.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à entreprise.id"
+    },
+    {
+     "nom": "maturite",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_maturite_produit.value (A→E)"
+    },
+    {
+     "nom": "txt_explicatif",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Texte produit destiné à l'annonce.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_app_branding",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel de marque (1 option : Pachamama).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "background_asset1",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "background_asset2",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "background_image",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "logo_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "logo_mini_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "police",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre de design system.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "web_site",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Site public de la marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_apporteur_affaires",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (3 options).",
+     "contrainte": "PK, not null ; cible de mandat.lead_apporteur"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_background",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 options).",
+     "contrainte": "PK, not null, cible FK experience_background.background"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_cible",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (B2B, B2B2C, B2C, Users internes).",
+     "contrainte": "PK, not null, cible FK mandat_cible.cible"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_company_type",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (5 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_contract_status",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (5 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "couleur",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "signature_required",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle métier.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_contrat",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (CDI, Freelance).",
+     "contrainte": "PK, not null ; cible de candidat_contrat.contrat et job_reve_contrat.contrat, sans FK déclarée"
+    },
+    {
+     "nom": "color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_contributor_type",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 entrées, doublons IC et Manager/C-level connus).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "full_display",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé d'affichage.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_criteres",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (32 options).",
+     "contrainte": "PK, not null, cible FK job_reve_critere.critere"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_email_config",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Clé de configuration (1 option : Emails Test).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "email_adresses",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "EXCEPTION aux ref_* : contient des adresses de destination réelles de l'équipe. Conservée, une exécution de dev enverrait de vrais emails à de vraies personnes.",
+     "contrainte": "format email, éventuellement liste séparée par virgules ; rediriger vers une boîte de test contrôlée"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_emoji",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_expertise",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (31 options).",
+     "contrainte": "PK, not null, cible de 2 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_expertise_univers",
+   "cle_primaire": "expertise_value, univers_value",
+   "colonnes": [
+    {
+     "nom": "expertise_value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison entre deux référentiels.",
+     "contrainte": "PK composite, not null, FK ref_expertise(value) ON DELETE CASCADE"
+    },
+    {
+     "nom": "univers_value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison entre deux référentiels.",
+     "contrainte": "PK composite, not null, FK ref_univers(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_fonction",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (career_agent, recruiter).",
+     "contrainte": "PK, not null ; cible de user.fonction sans FK déclarée"
+    },
+    {
+     "nom": "label_en",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "label_fr",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_form_41",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel de formulaire (5 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_form_42",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel de formulaire (6 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_formule",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel commercial (4 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_gender",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "C'est le référentiel de genres, pas le genre d'une personne : rien à substituer ici. C'est candidat.genre qui est substitué.",
+     "contrainte": "PK, not null ; cible de candidat.genre sans FK déclarée"
+    },
+    {
+     "nom": "label_en",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "label_fr",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_image",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel d'assets (1 option : mail_signature).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "file_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque, pas une photo de personne.",
+     "contrainte": "format URL ; vérifier que la signature ne contient pas la photo d'un agent"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_language",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (en_us, fr_fr).",
+     "contrainte": "PK, not null ; cible de user.langue et user.user_lang sans FK"
+    },
+    {
+     "nom": "label",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_mandate_status",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "status_admin_label",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé d'administration.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "status_color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "status_sort_order",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Ordre métier.",
+     "contrainte": "cohérence avec mandat.status_sort_order"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_mandate_visibility",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (3 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "label_fr",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "tooltip_icon",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_maturite_produit",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (A→E).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "image_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset d'affichage.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_metier",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel métier (273 entrées, 238 uniques — doublons connus).",
+     "contrainte": "PK, not null, cible FK ref_metier_univers.metier_value"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_metier_univers",
+   "cle_primaire": "metier_value, univers_value",
+   "colonnes": [
+    {
+     "nom": "metier_value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison entre deux référentiels.",
+     "contrainte": "PK composite, not null, FK ref_metier(value) ON DELETE CASCADE"
+    },
+    {
+     "nom": "univers_value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison entre deux référentiels.",
+     "contrainte": "PK composite, not null, FK ref_univers(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_mindset",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (5 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_niveau_analyse",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (Bien, Moyen, Vigilance).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_niveau_anglais",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "candidat_display",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé d'affichage.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_note_event",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (24 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "note_event_text",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Gabarit de libellé, sans valeur réelle.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "note_event_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison de référentiel.",
+     "contrainte": "FK ref_note_event_type(value) — une des 4 seules FK scalaires de public"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_note_event_type",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (contract, info, archive, task, team).",
+     "contrainte": "PK, not null, cible FK ref_note_event.note_event_type"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_process_etape",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (14 options) — indispensable au kanban en dev.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "is_active",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle métier.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_in_kanban_view_company",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle d'affichage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_in_kanban_view_pachamama",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle d'affichage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_ko",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle métier.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_public",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle d'affichage.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "kanban_column_color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "kanban_tag_color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre d'affichage.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "public_display",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé public.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_product",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (6 options).",
+     "contrainte": "PK, not null, cible FK experience_product.product"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_product_type",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (9 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_profile",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (4 options).",
+     "contrainte": "PK, not null, cible de 2 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_remote",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (Hybride, Full Remote France/Europe/Worldwide).",
+     "contrainte": "PK, not null ; FK déclarée seulement depuis job_reve_remote — candidat_remote, entreprise_remote et mandat_remote n'en ont pas"
+    },
+    {
+     "nom": "is_active",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle métier.",
+     "contrainte": "not null, défaut true"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_role",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel de rôles (5 options) — la base des futures policies RLS.",
+     "contrainte": "PK, not null, cible FK user_role.role ON DELETE CASCADE"
+    },
+    {
+     "nom": "role_category",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison de référentiel.",
+     "contrainte": "FK ref_role_category(value) — une des 4 seules FK scalaires de public"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_role_category",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (1 option : recruiter).",
+     "contrainte": "PK, not null, cible FK ref_role.role_category"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_secteur",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (52 options).",
+     "contrainte": "PK, not null, cible de 4 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_sendgrid_template",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (6 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "id_sendgrid",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant de gabarit du compte SendGrid : pas un secret, l'envoi reste protégé par la clé d'API. À laisser tel quel tant que le dev ne porte pas de clé de production.",
+     "contrainte": "format d_-xxxx SendGrid"
+    },
+    {
+     "nom": "visible_pour_mandat",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Règle d'affichage.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_slack_channel",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (2 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "webhook",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "EXCEPTION aux ref_* : URL de webhook Slack = secret d'exploitation ET canal d'effet de bord. Conservée, le dev poste dans le vrai Slack de l'équipe.",
+     "contrainte": "nullable ; ne pas non plus substituer par une URL joignable"
+    },
+    {
+     "nom": "webhook_test",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Même nature de secret.",
+     "contrainte": "nullable ; à remplir manuellement avec un webhook de dev si un test l'exige"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_source_marketing",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (12 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_statut_candidat",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (5 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_tag_job",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (15 options).",
+     "contrainte": "PK, not null ; cible de mandat_tag_job.tag_job sans FK déclarée"
+    },
+    {
+     "nom": "icone_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset d'affichage.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_task_anchor",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (creation_date, contract_start_date, guarantee_end_date).",
+     "contrainte": "PK, not null, cible FK ref_task_type.task_anchor"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_task_event",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (mandate_clo_free, mandate_clo_cdi).",
+     "contrainte": "PK, not null, cible FK ref_task_type.task_event"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_task_type",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (12 options).",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "is_admin",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Règle métier.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "relative_time",
+     "type": "smallint",
+     "traitement": "CONSERVER",
+     "raison": "Règle de planification.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "task_anchor",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison de référentiel.",
+     "contrainte": "FK ref_task_anchor(value) — une des 4 seules FK scalaires de public"
+    },
+    {
+     "nom": "task_event",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Liaison de référentiel.",
+     "contrainte": "FK ref_task_event(value) — une des 4 seules FK scalaires de public"
+    },
+    {
+     "nom": "task_text",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Gabarit de libellé avec jetons de fusion — c'est lui qui permettra de regénérer task.task_text vidé.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "ref_univers",
+   "cle_primaire": "value",
+   "colonnes": [
+    {
+     "nom": "value",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel (8 univers).",
+     "contrainte": "PK, not null, cible de 2 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre de design system.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "secondary_color",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Paramètre de design system.",
+     "contrainte": "code couleur"
+    },
+    {
+     "nom": "logo_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "logo_mini_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "talent_card_url",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Asset de marque.",
+     "contrainte": "format URL"
+    },
+    {
+     "nom": "is_live",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau de publication.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "sort_order",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "Ordre d'affichage.",
+     "contrainte": "aucune"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "tag",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque, cible de candidat_tag et entreprise_tag.",
+     "contrainte": "PK, not null, cible de 2 FK ON DELETE CASCADE"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Libellé de tag = vocabulaire d'affaires.",
+     "contrainte": "vérifier qu'aucun tag ne porte le nom d'une personne (tags de type Candidat)"
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Description du tag, pas d'une personne.",
+     "contrainte": "même vérification que nom"
+    },
+    {
+     "nom": "type_tag",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Typage du tag.",
+     "contrainte": "CHECK ∈ (Candidat, Entreprise, Job)"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "mandat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "task",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "task_text",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Libellé produit par interpolation d'un gabarit : contient en clair le nom du talent et du client. La substitution des tables ne l'atteint pas.",
+     "contrainte": "nullable ; regénérable depuis ref_task_type.task_text après substitution si un écran en a besoin"
+    },
+    {
+     "nom": "is_complete",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "creation_date",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon métier.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "due_date",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Jalon métier.",
+     "contrainte": "cohérence avec ref_task_type.relative_time et task_anchor"
+    },
+    {
+     "nom": "task_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_task_type.value"
+    },
+    {
+     "nom": "mandatclose_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "task_notif_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "creation_user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "update_user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "assigned_user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "task_notif",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "task_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à task.id"
+    },
+    {
+     "nom": "is_sent",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "preview_text",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Aperçu du message : noms de talents et de clients en clair.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "sent_email",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Adresse destinataire réelle ; conservée, un rejeu de workflow depuis le dev écrirait à une vraie personne.",
+     "contrainte": "format email, domaine @exemple.test ; cohérence avec user/equipe substitués"
+    },
+    {
+     "nom": "sent_text",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "Corps du message envoyé : noms en clair.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "wf_date",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "wf_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant de workflow Bubble, opaque.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "task_type",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_task_type.value"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "aucune"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "user",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id Bubble opaque, référencé par des dizaines de colonnes *_id dans toute la base.",
+     "contrainte": "PK, not null, cible FK user_role.user_id ON DELETE CASCADE"
+    },
+    {
+     "nom": "auth_id",
+     "type": "uuid",
+     "traitement": "VIDER",
+     "raison": "Pointe vers auth.users du projet LIVE. Recopié dans le dev il ne correspond à personne, et l'unicité bloquerait la création d'un compte de test rattaché au même agent.",
+     "contrainte": "UNIQUE (user_auth_id_key), nullable ; à repeupler avec les uuid des comptes de test du projet dev"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Identité d'un agent, d'un candidat ou d'un contact entreprise.",
+     "contrainte": "cohérence exigée avec candidat.nom quand candidat_id est renseigné"
+    },
+    {
+     "nom": "prenom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Identité directe.",
+     "contrainte": "cohérence exigée avec candidat.prenom"
+    },
+    {
+     "nom": "photo_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Visage = identification directe.",
+     "contrainte": "format URL, avatar générique"
+    },
+    {
+     "nom": "candidat_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à candidat.id"
+    },
+    {
+     "nom": "entreprise_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Lien technique opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à entreprise.id"
+    },
+    {
+     "nom": "fonction",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel de rôle applicatif.",
+     "contrainte": "doit appartenir à ref_fonction.value (career_agent, recruiter)"
+    },
+    {
+     "nom": "langue",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Préférence d'interface.",
+     "contrainte": "doit appartenir à ref_language.value"
+    },
+    {
+     "nom": "user_lang",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Préférence d'interface.",
+     "contrainte": "doit appartenir à ref_language.value"
+    },
+    {
+     "nom": "email_confirmed",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "is_deleted",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Drapeau technique.",
+     "contrainte": "not null, défaut false"
+    },
+    {
+     "nom": "popup_pas_de_nouvelles",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Préférence d'interface.",
+     "contrainte": "défaut true, nullable"
+    },
+    {
+     "nom": "popup_trouve_bonheur",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "Préférence d'interface.",
+     "contrainte": "défaut true, nullable"
+    },
+    {
+     "nom": "premiere_connexion_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage d'usage.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "Dérivé du nom de la personne.",
+     "contrainte": "regénérer après substitution"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "user_partner",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id opaque.",
+     "contrainte": "PK, not null"
+    },
+    {
+     "nom": "user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée ; doit correspondre à user.id"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Référentiel.",
+     "contrainte": "doit appartenir à ref_univers.value"
+    },
+    {
+     "nom": "slug",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Route technique.",
+     "contrainte": "regénérer s'il reprend le nom du user"
+    },
+    {
+     "nom": "created_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "updated_at",
+     "type": "timestamptz",
+     "traitement": "CONSERVER",
+     "raison": "Horodatage système.",
+     "contrainte": "not null, défaut now()"
+    },
+    {
+     "nom": "created_by",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "_id user opaque.",
+     "contrainte": "aucune FK déclarée"
+    }
+   ]
+  },
+  {
+   "schema": "public",
+   "table": "user_role",
+   "cle_primaire": "user_id, role",
+   "colonnes": [
+    {
+     "nom": "user_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Identifiant opaque ; c'est la table qui portera les futures policies RLS, elle doit rester fidèle.",
+     "contrainte": "PK composite, not null, FK user(id) ON DELETE CASCADE"
+    },
+    {
+     "nom": "role",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "Valeur de référentiel de rôle.",
+     "contrainte": "PK composite, not null, FK ref_role(value) ON DELETE CASCADE"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "talent",
+   "cle_primaire": "talent_id",
+   "colonnes": [
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (conservée telle quelle dans l'INSERT). Clé synthétique séquentielle fabriquée par le pivot (T000001…) : elle ne porte aucune information sur la personne et ne permet de remonter à aucun système source. C'est aussi la clé de jointure de tout le graphe — la substituer casserait les 8 tables filles.",
+     "contrainte": "PK ; référencée par 8 FK ON DELETE CASCADE (attentes, conflit, email, note_journal, parcours, phone, qualification, talent_source)"
+    },
+    {
+     "nom": "type_fusion",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (conservée par le spread). Métadonnée de résolution d'entités, aucun contenu personnel, et c'est la mesure centrale de qa_completude et de qa_preseance_suspecte.",
+     "contrainte": "NOT NULL ; CHECK merged|jarvi_only|app_only ; index btree"
+    },
+    {
+     "nom": "prenom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : tirage déterministe dans PRENOMS par hachage de talent_id, avec NULL préservé si NULL (test explicite `t.prenom === null`). Ce détail compte : il conserve la statistique de complétude et laisse qa_sans_identite peuplée.",
+     "contrainte": "nullable — la NULLITÉ doit être préservée ; index trigram sur lower(prenom)"
+    },
+    {
+     "nom": "prenom_src",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance seule ('jarvi'|'app') : c'est la matière de qa_preseance_suspecte et l'auditabilité de chaque valeur affichée. Aucune donnée personnelle.",
+     "contrainte": "CHECK jarvi|app"
+    },
+    {
+     "nom": "nom",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : tirage déterministe dans NOMS, sélecteur distinct de celui du prénom, NULL préservé. Le script purge en amont les listes de substituts qui collisionneraient avec une valeur réelle de l'échantillon — garde-fou à reprendre tel quel en dev.",
+     "contrainte": "nullable — la NULLITÉ doit être préservée ; index trigram sur lower(nom)"
+    },
+    {
+     "nom": "nom_src",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance seule, aucune donnée personnelle.",
+     "contrainte": "CHECK jarvi|app"
+    },
+    {
+     "nom": "headline",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : tirage dans POSTES. Un headline est du texte libre rédigé par la personne, très souvent auto-identifiant (« CTO @ <société> », accroche personnelle). Conséquence assumée : la distribution réelle des intitulés est détruite (8 valeurs possibles) — acceptable, ce n'est pas un axe de mesure du projet.",
+     "contrainte": "nullable — nullité préservée"
+    },
+    {
+     "nom": "localisation",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script, qui l'argumente explicitement (« une ville seule ne réidentifie pas, et c'est un axe de recherche essentiel du sourcing »). Je le suis parce que la condition tient ICI : headline et employeur_actuel sont substitués, donc le triplet ville+poste+employeur qui ferait un quasi-identifiant est déjà cassé. RÉSERVE : les valeurs observées descendent à la commune (« Deauville, France ») ; le jour où employeur_actuel ou headline repasserait en CONSERVER, il faudrait basculer cette colonne en GENERALISER (département ou région).",
+     "contrainte": "index btree sur lower(localisation)"
+    },
+    {
+     "nom": "localisation_src",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance seule.",
+     "contrainte": "CHECK jarvi|app"
+    },
+    {
+     "nom": "url_linkedin",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : URL reconstruite à partir des prénom/nom substitués + suffixe numérique dérivé de talent_id. C'est l'identifiant direct le plus fort du schéma — un slug LinkedIn EST une personne — et le script le traite comme tel en le scannant en dur dans son contrôle 4b (identifiants à forte entropie).",
+     "contrainte": "nullable — nullité préservée"
+    },
+    {
+     "nom": "open_to",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script, mais décision IMPLICITE : la colonne est conservée par le spread `...t` et n'est nommée nulle part, ni dans l'en-tête ni dans les contrôles. Sur le fond la conservation est juste (vocabulaire fermé Oui/Non, disposition de recherche, non identifiante), mais une conservation par omission est une conservation que personne ne relit — à inscrire explicitement dans la liste des champs conservés.",
+     "contrainte": ""
+    },
+    {
+     "nom": "employeur_actuel",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : tirage dans SOCIETES. Employeur + ville + intitulé est le triplet de réidentification classique ; c'est aussi la colonne que qa_multi_source publie à côté du nom et des identifiants externes.",
+     "contrainte": "nullable — nullité préservée ; index trigram sur lower(employeur_actuel)"
+    },
+    {
+     "nom": "employeur_src",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance seule.",
+     "contrainte": "CHECK jarvi|app"
+    },
+    {
+     "nom": "statut_jarvi",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script, décision implicite comme open_to. Statut de process ATS (« Entretien ») : vocabulaire fermé, exposé par talent_recherche, sans contenu personnel. Même remarque d'explicitation.",
+     "contrainte": ""
+    },
+    {
+     "nom": "origine_jarvi",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script, décision implicite. Canal de sourcing (« LINKEDIN ») : dimension analytique utile, aucune information sur la personne.",
+     "contrainte": ""
+    },
+    {
+     "nom": "cv_url",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : URL constante 'https://exemple.test/cv/anonymise.pdf'. L'URL réelle pointe un CV — donc une pièce nominative complète, et souvent un lien signé encore valide au moment où le dump circule. La présence/absence est conservée, ce qui préserve les deux indicateurs qui en dérivent.",
+     "contrainte": "nullable — la nullité DOIT être préservée (qa_completude.avec_cv et talent_recherche.a_cv en dépendent)"
+    },
+    {
+     "nom": "notes_jarvi",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : jeton constant '[note anonymisée pour le livrable]'. Texte libre rédigé par des recruteurs AU SUJET de la personne — appréciation, la catégorie la plus lourde côté RGPD.",
+     "contrainte": ""
+    },
+    {
+     "nom": "notes_bloc",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "SUIT le script (`notes_bloc: null`). Consolidation LLM du journal de notes : donnée dérivée et régénérable depuis note_journal, donc rien à préserver ; et un résumé libre est le pire porteur de détails identifiants résiduels. VIDER plutôt que SUBSTITUER, parce qu'aucun indicateur ne mesure sa présence.",
+     "contrainte": ""
+    },
+    {
+     "nom": "cree_le",
+     "type": "timestamp with time zone",
+     "traitement": "CONSERVER",
+     "raison": "ÉCART. Le script OMET cette colonne de sa liste d'INSERT : la valeur repart donc à DEFAULT now() au chargement, ce qui écrase l'histoire sans le dire. Tolérable pour un livrable figé, pas pour un environnement de développement : tous les talents naissent alors à la seconde du chargement, on ne peut plus relire l'ordre d'arrivée ni tester un incrémental. Un horodatage de chargement pivot ne dit rien sur la personne — je le conserve explicitement.",
+     "contrainte": "NOT NULL DEFAULT now()"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "talent_source",
+   "cle_primaire": "(talent_id, source, external_id)",
+   "colonnes": [
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé synthétique du pivot, non identifiante, indispensable à la jointure.",
+     "contrainte": "NOT NULL ; FK pivot.talent ON DELETE CASCADE ; membre de la PK composite"
+    },
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Nom du système d'origine : métadonnée de traçabilité, cœur de la réversibilité de la fusion.",
+     "contrainte": "NOT NULL ; CHECK jarvi|app ; membre de la PK"
+    },
+    {
+     "nom": "external_id",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : `${source}-${h(external_id)}`. C'est une clé primaire de système tiers, donc le chemin de réidentification le plus direct : on la rejoue dans Jarvi et on retrouve la personne. qa_multi_source la publie en clair, concaténée. RÉSERVE : h() est un hachage tronqué à 32 bits — les collisions sont improbables mais possibles ; la PK étant composite, seule une collision à l'intérieur d'un même couple (talent, source) casserait le chargement. Conséquence assumée et souhaitable : l'environnement de dev ne peut plus se rapprocher des vrais systèmes source.",
+     "contrainte": "NOT NULL ; membre de la PK composite ; index (source, external_id) — le substitut doit rester unique pour un même (talent_id, source)"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "email",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "clé de substitution, sans contenu personnel : conservée pour que le dev reste comparable à la production et que le chargement soit rejouable",
+     "contrainte": "PK bigserial (nextval sur pivot.email_id_seq)"
+    },
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé de jointure non identifiante.",
+     "contrainte": "NOT NULL ; FK pivot.talent ON DELETE CASCADE ; index idx_email_talent"
+    },
+    {
+     "nom": "email",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script sur le principe : adresse dérivée des substituts (prenom.nom@exemple.test), normalisée sans accents, avec rang pour respecter la contrainte d'unicité — le script documente ce point précisément. ÉCART sur le GÉNÉRATEUR : il produit une adresse nominale même lorsque generique=true, ce qui contredit le drapeau et rend qa_emails_generiques incohérente (elle listerait des adresses en prénom.nom comme adresses de service). En dev, générer contact+N@exemple.test pour les lignes generique=true.",
+     "contrainte": "NOT NULL ; UNIQUE (talent_id, email) — le substitut doit être unique par talent, d'où la numérotation +1, +2 à partir de la deuxième adresse"
+    },
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance de la coordonnée, aucune donnée personnelle.",
+     "contrainte": "NOT NULL ; CHECK jarvi|app"
+    },
+    {
+     "nom": "generique",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Drapeau de classification (adresse de service contact@/rh@), exclu des clés d'union pour ne pas fusionner deux personnes distinctes. À conserver — c'est justement parce qu'il doit rester vrai que le générateur d'email doit en tenir compte (voir l'écart signalé sur `email`).",
+     "contrainte": "NOT NULL DEFAULT false"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "phone",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "clé de substitution, sans contenu personnel : conservée pour que le dev reste comparable à la production et que le chargement soit rejouable",
+     "contrainte": "PK bigserial (nextval sur pivot.phone_id_seq)"
+    },
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé de jointure non identifiante.",
+     "contrainte": "NOT NULL ; FK pivot.talent ON DELETE CASCADE ; index idx_phone_talent"
+    },
+    {
+     "nom": "tel",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : numéro à 9 chiffres fabriqué à partir de h(talent_id), jamais attribuable à un abonné réel. Un numéro est un identifiant direct et à forte entropie — le script le scanne en dur dans son contrôle 4b, à raison : une correspondance textuelle y est nécessairement une fuite, jamais une coïncidence.",
+     "contrainte": "NOT NULL ; UNIQUE (talent_id, tel) — d'où le décalage de rang (k*7919) qui garantit des substituts distincts pour un talent multi-numéros"
+    },
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance de la coordonnée.",
+     "contrainte": "NOT NULL ; CHECK jarvi|app"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "qualification",
+   "cle_primaire": "talent_id",
+   "colonnes": [
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (la table entière est insérée telle quelle). Clé de jointure non identifiante.",
+     "contrainte": "PK ; FK pivot.talent ON DELETE CASCADE"
+    },
+    {
+     "nom": "niveau_qualifie",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Niveau de qualification produit par les recruteurs : vocabulaire fermé, indexé, axe de recherche du sourcing. C'est exactement la « valeur analytique » que l'en-tête du script s'engage à préserver.",
+     "contrainte": "index idx_qualif_niveau"
+    },
+    {
+     "nom": "univers",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Vocabulaire de référence (univers métier), non identifiant, exposé par talent_recherche comme critère de sourcing.",
+     "contrainte": "index idx_qualif_univers"
+    },
+    {
+     "nom": "anglais",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Niveau de langue : catégorie fermée, ni sensible ni identifiante à ce grain.",
+     "contrainte": ""
+    },
+    {
+     "nom": "product",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Catégorie de qualification adossée à un référentiel public.ref_*, sans contenu libre.",
+     "contrainte": ""
+    },
+    {
+     "nom": "profil",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Catégorie de profil issue d'un référentiel fermé.",
+     "contrainte": ""
+    },
+    {
+     "nom": "seniorite",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Palier de séniorité : catégorie fermée, indexée, axe de recherche.",
+     "contrainte": "index idx_qualif_seniorite"
+    },
+    {
+     "nom": "background",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Catégorie de background (référentiel ref_background), et non le parcours détaillé — celui-ci vit dans pivot.parcours et y est substitué.",
+     "contrainte": ""
+    },
+    {
+     "nom": "expertises",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Tableau de termes d'un référentiel FERMÉ (à la différence de parcours.competences, qui est du texte libre — d'où le traitement différent que je retiens là-bas).",
+     "contrainte": "index GIN idx_qualif_expertises"
+    },
+    {
+     "nom": "secteurs",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Tableau de secteurs d'un référentiel fermé. À noter : le genre est volontairement ABSENT de cette table (minimisation RGPD assumée au schéma) — il n'y a donc rien à anonymiser ici.",
+     "contrainte": "index GIN idx_qualif_secteurs"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "attentes",
+   "cle_primaire": "talent_id",
+   "colonnes": [
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé de jointure non identifiante.",
+     "contrainte": "PK ; FK pivot.talent ON DELETE CASCADE"
+    },
+    {
+     "nom": "metier_vise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Métier visé issu d'un référentiel (ref_metier) : projection, pas situation actuelle, et donc pas un point d'ancrage de réidentification.",
+     "contrainte": ""
+    },
+    {
+     "nom": "univers_vise",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Vocabulaire fermé, axe de matching.",
+     "contrainte": ""
+    },
+    {
+     "nom": "contrats",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Types de contrats visés : référentiel fermé, indexé, critère de recherche annoncé comme conservé dans l'en-tête.",
+     "contrainte": "index GIN idx_attentes_contrats"
+    },
+    {
+     "nom": "localisations",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Villes souhaitées — même raisonnement que talent.localisation, avec un risque encore plus faible : ce sont des souhaits, pas la résidence, et le combinatoire identifiant est déjà rompu par la substitution de l'employeur.",
+     "contrainte": ""
+    },
+    {
+     "nom": "remotes",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Modalités de télétravail : référentiel fermé.",
+     "contrainte": ""
+    },
+    {
+     "nom": "secteurs",
+     "type": "text[]",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Secteurs visés : référentiel fermé.",
+     "contrainte": ""
+    },
+    {
+     "nom": "nogo",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script, qui l'argumente : `nogo` nomme les entreprises qu'un talent REFUSE — le plus souvent son employeur actuel ou passé, donc identifiant par recoupement, et accessoirement une information sensible sur sa relation de travail. Remplacé par deux sociétés fictives tirées de SOCIETES. Point de méthode à reprendre : le script vérifie cette colonne par ASSERTION (valeur écrite ≠ valeur réelle) et non par scan textuel, parce qu'un nom de secteur légitime ailleurs dans le dump produirait un faux positif.",
+     "contrainte": ""
+    },
+    {
+     "nom": "salaire_min",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Fourchette de rémunération : valeur analytique explicitement listée comme conservée, non identifiante à ce grain et indexée pour le sourcing.",
+     "contrainte": "index idx_attentes_salaire ; unité K€ (3 264 valeurs harmonisées €→K€ en amont)"
+    },
+    {
+     "nom": "salaire_souhaite",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Même raisonnement que salaire_min ; l'unité harmonisée doit être respectée au chargement sous peine de rendre le jeu de dev incohérent.",
+     "contrainte": "unité K€"
+    },
+    {
+     "nom": "tjm_min",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Taux journalier : dimension analytique, non identifiante.",
+     "contrainte": "index idx_attentes_tjm ; unité euros/jour (≠ salaires en K€)"
+    },
+    {
+     "nom": "tjm_souhaite",
+     "type": "numeric",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Même raisonnement.",
+     "contrainte": "unité euros/jour"
+    },
+    {
+     "nom": "disponibilite",
+     "type": "text",
+     "traitement": "GENERALISER",
+     "raison": "SUIT le script — et c'est le SEUL vrai GENERALISER de l'anonymiseur existant. Le champ est du texte libre rédigé par les recruteurs et contient des noms d'entreprises (« à voir avec X ») : il est réduit à trois catégories, Immédiate / À terme / Non précisée. On garde l'axe analytique (quand la personne est disponible) sans transporter le texte. Vérifié par assertion, avec l'exception correcte : une valeur réelle qui vaut déjà exactement une des trois catégories n'est pas une fuite.",
+     "contrainte": ""
+    },
+    {
+     "nom": "description",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : jeton constant '[description anonymisée]'. Texte libre rédigé par le talent sur son projet. Le choix du jeton plutôt que du NULL est délibéré et je le garde : il préserve le signal « a rempli sa description », qui est une mesure d'engagement exploitable en dev.",
+     "contrainte": ""
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "parcours",
+   "cle_primaire": "talent_id",
+   "colonnes": [
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé de jointure non identifiante.",
+     "contrainte": "PK ; FK pivot.talent ON DELETE CASCADE"
+    },
+    {
+     "nom": "experience",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : jeton constant '[parcours anonymisé — structure conservée]'. Export Jarvi APLATI de l'expérience — employeurs successifs, intitulés, dates : réidentifiant en une seule lecture, même sans le nom.",
+     "contrainte": ""
+    },
+    {
+     "nom": "formation",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : jeton constant '[formation anonymisée]'. École + promotion réidentifie dans une population restreinte.",
+     "contrainte": ""
+    },
+    {
+     "nom": "competences",
+     "type": "text",
+     "traitement": "GENERALISER",
+     "raison": "ÉCART. Le script CONSERVE, au motif qu'« une liste de compétences n'est pas identifiante ». Le motif tient pour une liste NORMALISÉE — mais la colonne est du TEXTE LIBRE issu du même export aplati que experience et formation, et rien dans le schéma ne garantit qu'elle ne contient que des compétences. S'ajoute le fait qu'une combinaison rare de compétences est un quasi-identifiant reconnu. En dev : ne retenir que les jetons reconnus dans un vocabulaire de compétences (celui de qualification.expertises fait l'affaire) et jeter le reste — on préserve l'axe de recherche sans faire confiance au contenu. À noter que le script scanne bien experience dans son contrôle 4c, mais jamais competences : ni substituée, ni vérifiée.",
+     "contrainte": ""
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "note_journal",
+   "cle_primaire": "id",
+   "colonnes": [
+    {
+     "nom": "id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "clé de substitution, sans contenu personnel : conservée pour que le dev reste comparable à la production et que le chargement soit rejouable",
+     "contrainte": "PK bigserial (nextval sur pivot.note_journal_id_seq)"
+    },
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script. Clé de jointure non identifiante.",
+     "contrainte": "NOT NULL ; FK pivot.talent ON DELETE CASCADE ; index idx_note_talent ; membre de UNIQUE (talent_id, external_id)"
+    },
+    {
+     "nom": "contenu",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : jeton constant, appliqué INCONDITIONNELLEMENT, y compris aux notes automatiques. C'est le bon choix et je le garde : une note générée par un automatisme cite quand même des noms, des entreprises et des montants. C'est le corpus le plus dense en données personnelles de tout le schéma (~19 400 lignes en production).",
+     "contrainte": "NOT NULL — d'où un jeton, jamais un NULL"
+    },
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Provenance de la note, sans contenu.",
+     "contrainte": "NOT NULL DEFAULT 'app'"
+    },
+    {
+     "nom": "automatique",
+     "type": "boolean",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Drapeau distinguant note d'automate et note de recruteur : à conserver précisément parce qu'on ne s'en sert PAS pour moduler l'anonymisation du contenu.",
+     "contrainte": "NOT NULL DEFAULT false"
+    },
+    {
+     "nom": "date_note",
+     "type": "timestamp with time zone",
+     "traitement": "CONSERVER",
+     "raison": "SUIT le script (spread). Date d'une note : chronologie du suivi, aucun contenu. Utile en dev pour éprouver les tris et le comportement d'archivage glissant.",
+     "contrainte": ""
+    },
+    {
+     "nom": "external_id",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "SUIT le script : `note-${h(external_id ?? id)}`. Clé du système source, même raisonnement que talent_source.external_id, et c'est elle qui porte l'idempotence du chargement. RÉSERVE : la contrainte d'unicité est composite, donc seule une collision de h() à l'intérieur d'un même talent casserait l'INSERT — surveiller si l'échantillon de dev grossit vers le volume réel.",
+     "contrainte": "UNIQUE (talent_id, external_id) — le substitut doit rester unique par talent"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "conflit",
+   "cle_primaire": "conflit_id",
+   "colonnes": [
+    {
+     "nom": "conflit_id",
+     "type": "bigint",
+     "traitement": "CONSERVER",
+     "raison": "clé de substitution, sans contenu personnel : conservée pour que le dev reste comparable à la production et que le chargement soit rejouable",
+     "contrainte": "PK bigserial (nextval sur pivot.conflit_conflit_id_seq)"
+    },
+    {
+     "nom": "talent_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Clé synthétique du pivot, non identifiante. La cascade est ici une décision de CONFORMITÉ autant que d'intégrité (assumée dans la migration : « un talent effacé doit emporter ses conflits, sinon le droit à l'effacement laisse derrière lui un journal qui le décrit encore »). En dev : ne charger QUE les conflits dont le talent_id figure dans l'échantillon de talents, sinon violation de FK au chargement.",
+     "contrainte": "NOT NULL ; FK pivot.talent ON DELETE CASCADE ; index conflit_talent_idx (talent_id, vu_le DESC)"
+    },
+    {
+     "nom": "champ",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Nom du champ arbitré ('prenom', 'nom', 'employeur_actuel', 'localisation'…) : métadonnée pure. À conserver IMPÉRATIVEMENT — c'est elle qui pilote le traitement des deux colonnes de valeur ci-dessous ; sans elle, on ne sait plus quel générateur de substitut appliquer.",
+     "contrainte": "NOT NULL ; index conflit_champ_idx (champ, vu_le DESC)"
+    },
+    {
+     "nom": "valeur_retenue",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "NON COUVERTE — et c'est le trou le plus grave du dispositif actuel. La migration 03 le déclare noir sur blanc : « Ce journal porte des DONNÉES PERSONNELLES : les valeurs retenues et écartées sont des noms, des employeurs, des localisations. » Un jeu de données anonymisé côté talent mais brut ici rend l'anonymisation entièrement caduque : le journal redonne le vrai nom en clair, à côté du talent_id qui le rattache à la ligne dorée. RÈGLE DE SUBSTITUTION : appliquer le traitement de la colonne DÉSIGNÉE PAR `champ`, avec LE MÊME substitut déterministe que celui écrit dans pivot.talent (pick(PRENOMS, talent_id, 1) pour champ='prenom', pick(SOCIETES, talent_id, 4) pour champ='employeur_actuel', etc.) — sinon le journal contredit l'enregistrement doré et devient illisible. Cas particulier cohérent : pour champ='localisation', conservée dans talent, la valeur est conservée ici aussi.",
+     "contrainte": "nullable ; le substitut doit être IDENTIQUE à celui écrit dans pivot.talent pour (talent_id, champ)"
+    },
+    {
+     "nom": "source_retenue",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. 'jarvi'|'app' : provenance seule, aucune donnée personnelle — et c'est précisément l'information qui donne sa valeur au journal.",
+     "contrainte": "NOT NULL"
+    },
+    {
+     "nom": "valeur_ecartee",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "NON COUVERTE. Même nature personnelle que valeur_retenue, et déclarée telle par la migration. Différence de traitement : la valeur PERDANTE n'a aucun pendant dans pivot.talent, il n'y a donc pas de substitut à répliquer — tirer un second substitut de la même liste avec un sélecteur distinct, en garantissant qu'il diffère de valeur_retenue. Sans cette garantie, la ligne cesse de décrire un conflit et le journal devient inexploitable pour tester le moteur d'arbitrage.",
+     "contrainte": "nullable ; le substitut DOIT différer de valeur_retenue"
+    },
+    {
+     "nom": "source_ecartee",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Provenance seule, aucune donnée personnelle.",
+     "contrainte": "NOT NULL"
+    },
+    {
+     "nom": "regle",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. La règle qui a tranché : c'est l'instrument de mesure du moteur (« si concurrence domine, les sources se marchent dessus et le problème est en amont, pas dans l'arbitrage »). Aucune donnée personnelle, valeur analytique maximale — à conserver intégralement.",
+     "contrainte": "NOT NULL ; CHECK matrice|R1|R2|concurrence|coexistence"
+    },
+    {
+     "nom": "run_id",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Identifiant technique de run, sans contenu personnel. À conserver SI les lignes sync_run correspondantes sont chargées, et à mettre à NULL sinon (la colonne l'autorise) : aucune contrainte ne protège ce lien, un run_id orphelin ferait donc silencieusement mentir l'index conflit_run_idx et le bilan par run.",
+     "contrainte": "nullable ; index conflit_run_idx ; AUCUNE FK vers pivot.sync_run"
+    },
+    {
+     "nom": "vu_le",
+     "type": "timestamp with time zone",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Horodatage de l'événement : porte l'ordre du journal et les deux index de lecture. Aucune donnée personnelle.",
+     "contrainte": "NOT NULL DEFAULT now()"
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "sync_etat",
+   "cle_primaire": "source",
+   "colonnes": [
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE par generer_dump.mjs (ajoutée en migration 03). À conserver, mais il n'y a en pratique RIEN à charger : la migration 03 sème elle-même les deux lignes ('app'), ('ats') avec ON CONFLICT DO NOTHING. Le travail en dev consiste donc uniquement à ne PAS écraser les autres colonnes avec celles de production.",
+     "contrainte": "PK ; CHECK app|ats"
+    },
+    {
+     "nom": "curseur",
+     "type": "timestamp with time zone",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE — et c'est la colonne la plus dangereuse à recopier de tout le schéma, alors qu'elle ne contient aucune donnée personnelle. Un curseur de production importé fait croire au connecteur de dev qu'il est déjà à jour : l'incrémental ne lit plus rien, SILENCIEUSEMENT, et tout ce qui précède cette date devient structurellement inatteignable. C'est exactement le mode de défaillance documenté par la migration (règle 1 : un curseur avancé à tort a coûté 396 enregistrements au miroir). NULL, associé à statut='jamais_lance', donne un environnement vierge qui repart d'un rattrapage complet.",
+     "contrainte": "nullable — NULL est l'état de départ légitime"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "REINITIALISER",
+     "raison": "remise à zéro : le dev ne doit pas hériter de l'avancement de la production",
+     "contrainte": "NOT NULL DEFAULT 'jamais_lance' ; CHECK jamais_lance|en_cours|ok|erreur",
+     "valeur": "jamais_lance"
+    },
+    {
+     "nom": "demarre_le",
+     "type": "timestamp with time zone",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. NULL, par cohérence avec 'jamais_lance'. Dater le démarrage d'un run qui n'a pas eu lieu dans cet environnement est un mensonge que la supervision lira comme un fait.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "termine_le",
+     "type": "timestamp with time zone",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. NULL, même raisonnement : l'écart demarre_le/termine_le est le seul moyen de distinguer « rien à faire » de « mort en chemin », il ne doit pas être hérité de production.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "message_erreur",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. Texte libre renvoyé par un système tiers : un message d'erreur d'API recopie couramment le corps de l'enregistrement fautif, donc potentiellement un email, un nom, un téléphone. C'est un canal de fuite INDIRECT, qu'aucun scan orienté colonnes personnelles n'attraperait — et il n'a de toute façon aucun sens en dev.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "volume_dernier_run",
+     "type": "integer",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. NULL : aucun run n'a eu lieu dans l'environnement de développement, un volume hérité fausserait immédiatement la lecture de la première exécution.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "runs_total",
+     "type": "bigint",
+     "traitement": "REINITIALISER",
+     "raison": "remise à zéro : aucun run n'a eu lieu contre le dev",
+     "contrainte": "NOT NULL DEFAULT 0 — on ne peut pas la vider, d'où la remise à 0",
+     "valeur": 0
+    }
+   ]
+  },
+  {
+   "schema": "pivot",
+   "table": "sync_run",
+   "cle_primaire": "run_id",
+   "colonnes": [
+    {
+     "nom": "run_id",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "NON COUVERTE par generer_dump.mjs (ajoutée en migration 03). REMARQUE PRÉALABLE valable pour toute la table : c'est un journal des exécutions de PRODUCTION ; par défaut, le plus sain est de NE RIEN CHARGER et de laisser les runs de dev la remplir. Les traitements ci-dessous valent si l'on veut malgré tout un jeu de démonstration pour les écrans de supervision. Pour run_id : la clé est fabriquée par le connecteur et peut embarquer un nom d'hôte, un identifiant de job ou un horodatage de production — de l'infrastructure, pas de la donnée personnelle, mais rien qui ait à sortir. Régénérer en 'dev-0001'…",
+     "contrainte": "PK text (pas de séquence : fabriquée par le connecteur)"
+    },
+    {
+     "nom": "source",
+     "type": "text",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. 'app'|'ats' : dimension de lecture de l'index sync_run_source_idx, aucun contenu.",
+     "contrainte": "NOT NULL ; PAS de CHECK ici, contrairement à sync_etat.source — rien n'empêche donc une valeur hors 'app'|'ats' au chargement"
+    },
+    {
+     "nom": "demarre_le",
+     "type": "timestamp with time zone",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Horodatage d'exécution : aucune donnée personnelle, et l'écart demarre_le/termine_le est la matière même des écrans de supervision qu'on veut pouvoir éprouver en dev.",
+     "contrainte": "NOT NULL DEFAULT now() ; index sync_run_source_idx (source, demarre_le DESC)"
+    },
+    {
+     "nom": "termine_le",
+     "type": "timestamp with time zone",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Même raisonnement que demarre_le.",
+     "contrainte": "nullable — un NULL sur une ligne 'en_cours' est le signal d'un run interrompu"
+    },
+    {
+     "nom": "statut",
+     "type": "text",
+     "traitement": "SUBSTITUER",
+     "raison": "NON COUVERTE. Conserver la valeur SAUF 'en_cours', à réécrire en 'erreur'. Un run en vol importé décrit une exécution qui ne se terminera jamais — or « un statut en_cours qui traîne » est précisément le marqueur que la migration désigne pour repérer un run interrompu : hériter d'un faux positif rend ce signal inutilisable dès le premier jour.",
+     "contrainte": "NOT NULL DEFAULT 'en_cours' ; CHECK en_cours|ok|erreur"
+    },
+    {
+     "nom": "attendus",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Total annoncé par la source, lu AVANT de commencer. Aucun contenu, et c'est la moitié de l'invariant attendus/lus — celui qui a révélé 13 073 enregistrements écrits au lieu de 19 381 sans qu'aucune exception ne soit levée. Le conserver permet de tester la détection en dev sur des cas réels.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "lus",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. L'autre moitié de l'invariant de complétude. Compteur pur.",
+     "contrainte": "NOT NULL DEFAULT 0"
+    },
+    {
+     "nom": "talents_crees",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Compteur d'effet, sans aucun contenu : dit combien, jamais qui.",
+     "contrainte": "NOT NULL DEFAULT 0"
+    },
+    {
+     "nom": "talents_majs",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Compteur d'effet, même raisonnement.",
+     "contrainte": "NOT NULL DEFAULT 0"
+    },
+    {
+     "nom": "conflits",
+     "type": "integer",
+     "traitement": "CONSERVER",
+     "raison": "NON COUVERTE. Compteur d'arbitrages du run : à rapprocher du volume réel de pivot.conflit chargé, sous peine d'incohérence visible dans la supervision de dev.",
+     "contrainte": "NOT NULL DEFAULT 0"
+    },
+    {
+     "nom": "curseur_avant",
+     "type": "timestamp with time zone",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. Watermark de production stocké dans une ligne de journal : inerte tant que personne ne le lit, mais tout chemin de REPRISE consiste justement à re-primer sync_etat.curseur depuis le dernier run connu. Un curseur accessible depuis le journal est un curseur qu'une reprise peut réinjecter — et on retombe alors sur la panne silencieuse décrite pour sync_etat.curseur. Variante acceptable si l'on tient à tester la supervision de progression : SUBSTITUER par des dates relatives à l'environnement de dev, plutôt que conserver les vraies.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "curseur_apres",
+     "type": "timestamp with time zone",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. Même raisonnement que curseur_avant, en plus exposé : c'est cette valeur-là qu'une reprise irait chercher en priorité.",
+     "contrainte": "nullable"
+    },
+    {
+     "nom": "message",
+     "type": "text",
+     "traitement": "VIDER",
+     "raison": "NON COUVERTE. Texte libre écrit par le connecteur en fin de run : mêmes risques que sync_etat.message_erreur — il recopie volontiers un fragment de payload source, donc potentiellement une donnée personnelle, dans une colonne que personne ne classe comme personnelle.",
+     "contrainte": "nullable"
+    }
+   ]
+  }
+ ],
+ "traitements": {
+  "CONSERVER": "valeur réelle gardée telle quelle",
+  "SUBSTITUER": "remplacée par un substitut déterministe, garanti DIFFÉRENT de la vraie valeur",
+  "VIDER": "mise à NULL",
+  "GENERALISER": "précision réduite (tranche, département)",
+  "REINITIALISER": "ramenée à une constante — une remise à zéro peut légitimement égaler la valeur réelle"
+ }
+}

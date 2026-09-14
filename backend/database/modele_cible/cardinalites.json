@@ -1,0 +1,1773 @@
+{
+ "couverture": {
+  "source_schema": "/Users/claudemenye/Documents/Project./pachamama-os/supabase/migrations/20260825111210_remote_schema.sql",
+  "source_liens": "/Users/claudemenye/Documents/Project./pachamama-os/backend/database/anonymisation/liens_non_declares.json",
+  "mesure": "PostgREST sur le projet de production zkxwoclmephuzbdgcggr, cle service_role, lectures seules, le 26/08/2026. Chaque table a ete parcourue integralement : le nombre de lignes recuperees egale le nombre de lignes comptees, pour les 68 tables porteuses de relation.",
+  "tables_schema": {
+   "total": 118,
+   "public": 107,
+   "pivot": 11
+  },
+  "colonnes_schema": {
+   "total": 785,
+   "public": 688,
+   "pivot": 97
+  },
+  "colonnes_de_relation_mesurees": 154,
+  "colonnes_hors_relation": 631,
+  "tables_porteuses_de_relation": 68,
+  "tables_sans_colonne_de_relation": 50,
+  "detail_tables_sans_relation": "50 tables : 45 referentiels ref_* sans lien sortant, public.email_template, public._fk_backup, public._sync_passe, public._sync_state, pivot.sync_etat (outillage de synchro). Aucune n'a de colonne *_id ni de cle primaire composite ni de FK sortante : elles ne portent aucune cardinalite a etablir.",
+  "fk_declarees": {
+   "total": 65,
+   "entite_vers_entite": 44,
+   "vers_referentiel": 21,
+   "remarque": "4 des 21 FK vers referentiel gardent une colonne entierement vide : ref_note_event.note_event_type (0/24), ref_role.role_category (0/5), ref_task_type.task_anchor (0/12), ref_task_type.task_event (0/12). La contrainte existe, la donnee n'existe pas."
+  },
+  "liens_mesures_sans_contrainte": 75,
+  "liens_contraignables_sans_nettoyage": "63 des 69 liens entite->entite testes pour l'integrite referentielle ont 0 valeur orpheline. 6 exceptions mesurees : mandate_closed_split.mandatclose_id (1 valeur / 1 ligne), note.user_id (2 / 21), task.mandatclose_id (1 / 5), nps_tracking.bubble_contact_id (13 / 16), nps_tracking.bubble_mandat_id (polymorphe, 15 lignes sans cible), et les colonnes vides.",
+  "colonnes_mortes": [
+   "public._sync_quarantine.bubble_id",
+   "public.candidat.ajout_par_id",
+   "public.candidat_jobtype.candidat_id",
+   "public.candidat_jobtype.jobtype",
+   "public.candidat_note.candidat_id",
+   "public.candidat_note.note_id",
+   "public.experience.entreprise_id",
+   "public.mandat.business_maker_id",
+   "public.note.note_user_tag_id",
+   "public.note_archivee.mandatclose_id",
+   "public.ref_note_event.note_event_type",
+   "public.ref_role.role_category",
+   "public.ref_task_type.task_anchor",
+   "public.ref_task_type.task_event",
+   "public.user.auth_id"
+  ],
+  "non_couvert": "Les 631 colonnes qui ne portent aucune relation (libelles, dates, montants, textes, drapeaux) ne sont pas classees ici : ce releve porte sur les cardinalites. Elles restent a attribuer dans le travail de modele cible. Aucune colonne porteuse de relation n'a ete laissee de cote : les 154 sont dans 'relations', chacune avec une cardinalite mesuree et un devenir."
+ },
+ "relations": [
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.attentes",
+   "colonne": "talent_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.attentes : 5864 lignes ; talent_id = 5864 non nuls, 5864 valeurs distinctes, max 1 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-1 PARTIEL avec pivot.talent (5864 sur 30977) — repliable en colonnes de talent, mais le repli rend explicite que 25113 talents n'ont pas d'attentes"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.conflit",
+   "colonne": "conflit_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.conflit : 1229 lignes ; conflit_id = 1229 non nuls, 1229 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "cle primaire de pivot.conflit, pas une relation"
+  },
+  {
+   "parent": "pivot.sync_run",
+   "enfant": "pivot.conflit",
+   "colonne": "run_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.conflit : 1229 lignes ; run_id = 1229 non nuls, 3 valeurs distinctes, max 1225 par parent, 0 nuls ; pivot.sync_run = 198 lignes",
+   "devenir_dans_le_cible": "FK pivot.conflit.run_id -> pivot.sync_run, 1-N (3 runs, max 1225)"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.conflit",
+   "colonne": "talent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.conflit : 1229 lignes ; talent_id = 1229 non nuls, 1139 valeurs distinctes, max 4 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-N reelle (max 4 conflits par talent) — reste une table"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.email",
+   "colonne": "talent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.email : 24515 lignes ; talent_id = 24515 non nuls, 23528 valeurs distinctes, max 4 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-N reelle (max 4 emails par talent) — reste une table"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.note_journal",
+   "colonne": "external_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.note_journal : 37068 lignes ; external_id = 37068 non nuls, 37068 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "identifiant du fournisseur, pas une relation interne (37068 valeurs, toutes distinctes) — cle de rapprochement a conserver"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.note_journal",
+   "colonne": "talent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.note_journal : 37068 lignes ; talent_id = 37068 non nuls, 5637 valeurs distinctes, max 146 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-N reelle (max 146 notes par talent) — reste une table"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.parcours",
+   "colonne": "talent_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.parcours : 26536 lignes ; talent_id = 26536 non nuls, 26536 valeurs distinctes, max 1 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-1 PARTIEL avec pivot.talent (26536 sur 30977) — repliable en colonnes de talent"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.phone",
+   "colonne": "talent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.phone : 11542 lignes ; talent_id = 11542 non nuls, 11433 valeurs distinctes, max 4 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-N reelle (max 4 telephones par talent) — reste une table"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.qualification",
+   "colonne": "talent_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.qualification : 6627 lignes ; talent_id = 6627 non nuls, 6627 valeurs distinctes, max 1 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-1 PARTIEL avec pivot.talent (6627 sur 30977) — repliable ; c'est la seule source de senioritie, absente pour 24350 talents"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.sync_run",
+   "colonne": "run_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.sync_run : 198 lignes ; run_id = 198 non nuls, 198 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "cle primaire de pivot.sync_run, pas une relation"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.talent",
+   "colonne": "talent_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.talent : 30977 lignes ; talent_id = 30977 non nuls, 30977 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "cle primaire de pivot.talent, pas une relation"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.talent_source",
+   "colonne": "external_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.talent_source : 33717 lignes ; external_id = 33717 non nuls, 33717 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "identifiant du fournisseur — c'est la cle de matching, a conserver telle quelle (33717 valeurs, toutes distinctes)"
+  },
+  {
+   "parent": null,
+   "enfant": "pivot.talent_source",
+   "colonne": "source",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "pivot.talent_source : 33717 lignes ; source = 33717 non nuls, 2 valeurs distinctes, max 26689 par parent, 0 nuls",
+   "devenir_dans_le_cible": "discriminant de provenance : 2 valeurs seulement, max 26689"
+  },
+  {
+   "parent": "pivot.talent",
+   "enfant": "pivot.talent_source",
+   "colonne": "talent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "pivot.talent_source : 33717 lignes ; talent_id = 33717 non nuls, 30977 valeurs distinctes, max 5 par parent, 0 nuls ; pivot.talent = 30977 lignes",
+   "devenir_dans_le_cible": "1-N reelle (max 5 sources par talent) — reste une table, c'est le coeur du rapprochement"
+  },
+  {
+   "parent": null,
+   "enfant": "public._sync_ecart",
+   "colonne": "bubble_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public._sync_ecart : 6200 lignes ; bubble_id = 6200 non nuls, 6200 valeurs distinctes, max 1 par parent, 0 nuls",
+   "devenir_dans_le_cible": "colonne technique — identifiant Bubble d'un record manquant, hors modele metier (6200 lignes, toutes distinctes)"
+  },
+  {
+   "parent": null,
+   "enfant": "public._sync_quarantine",
+   "colonne": "bubble_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public._sync_quarantine : 0 lignes ; bubble_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 0 nuls",
+   "devenir_dans_le_cible": "colonne technique, table vide (0 ligne) — outillage de synchro, hors modele metier"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.analyse",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.analyse : 501 lignes ; mandat_id = 481 non nuls, 79 valeurs distinctes, max 9 par parent, 20 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK analyse.mandat_id — 1-N reelle (max 9 analyses par mandat), 0 orphelin, contrainte posable ; 20 analyses sans mandat a trier"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.business_maker",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.business_maker : 20 lignes ; candidat_id = 15 non nuls, 14 valeurs distinctes, max 2 par parent, 5 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "garder UN seul sens. Ici max 2 : 1 candidat porte 2 business_maker. Sens a retenir apres arbitrage, l'autre colonne supprimee."
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.candidat",
+   "colonne": "agent_pachamama_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; agent_pachamama_id = 605 non nuls, 16 valeurs distinctes, max 106 par parent, 6423 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK candidat.agent_pachamama_id -> user (cible etablie par inclusion : 16 valeurs sur 16 dans user). 1-N, max 106."
+  },
+  {
+   "parent": null,
+   "enfant": "public.candidat",
+   "colonne": "ajout_par_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; ajout_par_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 7028 nuls",
+   "devenir_dans_le_cible": "ABANDON — 0 valeur sur 7028 lignes. Aucune cible identifiable, aucune donnee a perdre."
+  },
+  {
+   "parent": "public.business_maker",
+   "enfant": "public.candidat",
+   "colonne": "business_maker_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; business_maker_id = 14 non nuls, 14 valeurs distinctes, max 1 par parent, 7014 nuls ; public.business_maker = 20 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "conserver comme FK candidat.business_maker_id (14 liens, max 1) ; noter le doublon avec business_maker.candidat_id (15 liens, max 2) : les deux sens coexistent, a reconcilier"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.candidat",
+   "colonne": "experience_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; experience_id = 3352 non nuls, 3352 valeurs distinctes, max 1 par parent, 3676 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse redondant et appauvri : 3352 valeurs contre 7028 via experience.candidat_id. Aucune information propre."
+  },
+  {
+   "parent": "public.job_actuel",
+   "enfant": "public.candidat",
+   "colonne": "job_actuel_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; job_actuel_id = 3352 non nuls, 3352 valeurs distinctes, max 1 par parent, 3676 nuls ; public.job_actuel = 7029 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse redondant et appauvri : 3352 contre 7028 via job_actuel.candidat_id"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.candidat",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat : 7028 lignes ; job_reve_id = 3352 non nuls, 3352 valeurs distinctes, max 1 par parent, 3676 nuls ; public.job_reve = 7029 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse redondant et appauvri : 3352 contre 7028 via job_reve.candidat_id"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_contrat",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_contrat : 2460 lignes ; candidat_id = 2460 non nuls, 2092 valeurs distinctes, max 3 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 3 par parent)"
+  },
+  {
+   "parent": "public.ref_contrat",
+   "enfant": "public.candidat_contrat",
+   "colonne": "contrat",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat_contrat : 2460 lignes ; contrat = 2460 non nuls, 3 valeurs distinctes, max 1798 par parent, 0 nuls ; public.ref_contrat = 2 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 1798 par parent)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.candidat_expanded",
+   "colonne": "agent_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat_expanded : 7029 lignes ; agent_id = 1955 non nuls, 30 valeurs distinctes, max 498 par parent, 5074 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK vers user apres repli dans candidat (30 valeurs sur 30 dans user) ; doublon probable de candidat.agent_pachamama_id, a reconcilier au repli"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_expanded",
+   "colonne": "candidat_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat_expanded : 7029 lignes ; candidat_id = 7028 non nuls, 7028 valeurs distinctes, max 1 par parent, 1 nul ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — replier les colonnes de candidat_expanded dans candidat (bijection stricte : 7028 = 7028, 0 orphelin, 0 candidat non couvert)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_expertise",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_expertise : 807 lignes ; candidat_id = 807 non nuls, 260 valeurs distinctes, max 5 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.ref_expertise",
+   "enfant": "public.candidat_expertise",
+   "colonne": "expertise",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_expertise : 807 lignes ; expertise = 807 non nuls, 25 valeurs distinctes, max 106 par parent, 0 nuls ; public.ref_expertise = 31 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 106 par parent)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_jobtype",
+   "colonne": "candidat_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_jobtype : 0 lignes ; candidat_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — table vide (0 ligne). Aucune donnee a perdre."
+  },
+  {
+   "parent": "(aucune table ref_jobtype n'existe)",
+   "enfant": "public.candidat_jobtype",
+   "colonne": "jobtype",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat_jobtype : 0 lignes ; jobtype = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 0 nuls",
+   "devenir_dans_le_cible": "DISPARAIT — table vide, et aucune table ref_jobtype n'existe pour contraindre la valeur"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_mandat",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_mandat : 2603 lignes ; candidat_id = 2603 non nuls, 1506 valeurs distinctes, max 14 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison candidat_mandat(candidat_id, mandat_id) — N-N mesuree : max 14 mandats par candidat, max 130 candidats par mandat. ARBITRAGE : 2596 de ses 2603 paires sont deja dans process, 7 n'y sont pas ; process en porte 4484 de plus. Ne pas supprimer sans traiter les 7."
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.candidat_mandat",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_mandat : 2603 lignes ; mandat_id = 2603 non nuls, 176 valeurs distinctes, max 130 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison — cote mandat : max 130 candidats par mandat"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_note",
+   "colonne": "candidat_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_note : 0 lignes ; candidat_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — table vide (0 ligne) alors que note.candidat_id porte 23419 liens. Aucune donnee a reprendre."
+  },
+  {
+   "parent": "public.note",
+   "enfant": "public.candidat_note",
+   "colonne": "note_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_note : 0 lignes ; note_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 0 nuls ; public.note = 25728 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — table vide (0 ligne)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_profile",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_profile : 408 lignes ; candidat_id = 408 non nuls, 259 valeurs distinctes, max 4 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.ref_profile",
+   "enfant": "public.candidat_profile",
+   "colonne": "profile",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_profile : 408 lignes ; profile = 408 non nuls, 4 valeurs distinctes, max 141 par parent, 0 nuls ; public.ref_profile = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 141 par parent)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_remote",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_remote : 1999 lignes ; candidat_id = 1999 non nuls, 1404 valeurs distinctes, max 4 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.ref_remote",
+   "enfant": "public.candidat_remote",
+   "colonne": "remote",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.candidat_remote : 1999 lignes ; remote = 1999 non nuls, 7 valeurs distinctes, max 1085 par parent, 0 nuls ; public.ref_remote = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 1085 par parent)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_secteur",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_secteur : 747 lignes ; candidat_id = 747 non nuls, 254 valeurs distinctes, max 5 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.ref_secteur",
+   "enfant": "public.candidat_secteur",
+   "colonne": "secteur",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_secteur : 747 lignes ; secteur = 747 non nuls, 46 valeurs distinctes, max 90 par parent, 0 nuls ; public.ref_secteur = 52 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 90 par parent)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.candidat_tag",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_tag : 86 lignes ; candidat_id = 86 non nuls, 41 valeurs distinctes, max 5 par parent, 0 nuls ; public.candidat = 7028 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison candidat_tag(candidat_id, tag_id) — N-N mesuree : max 5 tags par candidat et max 9 candidats par tag"
+  },
+  {
+   "parent": "public.tag",
+   "enfant": "public.candidat_tag",
+   "colonne": "tag_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.candidat_tag : 86 lignes ; tag_id = 86 non nuls, 49 valeurs distinctes, max 9 par parent, 0 nuls ; public.tag = 110 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison — cote tag : max 9 candidats par tag"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.entreprise",
+   "colonne": "agent_en_charge_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.entreprise : 850 lignes ; agent_en_charge_id = 80 non nuls, 7 valeurs distinctes, max 43 par parent, 770 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 43)"
+  },
+  {
+   "parent": "public.produit",
+   "enfant": "public.entreprise",
+   "colonne": "produit_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.entreprise : 850 lignes ; produit_id = 56 non nuls, 56 valeurs distinctes, max 1 par parent, 794 nuls ; public.produit = 103 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse qui ne retient qu'un produit sur 103 pour 56 entreprises ; produit.entreprise_id (max 12) est la relation complete"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.entreprise_mandat",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_mandat : 1 lignes ; entreprise_id = 1 non nuls, 1 valeur distincte, max 1 par parent, 0 nuls ; public.entreprise = 850 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — 1 seule ligne alors que mandat.entreprise_id porte 533 liens. Table morte."
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.entreprise_mandat",
+   "colonne": "mandat_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_mandat : 1 lignes ; mandat_id = 1 non nuls, 1 valeur distincte, max 1 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — 1 seule ligne, deja couverte par mandat.entreprise_id"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.entreprise_note",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_note : 991 lignes ; entreprise_id = 991 non nuls, 52 valeurs distinctes, max 116 par parent, 0 nuls ; public.entreprise = 850 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — 991 lignes, 991 en accord avec note.entreprise_id, 0 desaccord, 0 ligne propre ; note.entreprise_id en porte 2082, soit 1091 de plus. Sous-ensemble strict."
+  },
+  {
+   "parent": "public.note",
+   "enfant": "public.entreprise_note",
+   "colonne": "note_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_note : 991 lignes ; note_id = 991 non nuls, 991 valeurs distinctes, max 1 par parent, 0 nuls ; public.note = 25728 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — note_id unique sur 991 lignes : la table n'exprime rien que note.entreprise_id n'exprime deja"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.entreprise_remote",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_remote : 58 lignes ; entreprise_id = 58 non nuls, 58 valeurs distinctes, max 1 par parent, 0 nuls ; public.entreprise = 850 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — max 1 par entreprise : entreprise_remote porte UNE valeur, elle devient la colonne entreprise.remote (58 entreprises sur 850 renseignees)"
+  },
+  {
+   "parent": "public.ref_remote",
+   "enfant": "public.entreprise_remote",
+   "colonne": "remote",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.entreprise_remote : 58 lignes ; remote = 58 non nuls, 5 valeurs distinctes, max 41 par parent, 0 nuls ; public.ref_remote = 4 lignes",
+   "devenir_dans_le_cible": "devient la colonne scalaire entreprise.remote, FK vers ref_remote"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.entreprise_tag",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_tag : 5 lignes ; entreprise_id = 5 non nuls, 1 valeur distincte, max 5 par parent, 0 nuls ; public.entreprise = 850 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — 5 lignes, 5 en accord avec tag.entreprise_id, 0 ligne propre"
+  },
+  {
+   "parent": "public.tag",
+   "enfant": "public.entreprise_tag",
+   "colonne": "tag_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.entreprise_tag : 5 lignes ; tag_id = 5 non nuls, 5 valeurs distinctes, max 1 par parent, 0 nuls ; public.tag = 110 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — tag_id unique sur 5 lignes ; la relation est 1-N entreprise -> tag"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.equipe",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.equipe : 766 lignes ; mandat_id = 644 non nuls, 426 valeurs distinctes, max 4 par parent, 122 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "conserver mais NON suffisante : 644 non nuls, 122 nuls, et 70 liens de mandat_equipe qu'elle ne porte pas. A reconcilier avec mandat_equipe, pas a substituer."
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.experience",
+   "colonne": "candidat_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience : 7049 lignes ; candidat_id = 7028 non nuls, 7028 valeurs distinctes, max 1 par parent, 21 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — replier experience dans candidat (bijection stricte sur les 7028 candidats ; les 21 lignes a candidat_id nul sont a trier avant repli, pas a jeter)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.experience",
+   "colonne": "entreprise_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience : 7049 lignes ; entreprise_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 7049 nuls ; public.entreprise = 850 lignes",
+   "devenir_dans_le_cible": "ABANDON — 0 valeur sur 7049 lignes. L'employeur d'une experience n'est donc PAS relie a entreprise ; il n'existe qu'en texte libre. Consequence a acter."
+  },
+  {
+   "parent": "public.ref_background",
+   "enfant": "public.experience_background",
+   "colonne": "background",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.experience_background : 5218 lignes ; background = 5218 non nuls, 4 valeurs distinctes, max 2223 par parent, 0 nuls ; public.ref_background = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 2223 par parent)"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.experience_background",
+   "colonne": "experience_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_background : 5218 lignes ; experience_id = 5218 non nuls, 3373 valeurs distinctes, max 4 par parent, 0 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.experience_expertise",
+   "colonne": "experience_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_expertise : 9478 lignes ; experience_id = 9478 non nuls, 3541 valeurs distinctes, max 5 par parent, 0 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.ref_expertise",
+   "enfant": "public.experience_expertise",
+   "colonne": "expertise",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_expertise : 9478 lignes ; expertise = 9478 non nuls, 33 valeurs distinctes, max 742 par parent, 0 nuls ; public.ref_expertise = 31 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 742 par parent)"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.experience_product",
+   "colonne": "experience_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_product : 11350 lignes ; experience_id = 11350 non nuls, 3994 valeurs distinctes, max 6 par parent, 0 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 6 par parent)"
+  },
+  {
+   "parent": "public.ref_product",
+   "enfant": "public.experience_product",
+   "colonne": "product",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.experience_product : 11350 lignes ; product = 11350 non nuls, 6 valeurs distinctes, max 3602 par parent, 0 nuls ; public.ref_product = 6 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 3602 par parent)"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.experience_profile",
+   "colonne": "experience_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_profile : 5223 lignes ; experience_id = 5223 non nuls, 3682 valeurs distinctes, max 4 par parent, 0 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.ref_profile",
+   "enfant": "public.experience_profile",
+   "colonne": "profile",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.experience_profile : 5223 lignes ; profile = 5223 non nuls, 4 valeurs distinctes, max 2450 par parent, 0 nuls ; public.ref_profile = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 2450 par parent)"
+  },
+  {
+   "parent": "public.experience",
+   "enfant": "public.experience_secteur",
+   "colonne": "experience_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.experience_secteur : 10342 lignes ; experience_id = 10342 non nuls, 3791 valeurs distinctes, max 8 par parent, 0 nuls ; public.experience = 7049 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 8 par parent)"
+  },
+  {
+   "parent": "public.ref_secteur",
+   "enfant": "public.experience_secteur",
+   "colonne": "secteur",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.experience_secteur : 10342 lignes ; secteur = 10342 non nuls, 52 valeurs distinctes, max 1106 par parent, 0 nuls ; public.ref_secteur = 52 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 1106 par parent)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.job_actuel",
+   "colonne": "candidat_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.job_actuel : 7029 lignes ; candidat_id = 7028 non nuls, 7028 valeurs distinctes, max 1 par parent, 1 nul ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — replier job_actuel dans candidat (bijection stricte, 0 orphelin, 0 candidat non couvert)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.job_actuel",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.job_actuel : 7029 lignes ; entreprise_id = 6 non nuls, 6 valeurs distinctes, max 1 par parent, 7023 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK vers entreprise apres repli dans candidat — 6 valeurs seulement sur 7029 lignes. L'employeur actuel n'est quasiment jamais relie."
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.job_reve",
+   "colonne": "candidat_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.job_reve : 7029 lignes ; candidat_id = 7028 non nuls, 7028 valeurs distinctes, max 1 par parent, 1 nul ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — replier job_reve dans candidat (bijection stricte, 0 orphelin, 0 candidat non couvert)"
+  },
+  {
+   "parent": "public.ref_contrat",
+   "enfant": "public.job_reve_contrat",
+   "colonne": "contrat",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.job_reve_contrat : 6444 lignes ; contrat = 6444 non nuls, 3 valeurs distinctes, max 4604 par parent, 0 nuls ; public.ref_contrat = 2 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4604 par parent)"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.job_reve_contrat",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_contrat : 6444 lignes ; job_reve_id = 6444 non nuls, 5460 valeurs distinctes, max 3 par parent, 0 nuls ; public.job_reve = 7029 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 3 par parent)"
+  },
+  {
+   "parent": "public.ref_criteres",
+   "enfant": "public.job_reve_critere",
+   "colonne": "critere",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_critere : 8882 lignes ; critere = 8882 non nuls, 32 valeurs distinctes, max 879 par parent, 0 nuls ; public.ref_criteres = 32 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 879 par parent)"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.job_reve_critere",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_critere : 8882 lignes ; job_reve_id = 8882 non nuls, 2651 valeurs distinctes, max 5 par parent, 0 nuls ; public.job_reve = 7029 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.job_reve_remote",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_remote : 4469 lignes ; job_reve_id = 4469 non nuls, 3169 valeurs distinctes, max 4 par parent, 0 nuls ; public.job_reve = 7029 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.ref_remote",
+   "enfant": "public.job_reve_remote",
+   "colonne": "remote",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_remote : 4469 lignes ; remote = 4469 non nuls, 4 valeurs distinctes, max 2764 par parent, 0 nuls ; public.ref_remote = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 2764 par parent)"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.job_reve_secteur",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_secteur : 2846 lignes ; job_reve_id = 2846 non nuls, 861 valeurs distinctes, max 5 par parent, 0 nuls ; public.job_reve = 7029 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.ref_secteur",
+   "enfant": "public.job_reve_secteur",
+   "colonne": "secteur",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_secteur : 2846 lignes ; secteur = 2846 non nuls, 50 valeurs distinctes, max 435 par parent, 0 nuls ; public.ref_secteur = 52 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 435 par parent)"
+  },
+  {
+   "parent": "public.job_reve",
+   "enfant": "public.job_reve_secteur_nogo",
+   "colonne": "job_reve_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_secteur_nogo : 1803 lignes ; job_reve_id = 1803 non nuls, 677 valeurs distinctes, max 5 par parent, 0 nuls ; public.job_reve = 7029 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 5 par parent)"
+  },
+  {
+   "parent": "public.ref_secteur",
+   "enfant": "public.job_reve_secteur_nogo",
+   "colonne": "secteur",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.job_reve_secteur_nogo : 1803 lignes ; secteur = 1803 non nuls, 52 valeurs distinctes, max 313 par parent, 0 nuls ; public.ref_secteur = 52 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 313 par parent)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.mandat",
+   "colonne": "account_manager_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; account_manager_id = 173 non nuls, 9 valeurs distinctes, max 74 par parent, 361 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK -> user (173 non nuls, 9 distincts, 0 orphelin)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.mandat",
+   "colonne": "agent_2_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; agent_2_id = 25 non nuls, 9 valeurs distinctes, max 11 par parent, 509 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK -> user (25 non nuls, 9 distincts, 0 orphelin)"
+  },
+  {
+   "parent": null,
+   "enfant": "public.mandat",
+   "colonne": "business_maker_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; business_maker_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 534 nuls",
+   "devenir_dans_le_cible": "ABANDON — 0 valeur sur 534 lignes"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.mandat",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; entreprise_id = 533 non nuls, 229 valeurs distinctes, max 25 par parent, 1 nul ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK mandat.entreprise_id — 1-N reelle (max 25 mandats par entreprise), 0 orphelin, contrainte posable ; 1 mandat sans entreprise"
+  },
+  {
+   "parent": "public.equipe",
+   "enfant": "public.mandat",
+   "colonne": "manager_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; manager_id = 77 non nuls, 77 valeurs distinctes, max 1 par parent, 457 nuls ; public.equipe = 766 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK mandat.manager_id -> equipe (cible etablie par inclusion : 77 valeurs sur 77 dans equipe, 0 orphelin). ATTENTION : le nom dit user, la donnee dit equipe. 1-1 partiel (max 1)."
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.mandat",
+   "colonne": "personne_en_charge_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; personne_en_charge_id = 478 non nuls, 32 valeurs distinctes, max 74 par parent, 56 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK -> user (478 non nuls, 32 distincts, max 74, 0 orphelin)"
+  },
+  {
+   "parent": "public.equipe",
+   "enfant": "public.mandat",
+   "colonne": "recruteur_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat : 534 lignes ; recruteur_id = 46 non nuls, 36 valeurs distinctes, max 4 par parent, 488 nuls ; public.equipe = 766 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK mandat.recruteur_id -> equipe (46 non nuls, 36 distincts, max 4, 0 orphelin). Meme piege de nommage que manager_id."
+  },
+  {
+   "parent": "public.analyse",
+   "enfant": "public.mandat_analyse",
+   "colonne": "analyse_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_analyse : 481 lignes ; analyse_id = 481 non nuls, 481 valeurs distinctes, max 1 par parent, 0 nuls ; public.analyse = 501 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — analyse_id unique sur 481 lignes ; la relation est 1-N mandat -> analyse (max 9)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_analyse",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_analyse : 481 lignes ; mandat_id = 481 non nuls, 79 valeurs distinctes, max 9 par parent, 0 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — duplicata exact de analyse.mandat_id (481 = 481, 0 desaccord, 0 analyse manquante). Ce n'est pas un M2M : analyse_id est unique."
+  },
+  {
+   "parent": "public.ref_cible",
+   "enfant": "public.mandat_cible",
+   "colonne": "cible",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_cible : 92 lignes ; cible = 92 non nuls, 4 valeurs distinctes, max 59 par parent, 0 nuls ; public.ref_cible = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 59 par parent)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_cible",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_cible : 92 lignes ; mandat_id = 92 non nuls, 87 valeurs distinctes, max 3 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 3 par parent)"
+  },
+  {
+   "parent": "public.equipe",
+   "enfant": "public.mandat_equipe",
+   "colonne": "equipe_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_equipe : 705 lignes ; equipe_id = 705 non nuls, 677 valeurs distinctes, max 4 par parent, 0 nuls ; public.equipe = 766 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison — cote equipe : max 4 mandats par equipe, 23 equipes concernees"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_equipe",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_equipe : 705 lignes ; mandat_id = 705 non nuls, 468 valeurs distinctes, max 3 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison mandat_equipe(mandat_id, equipe_id) — N-N mesuree : max 3 equipes par mandat, max 4 mandats par equipe, 23 equipes rattachees a plus d'un mandat. La colonne equipe.mandat_id NE SUFFIT PAS : 70 liens sur 705 y sont absents ou contradictoires (39 ou equipe.mandat_id est nul, 31 ou il designe un autre mandat)."
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_note",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_note : 2008 lignes ; mandat_id = 2008 non nuls, 106 valeurs distinctes, max 227 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — 2008 lignes, 2008 en accord avec note.mandat_id, 0 desaccord, 0 ligne propre ; note.mandat_id en porte 2062, soit 54 de plus"
+  },
+  {
+   "parent": "public.note",
+   "enfant": "public.mandat_note",
+   "colonne": "note_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat_note : 2008 lignes ; note_id = 2008 non nuls, 2008 valeurs distinctes, max 1 par parent, 0 nuls ; public.note = 25728 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — note_id unique sur 2008 lignes"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_remote",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_remote : 430 lignes ; mandat_id = 430 non nuls, 419 valeurs distinctes, max 2 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 2 par parent)"
+  },
+  {
+   "parent": "public.ref_remote",
+   "enfant": "public.mandat_remote",
+   "colonne": "remote",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat_remote : 430 lignes ; remote = 430 non nuls, 7 valeurs distinctes, max 327 par parent, 0 nuls ; public.ref_remote = 4 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 327 par parent)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandat_tag_job",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.mandat_tag_job : 830 lignes ; mandat_id = 830 non nuls, 294 valeurs distinctes, max 4 par parent, 0 nuls ; public.mandat = 534 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 4 par parent)"
+  },
+  {
+   "parent": "public.ref_tag_job",
+   "enfant": "public.mandat_tag_job",
+   "colonne": "tag_job",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandat_tag_job : 830 lignes ; tag_job = 830 non nuls, 16 valeurs distinctes, max 152 par parent, 0 nuls ; public.ref_tag_job = 74 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison entite x referentiel (attribut multivalue) — conservee (max 152 par parent)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.mandatclose",
+   "colonne": "agent_2_filtre_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; agent_2_filtre_id = 14 non nuls, 5 valeurs distinctes, max 4 par parent, 213 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 4)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.mandatclose",
+   "colonne": "agent_filtre_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; agent_filtre_id = 224 non nuls, 23 valeurs distinctes, max 42 par parent, 3 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 42)"
+  },
+  {
+   "parent": "public.business_maker",
+   "enfant": "public.mandatclose",
+   "colonne": "business_maker_coo_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; business_maker_coo_id = 2 non nuls, 2 valeurs distinctes, max 1 par parent, 225 nuls ; public.business_maker = 20 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 1)"
+  },
+  {
+   "parent": "public.business_maker",
+   "enfant": "public.mandatclose",
+   "colonne": "business_maker_deal_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; business_maker_deal_id = 16 non nuls, 13 valeurs distinctes, max 3 par parent, 211 nuls ; public.business_maker = 20 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 3)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.mandatclose",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; candidat_id = 227 non nuls, 220 valeurs distinctes, max 2 par parent, 0 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 2)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.mandatclose",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; entreprise_id = 226 non nuls, 96 valeurs distinctes, max 26 par parent, 1 nul ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 26)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.mandatclose",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; mandat_id = 226 non nuls, 187 valeurs distinctes, max 13 par parent, 1 nul ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 13)"
+  },
+  {
+   "parent": "public.process",
+   "enfant": "public.mandatclose",
+   "colonne": "process_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; process_id = 226 non nuls, 224 valeurs distinctes, max 2 par parent, 1 nul ; public.process = 7243 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK mandatclose.process_id — quasi 1-1 (226 non nuls, 224 distincts, max 2) : 2 process portent 2 mandatclose. Contrainte d'unicite a NE PAS poser."
+  },
+  {
+   "parent": "public.mandate_closed_split",
+   "enfant": "public.mandatclose",
+   "colonne": "split_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose : 227 lignes ; split_id = 227 non nuls, 227 valeurs distinctes, max 1 par parent, 0 nuls ; public.mandate_closed_split = 266 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse qui n'en retient qu'un : mandate_closed_split.mandatclose_id va jusqu'a 5 splits pour un meme mandatclose. Le pointeur unique perd 39 lignes."
+  },
+  {
+   "parent": "public.mandatclose",
+   "enfant": "public.mandatclose_note",
+   "colonne": "mandatclose_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose_note : 1289 lignes ; mandatclose_id = 1289 non nuls, 177 valeurs distinctes, max 19 par parent, 0 nuls ; public.mandatclose = 227 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — 1289 lignes, 1289 en accord avec note.mandatclose_id, 0 desaccord, 0 ligne propre ; note.mandatclose_id en porte 1750, soit 461 de plus"
+  },
+  {
+   "parent": "public.note",
+   "enfant": "public.mandatclose_note",
+   "colonne": "note_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandatclose_note : 1289 lignes ; note_id = 1289 non nuls, 1289 valeurs distinctes, max 1 par parent, 0 nuls ; public.note = 25728 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — note_id unique sur 1289 lignes"
+  },
+  {
+   "parent": "public.mandatclose",
+   "enfant": "public.mandate_closed_split",
+   "colonne": "mandatclose_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.mandate_closed_split : 266 lignes ; mandatclose_id = 261 non nuls, 228 valeurs distinctes, max 5 par parent, 5 nuls ; public.mandatclose = 227 lignes ; 1 valeur orpheline / 1 lignes",
+   "devenir_dans_le_cible": "FK mandate_closed_split.mandatclose_id — 1-N reelle (max 5), a contraindre apres traitement de 1 valeur orpheline (1 ligne)"
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.note",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; candidat_id = 23419 non nuls, 3592 valeurs distinctes, max 85 par parent, 2309 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 85)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.note",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; entreprise_id = 2082 non nuls, 76 valeurs distinctes, max 256 par parent, 23646 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 256)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.note",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; mandat_id = 2062 non nuls, 107 valeurs distinctes, max 227 par parent, 23666 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 227)"
+  },
+  {
+   "parent": "public.mandatclose",
+   "enfant": "public.note",
+   "colonne": "mandatclose_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; mandatclose_id = 1750 non nuls, 179 valeurs distinctes, max 23 par parent, 23978 nuls ; public.mandatclose = 227 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 23)"
+  },
+  {
+   "parent": null,
+   "enfant": "public.note",
+   "colonne": "note_user_tag_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; note_user_tag_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 25728 nuls",
+   "devenir_dans_le_cible": "ABANDON — 0 valeur sur 25728 lignes"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.note",
+   "colonne": "user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note : 25728 lignes ; user_id = 25663 non nuls, 2103 valeurs distinctes, max 2664 par parent, 65 nuls ; public.user = 4605 lignes ; 2 valeurs orphelines / 21 lignes",
+   "devenir_dans_le_cible": "FK note.user_id -> user, 1-N (max 2664). 2 valeurs orphelines / 21 lignes a traiter avant contrainte."
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.note_archivee",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note_archivee : 25318 lignes ; candidat_id = 23106 non nuls, 3549 valeurs distinctes, max 114 par parent, 2212 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 114)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.note_archivee",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note_archivee : 25318 lignes ; entreprise_id = 1223 non nuls, 106 valeurs distinctes, max 116 par parent, 24095 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 116)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.note_archivee",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note_archivee : 25318 lignes ; mandat_id = 992 non nuls, 60 valeurs distinctes, max 95 par parent, 24326 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 95)"
+  },
+  {
+   "parent": null,
+   "enfant": "public.note_archivee",
+   "colonne": "mandatclose_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note_archivee : 25318 lignes ; mandatclose_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 25318 nuls",
+   "devenir_dans_le_cible": "ABANDON — 0 valeur sur 25318 lignes, alors que note.mandatclose_id en porte 1750. L'archivage perd ce rattachement : a signaler, pas a reconstituer."
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.note_archivee",
+   "colonne": "user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.note_archivee : 25318 lignes ; user_id = 24712 non nuls, 1958 valeurs distinctes, max 2784 par parent, 606 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK -> user, 1-N (max 2784), 0 orphelin"
+  },
+  {
+   "parent": "public.equipe",
+   "enfant": "public.nps_tracking",
+   "colonne": "bubble_contact_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.nps_tracking : 118 lignes ; bubble_contact_id = 118 non nuls, 101 valeurs distinctes, max 3 par parent, 0 nuls ; public.equipe = 766 lignes ; 13 valeurs orphelines / 16 lignes",
+   "devenir_dans_le_cible": "FK -> equipe impossible en l'etat : 102 lignes sur 118 pointent une equipe, 16 lignes (13 valeurs) ne pointent rien. Conserver en texte et exposer l'ecart."
+  },
+  {
+   "parent": "POLYMORPHE",
+   "enfant": "public.nps_tracking",
+   "colonne": "bubble_mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.nps_tracking : 118 lignes ; bubble_mandat_id = 118 non nuls, 74 valeurs distinctes, max 3 par parent, 0 nuls",
+   "devenir_dans_le_cible": "COLONNE POLYMORPHE — mesure : 69 lignes designent un mandatclose, 34 un mandat, 15 aucune table. Une seule FK est impossible. A scinder en deux colonnes (mandat_id, mandatclose_id) ou a typer explicitement."
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.process",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.process : 7243 lignes ; candidat_id = 7224 non nuls, 4172 valeurs distinctes, max 26 par parent, 19 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 26)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.process",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.process : 7243 lignes ; entreprise_id = 7223 non nuls, 209 valeurs distinctes, max 565 par parent, 20 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 565)"
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.process",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.process : 7243 lignes ; mandat_id = 7223 non nuls, 472 valeurs distinctes, max 240 par parent, 20 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 240)"
+  },
+  {
+   "parent": "public.mandatclose",
+   "enfant": "public.process_mandatclose",
+   "colonne": "mandatclose_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.process_mandatclose : 226 lignes ; mandatclose_id = 226 non nuls, 226 valeurs distinctes, max 1 par parent, 0 nuls ; public.mandatclose = 227 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — mandatclose_id unique sur 226 lignes"
+  },
+  {
+   "parent": "public.process",
+   "enfant": "public.process_mandatclose",
+   "colonne": "process_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.process_mandatclose : 226 lignes ; process_id = 226 non nuls, 224 valeurs distinctes, max 2 par parent, 0 nuls ; public.process = 7243 lignes",
+   "devenir_dans_le_cible": "DISPARAIT — duplicata de mandatclose.process_id (226 lignes de part et d'autre). Ce n'est pas un M2M : mandatclose_id est unique."
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.produit",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.produit : 103 lignes ; entreprise_id = 103 non nuls, 56 valeurs distinctes, max 12 par parent, 0 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK produit.entreprise_id — 1-N reelle (max 12 produits par entreprise)"
+  },
+  {
+   "parent": "public.ref_expertise",
+   "enfant": "public.ref_expertise_univers",
+   "colonne": "expertise_value",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_expertise_univers : 49 lignes ; expertise_value = 49 non nuls, 31 valeurs distinctes, max 8 par parent, 0 nuls ; public.ref_expertise = 31 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison referentielle N-N : max 8 univers par expertise, max 18 expertises par univers"
+  },
+  {
+   "parent": "public.ref_univers",
+   "enfant": "public.ref_expertise_univers",
+   "colonne": "univers_value",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_expertise_univers : 49 lignes ; univers_value = 49 non nuls, 8 valeurs distinctes, max 18 par parent, 0 nuls ; public.ref_univers = 8 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison referentielle N-N"
+  },
+  {
+   "parent": "public.ref_metier",
+   "enfant": "public.ref_metier_univers",
+   "colonne": "metier_value",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_metier_univers : 361 lignes ; metier_value = 361 non nuls, 237 valeurs distinctes, max 8 par parent, 0 nuls ; public.ref_metier = 238 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison referentielle N-N : max 8 univers par metier, max 106 metiers par univers"
+  },
+  {
+   "parent": "public.ref_univers",
+   "enfant": "public.ref_metier_univers",
+   "colonne": "univers_value",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_metier_univers : 361 lignes ; univers_value = 361 non nuls, 8 valeurs distinctes, max 106 par parent, 0 nuls ; public.ref_univers = 8 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison referentielle N-N"
+  },
+  {
+   "parent": "public.ref_note_event_type",
+   "enfant": "public.ref_note_event",
+   "colonne": "note_event_type",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_note_event : 24 lignes ; note_event_type = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 24 nuls ; public.ref_note_event_type = 5 lignes ; 0 valeur(s) orpheline(s)",
+   "devenir_dans_le_cible": "FK referentiel -> referentiel, deja contrainte — conservee comme colonne ; 0 valeur : a abandonner si elle reste vide"
+  },
+  {
+   "parent": "public.ref_role_category",
+   "enfant": "public.ref_role",
+   "colonne": "role_category",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_role : 5 lignes ; role_category = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 5 nuls ; public.ref_role_category = 1 lignes ; 0 valeur(s) orpheline(s)",
+   "devenir_dans_le_cible": "FK referentiel -> referentiel, deja contrainte — conservee comme colonne ; 0 valeur : a abandonner si elle reste vide"
+  },
+  {
+   "parent": "public.ref_task_anchor",
+   "enfant": "public.ref_task_type",
+   "colonne": "task_anchor",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_task_type : 12 lignes ; task_anchor = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 12 nuls ; public.ref_task_anchor = 3 lignes ; 0 valeur(s) orpheline(s)",
+   "devenir_dans_le_cible": "FK referentiel -> referentiel, deja contrainte — conservee comme colonne ; 0 valeur : a abandonner si elle reste vide"
+  },
+  {
+   "parent": "public.ref_task_event",
+   "enfant": "public.ref_task_type",
+   "colonne": "task_event",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": true,
+   "preuve": "public.ref_task_type : 12 lignes ; task_event = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 12 nuls ; public.ref_task_event = 2 lignes ; 0 valeur(s) orpheline(s)",
+   "devenir_dans_le_cible": "FK referentiel -> referentiel, deja contrainte — conservee comme colonne ; 0 valeur : a abandonner si elle reste vide"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.tag",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.tag : 110 lignes ; entreprise_id = 5 non nuls, 1 valeur distincte, max 5 par parent, 105 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK tag.entreprise_id, 1-N — mais 5 valeurs sur 110 tags. 89 tags ne sont rattaches ni a une entreprise ni a un mandat : a trier, pas a jeter."
+  },
+  {
+   "parent": "public.mandat",
+   "enfant": "public.tag",
+   "colonne": "mandat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.tag : 110 lignes ; mandat_id = 16 non nuls, 4 valeurs distinctes, max 7 par parent, 94 nuls ; public.mandat = 534 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK tag.mandat_id, 1-N (16 non nuls, 4 mandats, max 7)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.task",
+   "colonne": "assigned_user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task : 1136 lignes ; assigned_user_id = 1071 non nuls, 22 valeurs distinctes, max 372 par parent, 65 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 372)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.task",
+   "colonne": "creation_user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task : 1136 lignes ; creation_user_id = 1136 non nuls, 19 valeurs distinctes, max 187 par parent, 0 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 187)"
+  },
+  {
+   "parent": "public.mandatclose",
+   "enfant": "public.task",
+   "colonne": "mandatclose_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task : 1136 lignes ; mandatclose_id = 1099 non nuls, 192 valeurs distinctes, max 9 par parent, 37 nuls ; public.mandatclose = 227 lignes ; 1 valeur orpheline / 5 lignes",
+   "devenir_dans_le_cible": "FK task.mandatclose_id -> mandatclose, 1-N (max 9). 1 valeur orpheline / 5 lignes a traiter. C'est le SEUL rattachement de task : ni mandat, ni process, ni candidat, ni entreprise."
+  },
+  {
+   "parent": "public.task_notif",
+   "enfant": "public.task",
+   "colonne": "task_notif_id",
+   "cardinalite": "1-1 partiel",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task : 1136 lignes ; task_notif_id = 1130 non nuls, 1130 valeurs distinctes, max 1 par parent, 6 nuls ; public.task_notif = 1152 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "SUPPRIMER — pointeur inverse du couple task/task_notif, redondant (1130 contre 1136)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.task",
+   "colonne": "update_user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task : 1136 lignes ; update_user_id = 351 non nuls, 12 valeurs distinctes, max 192 par parent, 785 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 192)"
+  },
+  {
+   "parent": "public.task",
+   "enfant": "public.task_notif",
+   "colonne": "task_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task_notif : 1152 lignes ; task_id = 1136 non nuls, 1136 valeurs distinctes, max 1 par parent, 16 nuls ; public.task = 1136 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "DISPARAIT — replier task_notif dans task (bijection stricte 1136 = 1136 ; les 16 lignes a task_id nul sont a trier avant repli)"
+  },
+  {
+   "parent": null,
+   "enfant": "public.task_notif",
+   "colonne": "wf_id",
+   "cardinalite": "1-1",
+   "contrainte_fk_existante": false,
+   "preuve": "public.task_notif : 1152 lignes ; wf_id = 1124 non nuls, 1124 valeurs distinctes, max 1 par parent, 28 nuls",
+   "devenir_dans_le_cible": "colonne technique conservee dans task apres repli — identifiant de workflow planifie cote Bubble, ne designe aucune table du schema (1124 valeurs, toutes distinctes, aucune presente dans une table du schema)"
+  },
+  {
+   "parent": null,
+   "enfant": "public.user",
+   "colonne": "auth_id",
+   "cardinalite": "morte",
+   "contrainte_fk_existante": false,
+   "preuve": "public.user : 4605 lignes ; auth_id = 0 non nuls, 0 valeurs distinctes, max 0 par parent, 4605 nuls",
+   "devenir_dans_le_cible": "ABANDON dans le miroir — 0 valeur sur 4605 lignes. Le rattachement a auth.users doit vivre dans app.compte, pas ici."
+  },
+  {
+   "parent": "public.candidat",
+   "enfant": "public.user",
+   "colonne": "candidat_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.user : 4605 lignes ; candidat_id = 4158 non nuls, 4156 valeurs distinctes, max 2 par parent, 447 nuls ; public.candidat = 7028 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 2)"
+  },
+  {
+   "parent": "public.entreprise",
+   "enfant": "public.user",
+   "colonne": "entreprise_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.user : 4605 lignes ; entreprise_id = 344 non nuls, 155 valeurs distinctes, max 11 par parent, 4261 nuls ; public.entreprise = 850 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK sur l'enfant, 1-N — conservee comme colonne (max 11)"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.user_partner",
+   "colonne": "user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": false,
+   "preuve": "public.user_partner : 8 lignes ; user_id = 8 non nuls, 2 valeurs distinctes, max 7 par parent, 0 nuls ; public.user = 4605 lignes ; 0 valeur orpheline",
+   "devenir_dans_le_cible": "FK user_partner.user_id -> user, 1-N (8 lignes, 2 utilisateurs, max 7)"
+  },
+  {
+   "parent": "public.ref_role",
+   "enfant": "public.user_role",
+   "colonne": "role",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.user_role : 4601 lignes ; role = 4601 non nuls, 5 valeurs distinctes, max 4213 par parent, 0 nuls ; public.ref_role = 5 lignes",
+   "devenir_dans_le_cible": "cote referentiel : 5 roles, max 4213 porteurs"
+  },
+  {
+   "parent": "public.user",
+   "enfant": "public.user_role",
+   "colonne": "user_id",
+   "cardinalite": "1-N",
+   "contrainte_fk_existante": true,
+   "preuve": "public.user_role : 4601 lignes ; user_id = 4601 non nuls, 4598 valeurs distinctes, max 2 par parent, 0 nuls ; public.user = 4605 lignes",
+   "devenir_dans_le_cible": "VRAIE table de liaison user_role(user_id, role) — N-N, mais marginal : 4601 lignes pour 4598 utilisateurs distincts, max 2. Seuls 3 utilisateurs ont deux roles. Garder la table plutot que replier, l'unicite n'est pas garantie."
+  }
+ ],
+ "tables_a_replier": [
+  {
+   "table": "public.candidat_expanded",
+   "replier_dans": "public.candidat",
+   "cardinalite": "1-1 stricte",
+   "preuve": "7029 lignes ; candidat_id = 7028 non nuls, 7028 distincts, max 1 par candidat, 1 nul ; candidat = 7028 lignes ; 0 valeur orpheline ; 0 candidat non couvert (comparaison d'ensembles)",
+   "raison": "bijection avec candidat : ce n'est pas une table, c'est la suite des colonnes de candidat",
+   "a_traiter_avant": "1 ligne a candidat_id nul ; la colonne agent_id (1955 non nuls, 30 valeurs, toutes dans user) fait doublon avec candidat.agent_pachamama_id (605 non nuls, 16 valeurs)"
+  },
+  {
+   "table": "public.job_actuel",
+   "replier_dans": "public.candidat",
+   "cardinalite": "1-1 stricte",
+   "preuve": "7029 lignes ; candidat_id = 7028 non nuls, 7028 distincts, max 1, 1 nul ; 0 orphelin ; 0 candidat non couvert",
+   "raison": "bijection avec candidat",
+   "a_traiter_avant": "1 ligne a candidat_id nul ; entreprise_id n'est renseigne que 6 fois sur 7029 (l'employeur actuel n'est quasiment jamais relie a entreprise)"
+  },
+  {
+   "table": "public.job_reve",
+   "replier_dans": "public.candidat",
+   "cardinalite": "1-1 stricte",
+   "preuve": "7029 lignes ; candidat_id = 7028 non nuls, 7028 distincts, max 1, 1 nul ; 0 orphelin ; 0 candidat non couvert",
+   "raison": "bijection avec candidat",
+   "a_traiter_avant": "1 ligne a candidat_id nul ; ses 5 tables filles (job_reve_contrat/critere/remote/secteur/secteur_nogo, 24444 lignes au total) devront pointer candidat au lieu de job_reve"
+  },
+  {
+   "table": "public.experience",
+   "replier_dans": "public.candidat",
+   "cardinalite": "1-1 stricte",
+   "preuve": "7049 lignes ; candidat_id = 7028 non nuls, 7028 distincts, max 1, 21 nuls ; 0 orphelin ; 0 candidat non couvert",
+   "raison": "bijection avec candidat malgre le nom : ce n'est pas la liste des experiences d'un candidat, c'est un bloc de colonnes",
+   "a_traiter_avant": "21 lignes a candidat_id nul ; entreprise_id est vide sur les 7049 lignes ; ses 5 tables filles (experience_background/expertise/product/profile/secteur, 41611 lignes) devront pointer candidat"
+  },
+  {
+   "table": "public.task_notif",
+   "replier_dans": "public.task",
+   "cardinalite": "1-1 stricte",
+   "preuve": "1152 lignes ; task_id = 1136 non nuls, 1136 distincts, max 1, 16 nuls ; task = 1136 lignes ; 0 orphelin ; 0 task sans notif (comparaison d'ensembles)",
+   "raison": "bijection avec task ; le couple porte en plus deux pointeurs croises redondants (task.task_notif_id / task_notif.task_id)",
+   "a_traiter_avant": "16 lignes a task_id nul ; conserver wf_id (1124 valeurs distinctes, aucune presente dans une table du schema : identifiant de workflow Bubble)"
+  },
+  {
+   "table": "public.entreprise_remote",
+   "replier_dans": "public.entreprise",
+   "cardinalite": "1-1 partiel (58 / 850)",
+   "preuve": "58 lignes ; entreprise_id = 58 non nuls, 58 distincts, max 1 par entreprise, 0 nul ; entreprise = 850 lignes ; 0 orphelin ; remote = 5 valeurs distinctes",
+   "raison": "max 1 par entreprise : la table ne porte qu'UNE valeur, donc une colonne entreprise.remote et non un attribut multivalue. C'est la seule des 20 tables entite x referentiel qui soit monovaluee.",
+   "a_traiter_avant": "792 entreprises sur 850 n'ont pas de valeur : la colonne sera nulle, il faut l'acter"
+  },
+  {
+   "table": "public.candidat_note",
+   "replier_dans": "public.note (colonne note.candidat_id)",
+   "cardinalite": "table vide",
+   "preuve": "0 ligne, alors que note.candidat_id porte 23419 liens (3592 candidats, max 85 notes par candidat, 0 orphelin)",
+   "raison": "table de liaison jamais alimentee ; la relation vit entierement dans note.candidat_id",
+   "a_traiter_avant": "rien, aucune donnee"
+  },
+  {
+   "table": "public.candidat_jobtype",
+   "replier_dans": "(rien)",
+   "cardinalite": "table vide",
+   "preuve": "0 ligne",
+   "raison": "table de liaison jamais alimentee, et aucune table ref_jobtype n'existe pour en contraindre la valeur",
+   "a_traiter_avant": "rien, aucune donnee"
+  },
+  {
+   "table": "public.entreprise_note",
+   "replier_dans": "public.note (colonne note.entreprise_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "991 lignes ; note_id = 991 distincts sur 991 lignes (unique) ; entreprise_id = 52 distincts, max 116 ; comparaison ligne a ligne : 991 accords, 0 desaccord, 0 ligne presente dans la liaison seulement ; note.entreprise_id porte 2082 liens, soit 1091 notes que la liaison ignore",
+   "raison": "note_id unique => pas un M2M ; et la table est un sous-ensemble strict de note.entreprise_id",
+   "a_traiter_avant": "rien : suppression sans perte, verifiee"
+  },
+  {
+   "table": "public.mandat_note",
+   "replier_dans": "public.note (colonne note.mandat_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "2008 lignes ; note_id = 2008 distincts sur 2008 lignes (unique) ; mandat_id = 106 distincts, max 227 ; 2008 accords, 0 desaccord, 0 ligne propre ; note.mandat_id porte 2062 liens, soit 54 de plus",
+   "raison": "note_id unique => pas un M2M ; sous-ensemble strict de note.mandat_id",
+   "a_traiter_avant": "rien : suppression sans perte, verifiee"
+  },
+  {
+   "table": "public.mandatclose_note",
+   "replier_dans": "public.note (colonne note.mandatclose_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "1289 lignes ; note_id = 1289 distincts sur 1289 lignes (unique) ; mandatclose_id = 177 distincts, max 19 ; 1289 accords, 0 desaccord, 0 ligne propre ; note.mandatclose_id porte 1750 liens, soit 461 de plus",
+   "raison": "note_id unique => pas un M2M ; sous-ensemble strict de note.mandatclose_id",
+   "a_traiter_avant": "rien : suppression sans perte, verifiee"
+  },
+  {
+   "table": "public.mandat_analyse",
+   "replier_dans": "public.analyse (colonne analyse.mandat_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "481 lignes ; analyse_id = 481 distincts sur 481 lignes (unique) ; mandat_id = 79 distincts, max 9 ; 481 accords, 0 desaccord ; analyse.mandat_id porte exactement les memes 481 liens (0 analyse manquante)",
+   "raison": "duplicata exact de analyse.mandat_id ; la relation est 1-N mandat -> analyse (max 9)",
+   "a_traiter_avant": "rien : duplicata exact"
+  },
+  {
+   "table": "public.process_mandatclose",
+   "replier_dans": "public.mandatclose (colonne mandatclose.process_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "226 lignes ; mandatclose_id = 226 distincts sur 226 lignes (unique) ; process_id = 224 distincts, max 2 ; mandatclose.process_id porte les memes 226 liens (224 distincts, max 2, 0 orphelin)",
+   "raison": "mandatclose_id unique => pas un M2M ; duplicata de mandatclose.process_id",
+   "a_traiter_avant": "ne PAS poser d'unicite sur process_id : 2 process portent 2 mandatclose chacun"
+  },
+  {
+   "table": "public.entreprise_mandat",
+   "replier_dans": "public.mandat (colonne mandat.entreprise_id)",
+   "cardinalite": "table quasi vide",
+   "preuve": "1 seule ligne (en accord avec mandat.entreprise_id) alors que mandat.entreprise_id porte 533 liens (229 entreprises, max 25 mandats par entreprise, 0 orphelin)",
+   "raison": "table morte ; la relation entreprise -> mandat est 1-N et vit dans mandat.entreprise_id",
+   "a_traiter_avant": "rien"
+  },
+  {
+   "table": "public.entreprise_tag",
+   "replier_dans": "public.tag (colonne tag.entreprise_id)",
+   "cardinalite": "1-N deguisee en N-N",
+   "preuve": "5 lignes ; tag_id = 5 distincts sur 5 lignes (unique) ; entreprise_id = 1 seule valeur, max 5 ; 5 accords avec tag.entreprise_id, 0 ligne propre",
+   "raison": "tag_id unique => pas un M2M",
+   "a_traiter_avant": "89 des 110 tags ne sont rattaches ni a une entreprise (5) ni a un mandat (16) : a trier separement, ne pas jeter"
+  },
+  {
+   "table": "pivot.attentes",
+   "replier_dans": "pivot.talent",
+   "cardinalite": "1-1 partiel (5864 / 30977)",
+   "preuve": "5864 lignes ; talent_id = 5864 non nuls, 5864 distincts, max 1, 0 nul (talent_id est la cle primaire) ; pivot.talent = 30977 lignes",
+   "raison": "une ligne au plus par talent : bloc de colonnes, pas une table",
+   "a_traiter_avant": "le repli rend visible que 25113 talents n'ont pas d'attentes"
+  },
+  {
+   "table": "pivot.parcours",
+   "replier_dans": "pivot.talent",
+   "cardinalite": "1-1 partiel (26536 / 30977)",
+   "preuve": "26536 lignes ; talent_id = 26536 non nuls, 26536 distincts, max 1, 0 nul (cle primaire) ; pivot.talent = 30977 lignes",
+   "raison": "une ligne au plus par talent",
+   "a_traiter_avant": "4441 talents sans parcours"
+  },
+  {
+   "table": "pivot.qualification",
+   "replier_dans": "pivot.talent",
+   "cardinalite": "1-1 partiel (6627 / 30977)",
+   "preuve": "6627 lignes ; talent_id = 6627 non nuls, 6627 distincts, max 1, 0 nul (cle primaire) ; pivot.talent = 30977 lignes",
+   "raison": "une ligne au plus par talent ; c'est la seule source de senioritie",
+   "a_traiter_avant": "24350 talents sans qualification : le repli ne cree pas la donnee, il rend le trou visible"
+  }
+ ],
+ "vraies_relations": [
+  {
+   "relation": "public.candidat <-> public.tag",
+   "table_de_liaison": "public.candidat_tag",
+   "forme": "N-N",
+   "preuve": "86 lignes ; candidat_id = 41 distincts, max 5 tags par candidat ; tag_id = 49 distincts, max 9 candidats par tag ; les deux cotes sont >1, donc N-N reelle",
+   "action": "CONSERVER telle quelle, PK (candidat_id, tag_id) ; aucune colonne scalaire ne peut la remplacer (candidat ne porte aucune colonne tag)"
+  },
+  {
+   "relation": "public.mandat <-> public.equipe",
+   "table_de_liaison": "public.mandat_equipe",
+   "forme": "N-N",
+   "preuve": "705 lignes ; mandat_id = 468 distincts, max 3 equipes par mandat ; equipe_id = 677 distincts, max 4 mandats par equipe, 23 equipes rattachees a plus d'un mandat. La colonne equipe.mandat_id (644 non nuls, 426 distincts, 122 nuls) ne suffit pas : sur les 705 liens, 635 concordent et 70 sont perdus — 39 ou equipe.mandat_id est nul, 31 ou il designe un AUTRE mandat",
+   "action": "CONSERVER comme vraie table de liaison. C'est le seul repli qui detruirait de la donnee : ne pas remplacer par equipe.mandat_id. Reconcilier les 31 contradictions avant de contraindre."
+  },
+  {
+   "relation": "public.candidat <-> public.mandat",
+   "table_de_liaison": "public.candidat_mandat",
+   "forme": "N-N",
+   "preuve": "2603 lignes ; candidat_id = 1506 distincts, max 14 mandats par candidat ; mandat_id = 176 distincts, max 130 candidats par mandat. Recoupement avec process : 2596 des 2603 paires y figurent, 7 n'y figurent pas, et process en porte 4484 que candidat_mandat ignore (7080 paires au total)",
+   "action": "CONSERVER, mais ARBITRAGE : soit candidat_mandat devient une vue de process, a condition de reprendre les 7 paires absentes, soit elle reste une table distincte avec une semantique propre a ecrire. Ne pas supprimer sans traiter les 7."
+  },
+  {
+   "relation": "public.user <-> public.ref_role",
+   "table_de_liaison": "public.user_role",
+   "forme": "N-N marginale",
+   "preuve": "4601 lignes ; user_id = 4598 distincts, max 2, 3 lignes en trop ; role = 5 valeurs, max 4213 porteurs ; 0 orphelin cote user",
+   "action": "CONSERVER la table. Replier en colonne user.role ferait perdre un role a 3 utilisateurs. La forme N-N est justifiee par 3 lignes sur 4601 : c'est peu, mais ce n'est pas zero."
+  },
+  {
+   "relation": "public.ref_expertise <-> public.ref_univers",
+   "table_de_liaison": "public.ref_expertise_univers",
+   "forme": "N-N",
+   "preuve": "49 lignes ; expertise_value = 31 distincts, max 8 univers par expertise ; univers_value = 8 distincts, max 18 expertises par univers",
+   "action": "CONSERVER, N-N referentielle authentique, deja contrainte par 2 FK"
+  },
+  {
+   "relation": "public.ref_metier <-> public.ref_univers",
+   "table_de_liaison": "public.ref_metier_univers",
+   "forme": "N-N",
+   "preuve": "361 lignes ; metier_value = 237 distincts, max 8 univers par metier ; univers_value = 8 distincts, max 106 metiers par univers",
+   "action": "CONSERVER, N-N referentielle authentique, deja contrainte par 2 FK"
+  },
+  {
+   "relation": "public.candidat_contrat : candidat_id x contrat (public.ref_contrat)",
+   "table_de_liaison": "public.candidat_contrat",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "2460 lignes ; candidat_id = 2092 distincts, max 3 valeurs par parent ; contrat = 3 valeurs distinctes, max 1798 porteurs",
+   "action": "CONSERVER : max 3 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.candidat_expertise : candidat_id x expertise (public.ref_expertise)",
+   "table_de_liaison": "public.candidat_expertise",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "807 lignes ; candidat_id = 260 distincts, max 5 valeurs par parent ; expertise = 25 valeurs distinctes, max 106 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.candidat_profile : candidat_id x profile (public.ref_profile)",
+   "table_de_liaison": "public.candidat_profile",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "408 lignes ; candidat_id = 259 distincts, max 4 valeurs par parent ; profile = 4 valeurs distinctes, max 141 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.candidat_remote : candidat_id x remote (public.ref_remote)",
+   "table_de_liaison": "public.candidat_remote",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "1999 lignes ; candidat_id = 1404 distincts, max 4 valeurs par parent ; remote = 7 valeurs distinctes, max 1085 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.candidat_secteur : candidat_id x secteur (public.ref_secteur)",
+   "table_de_liaison": "public.candidat_secteur",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "747 lignes ; candidat_id = 254 distincts, max 5 valeurs par parent ; secteur = 46 valeurs distinctes, max 90 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.experience_background : experience_id x background (public.ref_background)",
+   "table_de_liaison": "public.experience_background",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "5218 lignes ; experience_id = 3373 distincts, max 4 valeurs par parent ; background = 4 valeurs distinctes, max 2223 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.experience_expertise : experience_id x expertise (public.ref_expertise)",
+   "table_de_liaison": "public.experience_expertise",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "9478 lignes ; experience_id = 3541 distincts, max 5 valeurs par parent ; expertise = 33 valeurs distinctes, max 742 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.experience_product : experience_id x product (public.ref_product)",
+   "table_de_liaison": "public.experience_product",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "11350 lignes ; experience_id = 3994 distincts, max 6 valeurs par parent ; product = 6 valeurs distinctes, max 3602 porteurs",
+   "action": "CONSERVER : max 6 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.experience_profile : experience_id x profile (public.ref_profile)",
+   "table_de_liaison": "public.experience_profile",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "5223 lignes ; experience_id = 3682 distincts, max 4 valeurs par parent ; profile = 4 valeurs distinctes, max 2450 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.experience_secteur : experience_id x secteur (public.ref_secteur)",
+   "table_de_liaison": "public.experience_secteur",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "10342 lignes ; experience_id = 3791 distincts, max 8 valeurs par parent ; secteur = 52 valeurs distinctes, max 1106 porteurs",
+   "action": "CONSERVER : max 8 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.job_reve_contrat : job_reve_id x contrat (public.ref_contrat)",
+   "table_de_liaison": "public.job_reve_contrat",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "6444 lignes ; job_reve_id = 5460 distincts, max 3 valeurs par parent ; contrat = 3 valeurs distinctes, max 4604 porteurs",
+   "action": "CONSERVER : max 3 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.job_reve_critere : job_reve_id x critere (public.ref_criteres)",
+   "table_de_liaison": "public.job_reve_critere",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "8882 lignes ; job_reve_id = 2651 distincts, max 5 valeurs par parent ; critere = 32 valeurs distinctes, max 879 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.job_reve_remote : job_reve_id x remote (public.ref_remote)",
+   "table_de_liaison": "public.job_reve_remote",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "4469 lignes ; job_reve_id = 3169 distincts, max 4 valeurs par parent ; remote = 4 valeurs distinctes, max 2764 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.job_reve_secteur : job_reve_id x secteur (public.ref_secteur)",
+   "table_de_liaison": "public.job_reve_secteur",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "2846 lignes ; job_reve_id = 861 distincts, max 5 valeurs par parent ; secteur = 50 valeurs distinctes, max 435 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.job_reve_secteur_nogo : job_reve_id x secteur (public.ref_secteur)",
+   "table_de_liaison": "public.job_reve_secteur_nogo",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "1803 lignes ; job_reve_id = 677 distincts, max 5 valeurs par parent ; secteur = 52 valeurs distinctes, max 313 porteurs",
+   "action": "CONSERVER : max 5 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.mandat_cible : mandat_id x cible (public.ref_cible)",
+   "table_de_liaison": "public.mandat_cible",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "92 lignes ; mandat_id = 87 distincts, max 3 valeurs par parent ; cible = 4 valeurs distinctes, max 59 porteurs",
+   "action": "CONSERVER : max 3 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.mandat_remote : mandat_id x remote (public.ref_remote)",
+   "table_de_liaison": "public.mandat_remote",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "430 lignes ; mandat_id = 419 distincts, max 2 valeurs par parent ; remote = 7 valeurs distinctes, max 327 porteurs",
+   "action": "CONSERVER : max 2 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.mandat_tag_job : mandat_id x tag_job (public.ref_tag_job)",
+   "table_de_liaison": "public.mandat_tag_job",
+   "forme": "N-N (attribut multivalue)",
+   "preuve": "830 lignes ; mandat_id = 294 distincts, max 4 valeurs par parent ; tag_job = 16 valeurs distinctes, max 152 porteurs",
+   "action": "CONSERVER : max 4 > 1, l'attribut est reellement multivalue et ne peut pas devenir une colonne"
+  },
+  {
+   "relation": "public.entreprise -> public.produit",
+   "table_de_liaison": "(aucune : colonne produit.entreprise_id)",
+   "forme": "1-N",
+   "preuve": "produit = 103 lignes ; entreprise_id = 56 distincts, max 12 produits par entreprise, 0 nul, 0 orphelin. Le pointeur inverse entreprise.produit_id n'en retient qu'un (56 non nuls, tous distincts, max 1) : il perd 47 produits sur 103",
+   "action": "garder produit.entreprise_id, SUPPRIMER entreprise.produit_id qui force a tort un 1-1"
+  },
+  {
+   "relation": "public.mandatclose -> public.mandate_closed_split",
+   "table_de_liaison": "(aucune : colonne mandate_closed_split.mandatclose_id)",
+   "forme": "1-N",
+   "preuve": "mandate_closed_split = 266 lignes ; mandatclose_id = 261 non nuls, 228 distincts, max 5 splits par mandatclose, 5 nuls, 1 valeur orpheline (1 ligne). Le pointeur inverse mandatclose.split_id est unique (227 non nuls, 227 distincts, max 1) : il ne peut pas representer 5 splits",
+   "action": "garder mandate_closed_split.mandatclose_id, SUPPRIMER mandatclose.split_id qui force a tort un 1-1"
+  },
+  {
+   "relation": "public.nps_tracking -> public.mandat ET public.mandatclose",
+   "table_de_liaison": "(colonne polymorphe bubble_mandat_id)",
+   "forme": "polymorphe, a scinder",
+   "preuve": "118 lignes ; bubble_mandat_id = 74 valeurs distinctes : 69 lignes designent un mandatclose, 34 un mandat, 15 aucune table du schema. bubble_contact_id : 102 lignes designent une equipe, 16 aucune table",
+   "action": "une seule FK est impossible. Scinder en deux colonnes typees (mandat_id, mandatclose_id) et isoler les 15 + 16 lignes sans cible."
+  }
+ ]
+}
