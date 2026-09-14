@@ -29,6 +29,18 @@ begin
     return;
   end if;
 
+  -- ⚠ ET LE GARDE SYMÉTRIQUE : UNE BASE SANS REPRISE.
+  -- Celui du dessus protège la PRODUCTION ; celui-ci protège le VIDE. Cette
+  -- migration pose des FIXTURES, pas du schéma : sur une base neuve — un
+  -- `supabase start`, la CI qui rejoue les 127 migrations pour détecter une
+  -- collision — elle n'a rien à poser, et doit le DIRE plutôt qu'échouer.
+  -- Sans ce garde, l'historique n'est pas rejouable, et le contrôle qui
+  -- attrape deux branches recréant la même vue ne peut pas exister.
+  if not exists (select 1 from core.entreprise limit 1) then
+    raise warning 'accès entreprise IGNORÉ : core.entreprise est vide — base sans reprise.';
+    return;
+  end if;
+
   select id into v_entreprise from core.entreprise
    where bubble_id = '1758517190985x882278528737869800';   -- « Pachamama »
   if v_entreprise is null then
