@@ -1,5 +1,5 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
 /**
  * LE RAFRAÎCHISSEMENT DE SESSION (proxy Next 16).
@@ -52,12 +52,35 @@ import { NextResponse, type NextRequest } from 'next/server';
  * Le nom du fichier n'est pas cosmétique.
  */
 export async function proxy(requete: NextRequest) {
+  // ⚠ LES DEUX GARDES CI-DESSOUS SONT LA LEÇON D'UNE PANNE DÉJÀ VÉCUE.
+  //
+  // Le dépôt porte le commit « fix(deploiement): retire le middleware, cause
+  // racine du 500 en production ». Ce fichier-ci a rouvert la même porte : il
+  // déréférençait les deux variables avec des assertions non nulles, et
+  // `createServerClient` lève quand elles sont absentes. Comme un proxy
+  // s'exécute sur CHAQUE requête, l'exception ne fait pas tomber une page —
+  // elle fait tomber le site entier.
+  //
+  // Mesuré le 14/09 sur la prévisualisation de `dev`, où aucune variable n'est
+  // posée : `/`, `/login`, `/offres` et `/design-system` rendaient tous 500,
+  // alors que les trois derniers sont précisément ceux qui doivent fonctionner
+  // sans la moindre configuration (DEPLOIEMENT.md).
+  //
+  // La forme juste était déjà écrite dans `lib/session-refresh/
+  // middleware.reference.ts`. Elle est reprise ici.
+
+  // 1. Environnement non configuré : il n'y a pas de session à renouveler.
+  //    Ce n'est pas une erreur — c'est l'état d'un aperçu monté avant que les
+  //    variables soient posées, et celui du déploiement public, qui ne porte
+  //    AUCUNE clé d'accès à une base de 30 829 personnes physiques.
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const cle = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !cle) return NextResponse.next({ request: requete });
+
   let reponse = NextResponse.next({ request: requete });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  try {
+    const supabase = createServerClient(url, cle, {
       cookies: {
         getAll: () => requete.cookies.getAll(),
         setAll: (aPoser) => {
@@ -72,12 +95,19 @@ export async function proxy(requete: NextRequest) {
           );
         },
       },
-    },
-  );
+    });
 
-  // L'appel qui renouvelle. Son résultat ne nous intéresse pas : une session
-  // absente est un cas normal — le job board public se sert sans compte.
-  await supabase.auth.getUser();
+    // L'appel qui renouvelle. Son résultat ne nous intéresse pas : une session
+    // absente est un cas normal — le job board public se sert sans compte.
+    await supabase.auth.getUser();
+  } catch (erreur) {
+    // 2. Le renouvellement a échoué — serveur d'authentification injoignable,
+    //    cookie corrompu, panne réseau. Ce n'est PAS une raison de refuser la
+    //    requête : la donnée reste protégée par la RLS quoi qu'il arrive ici,
+    //    et une page qui s'affiche déconnectée vaut mieux qu'un site éteint.
+    console.error("[proxy] renouvellement de session impossible :", erreur);
+    return NextResponse.next({ request: requete });
+  }
 
   return reponse;
 }
@@ -88,5 +118,7 @@ export const config = {
    * Next, les images, le favicon. Faire tourner un aller-retour d'authentification
    * pour une icône serait payer une latence pour rien.
    */
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|icon.svg|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?)$).*)'],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|icon.svg|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?)$).*)",
+  ],
 };

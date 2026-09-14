@@ -6,7 +6,7 @@ import { moiCourant } from "@/lib/acces";
 import { Squelette, SqueletteCarte } from "@/components/pacha/Squelette";
 import { PageJobs } from "@/components/vues/PageJobs";
 import { COLONNES_OFFRE, versOffre, type Offre } from "@/lib/domaine/offre";
-import { clientServeur } from "@/lib/supabase/serveur";
+import { clientServeur, environnementConfigure } from "@/lib/supabase/serveur";
 import { VERSION_DEPLOYEE } from "@/lib/config";
 
 export const metadata = {
@@ -157,6 +157,34 @@ function SqueletteBoard() {
 
 async function Board({ page }: { page: number }) {
   const debut = (page - 1) * PAR_PAGE;
+
+  // ⚠ SANS CONFIGURATION, UN ÉTAT LISIBLE — PAS UN SQUELETTE ÉTERNEL.
+  // `clientServeur()` lève quand les deux variables sont absentes, et
+  // l'exception remontait dans le `<Suspense>` de la page : elle rendait 200,
+  // affichait « Chargement des offres », et n'en sortait jamais. Mesuré le
+  // 14/09 sur la prévisualisation de `dev`, où aucune variable n'est posée.
+  // Un chargement qui ne finit pas est le pire des états : il n'informe
+  // personne et n'invite à rien.
+  //
+  // On rejoint la branche d'erreur déjà écrite plus bas plutôt que d'inventer
+  // un second écran : pour le visiteur, « pas de configuration » et « service
+  // muet » sont le même fait — les offres ne s'affichent pas.
+  if (!environnementConfigure()) {
+    console.warn("[/offres] environnement non configuré : aucune offre à lire.");
+    return (
+      <div className="mx-auto max-w-2xl p-8">
+        <h1 className="t-h2">Les offres sont momentanément indisponibles</h1>
+        <p className="t-body mt-2 text-[var(--encre-500)]">
+          Le service ne répond pas. Réessayez dans un instant, ou retrouvez nos
+          offres sur{" "}
+          <a className="underline" href={VERSION_DEPLOYEE}>
+            l’application Pachamama
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
 
   const supabase = await clientServeur();
 
