@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 /**
- * Carte — deux régimes, et la distinction est structurante.
+ * Carte — trois régimes, et la distinction est structurante.
  *
  * L'ombre rétro décalée est la signature de la marque. Posée sur chaque ligne
  * d'un tableau de 30 000 talents, elle rendrait l'écran illisible. Le design
@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
  *
  *   accroche  ce qui se REGARDE : carte d'offre, en-tête de fiche, mise en avant
  *   travail   ce qui se PARCOURT : lignes, panneaux, listes
+ *   contour   ce qui se LIT en pleine page : les blocs de la fiche d'offre,
+ *             filet noir de 2px et aucune ombre (voir la prop `regime`)
  *
  * Choisir « accroche » pour une ligne de tableau, ou « travail » pour une carte
  * d'offre, c'est perdre la marque dans un cas et la lisibilité dans l'autre.
@@ -36,7 +38,15 @@ export function Carte({
   children,
   ...reste
 }: {
-  regime?: 'accroche' | 'travail';
+  /**
+   * `contour` — filet noir de 2px et AUCUNE ombre. C'est le régime des blocs
+   * de la fiche d'offre, relevé sur les quatre : `border: 2px solid #000000`
+   * sans `box-shadow` (Job_board_détails.md — Job card, Job missions,
+   * Pachamama review, Recruitement process). `accroche` lui ressemble mais
+   * porte l'ombre rétro : l'employer ici ajoutait une ombre que le Figma
+   * n'a pas.
+   */
+  regime?: 'accroche' | 'travail' | 'contour';
   /** 8px par défaut ; 16px pour les surfaces vues par le talent. */
   rayon?: 'md' | 'lg';
   /** Ajoute l'ombre rétro -6px au survol et au focus clavier. */
@@ -47,9 +57,9 @@ export function Carte({
       className={cn(
         'bg-[var(--fond-carte)]',
         rayon === 'lg' ? 'rounded-[var(--r-lg)]' : 'rounded-[var(--r-md)]',
-        regime === 'accroche'
-          ? 'border-2 border-black shadow-[var(--ombre-3)]'
-          : 'border border-[var(--encre-100)]',
+        regime === 'accroche' && 'border-2 border-black shadow-[var(--ombre-3)]',
+        regime === 'contour' && 'border-2 border-black',
+        regime === 'travail' && 'border border-[var(--encre-100)]',
         // Figma.md:37208 — l'ombre du survol est à -6px, sans flou.
         survol &&
           'shadow-none transition-shadow duration-150 hover:shadow-[var(--ombre-6)] focus-within:shadow-[var(--ombre-6)]',

@@ -72,7 +72,7 @@ import { cn } from '@/lib/utils';
  * groupe sont littéraux.
  */
 
-export type VarianteMenu = 'noir' | 'blanc';
+export type VarianteMenu = 'noir' | 'blanc' | 'discret';
 
 type ThemeItem = { repos: string; survol: string; selectionne: string };
 
@@ -84,6 +84,23 @@ const themes: Record<VarianteMenu, ThemeItem> = {
     // Figma.md:35076 (fond #8657FF) + Figma.md:35113 (texte #371B7E) → 2,98:1,
     // échec AA. Le noir sur ce même fond donne 4,82:1 et passe. Écart assumé.
     selectionne: 'bg-[var(--violet-500)] text-black',
+  },
+  /**
+   * Thème « discret » : pour un index DANS une page, pas pour une destination.
+   *
+   * ⚠ POURQUOI UNE TROISIÈME VARIANTE PLUTÔT QUE RÉEMPLOYER « noir ».
+   * Les deux premières marquent la sélection en `--violet-500` plein, qui est
+   * la marque du portail courant dans la barre latérale. Une navigation par
+   * ancres — les sections de « Ma fiche » — vit À CÔTÉ de cette barre, à 190px :
+   * reprendre le violet plein posait deux « vous êtes ici » de même intensité
+   * sur le même écran, et l'œil ne savait plus lequel répondait à « où suis-je
+   * dans l'application ». Le violet pâle dit « où suis-je dans la page », ce qui
+   * est une autre question.
+   */
+  discret: {
+    repos: 'text-[var(--encre-600)]',
+    survol: 'hover:bg-[var(--violet-100)] hover:text-black',
+    selectionne: 'bg-[var(--violet-050)] text-black',
   },
   // Thème « blanc » : libellé blanc, à réserver à une surface sombre.
   blanc: {
@@ -112,27 +129,56 @@ const themes: Record<VarianteMenu, ThemeItem> = {
  * lui, l'état sélectionné n'existe qu'en couleur, ce que la règle « une
  * information critique n'est jamais portée par la seule couleur » interdit.
  */
+/**
+ * L'entrée de menu accepte un ÉMOJI ou une ICÔNE, jamais les deux.
+ *
+ * Le Figma dessine des émojis, et c'est resté le cas par défaut. Mais un
+ * appelant qui compose sa propre liste — le sélecteur de vue des écrans
+ * connectés — a besoin d'icônes Lucide : à cette taille les émojis rendent
+ * inégalement d'une plateforme à l'autre, et ils ne suivent pas la couleur du
+ * texte. Le type est une union fermée plutôt que deux props facultatives :
+ * une entrée sans aucun visuel, ou avec les deux, ne compile pas.
+ */
+/**
+ * Un émoji, une icône, ou RIEN — et le troisième cas est arrivé après les deux
+ * autres.
+ *
+ * La règle d'origine exigeait un visuel par entrée, ce qui vaut pour la barre
+ * latérale : cinq destinations qu'on reconnaît de loin, et une gouttière
+ * d'icônes qui aligne les libellés. Un index de sections dans une page n'a rien
+ * à reconnaître de loin — il tient dans le champ de lecture, ses libellés sont
+ * des phrases, et trois icônes inventées pour satisfaire un type y ajouteraient
+ * du bruit sans rien nommer. La gouttière disparaît avec le visuel.
+ */
+type VisuelElementMenu =
+  | { emoji: string; icone?: never }
+  | { icone: React.ReactNode; emoji?: never }
+  | { emoji?: never; icone?: never };
+
 export function ElementMenu({
   emoji,
+  icone,
   libelle,
   href,
   actif,
   desactive,
   variante = 'noir',
 }: {
-  emoji: string;
   libelle: string;
   href: string;
   actif?: boolean;
   desactive?: boolean;
   variante?: VarianteMenu;
-}) {
+} & VisuelElementMenu) {
   const theme = themes[variante];
+  const visuel = icone ?? emoji;
   const contenu = (
     <>
-      <span aria-hidden="true" className="t-body-bold">
-        {emoji}
-      </span>
+      {visuel !== undefined && (
+        <span aria-hidden="true" className="t-body-bold flex w-5 shrink-0 justify-center">
+          {visuel}
+        </span>
+      )}
       <span className="t-body-hl truncate">{libelle}</span>
     </>
   );
@@ -173,7 +219,10 @@ export function Menu({
 }: {
   sections: {
     titre?: string;
-    entrees: { emoji: string; libelle: string; href: string; desactive?: boolean }[];
+    // Élargi au même `VisuelElementMenu` que `ElementMenu` : une entrée porte
+    // un émoji OU une icône, jamais les deux, jamais aucun. Ajout purement
+    // additif — le rendu ne change pas, `{...e}` transmettait déjà `icone`.
+    entrees: ({ libelle: string; href: string; desactive?: boolean } & VisuelElementMenu)[];
   }[];
   cheminActif?: string;
   /** `admin` = groupes titrés (Figma.md:33606) ; `talent` = liste plate (Figma.md:34252). */

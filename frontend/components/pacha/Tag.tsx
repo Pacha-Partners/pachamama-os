@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
+// Réexportés pour ne rien casser chez les appelants : ces valeurs vivent
+// désormais HORS de la frontière client/serveur — voir l'en-tête d'univers.ts.
+import { fondsUnivers, libellesUnivers, type Univers } from "./univers";
+
+export { fondsUnivers, libellesUnivers, type Univers };
 
 /**
  * Les tags — quatre familles, quatre cotes DIFFÉRENTES, et c'est le point.
@@ -56,10 +61,10 @@ function BoutonRetirer({
       onClick={onClick}
       aria-label={`Retirer ${libelle}`}
       className={cn(
-        'relative grid size-3 shrink-0 place-items-center',
+        "relative grid size-3 shrink-0 place-items-center",
         // Cible tactile élargie sans toucher au flux : le tag garde sa cote.
         "after:absolute after:-inset-1.5 after:content-['']",
-        attenue ? 'text-[var(--encre-300)]' : 'text-black',
+        attenue ? "text-[var(--encre-300)]" : "text-black",
       )}
     >
       <X className="size-3" strokeWidth={2.5} aria-hidden="true" />
@@ -68,39 +73,6 @@ function BoutonRetirer({
 }
 
 /* ─────────────────────────────────  Univers  ───────────────────────────────── */
-
-export type Univers = 'people' | 'product' | 'tech' | 'sales';
-
-/**
- * Le fond porte la verticale, le texte reste noir. Les quatre teintes du Figma,
- * relevées une par une — et deux d'entre elles ne tombent pas exactement sur un
- * jeton de marque :
- *
- *   Product #FFD2C2 = --product-200            exact      Figma.md:58136
- *   Tech    #E9E0FF = --violet-100             exact      Figma.md:58218
- *   People  #FFFBF0 = aucun jeton de verticale (= --fond-entete)  Figma.md:58299
- *   Sales   #CCF5E6 ≈ --revenue-200 (#CAF5E5), 2 unités d'écart   Figma.md:58381
- *
- * Le cas Tech mérite un mot : le Figma prend le violet d'INTERFACE, pas le
- * --tech-200 de la marque (#DED1FF). Les deux teintes sont proches mais
- * distinctes. Le Figma gouvernant l'interface, je pose --violet-100 — en notant
- * que c'est le seul tag de verticale peint avec la rampe interactive.
- *
- * Contraste : toutes ces teintes sont claires, le texte noir y passe AAA.
- */
-const fondsUnivers: Record<Univers, string> = {
-  product: 'bg-[var(--product-200)]',
-  tech: 'bg-[var(--violet-100)]',
-  people: 'bg-[#fffbf0]', // sans jeton — consigné dans docs/ds-jetons-manquants-lot3.md
-  sales: 'bg-[#ccf5e6]', // sans jeton exact — idem
-};
-
-const libellesUnivers: Record<Univers, string> = {
-  product: 'Product',
-  tech: 'Tech',
-  people: 'People',
-  sales: 'Sales',
-};
 
 /**
  * TagUnivers. À noter : dans le Figma, les quatre variantes portent le MÊME
@@ -124,10 +96,10 @@ export function TagUnivers({
     <span
       className={cn(
         // Figma.md:58130 — padding 4px 8px, gap 4px, height 27px
-        'inline-flex h-[var(--h-tag)] items-center gap-1 px-2 py-1',
-        'rounded-[var(--r-md)] border border-black shadow-[var(--ombre-1)]',
-        't-body-hl text-black', // Body/Highlight, 14px/500 — Figma.md:58156
-        'whitespace-nowrap',
+        "inline-flex h-[var(--h-tag)] items-center gap-1 px-2 py-1",
+        "rounded-[var(--r-md)] border border-black shadow-[var(--ombre-1)]",
+        "t-body-hl text-black", // Body/Highlight, 14px/500 — Figma.md:58156
+        "whitespace-nowrap",
         fondsUnivers[univers],
         className,
       )}
@@ -149,17 +121,17 @@ export function TagUnivers({
  * une teinte par contrat — interdit. Les valeurs hors Figma sont donc rendues
  * en NEUTRE : fond blanc, bordure noire, pas d'emoji, libellé tel quel.
  */
-export type Contrat = 'cdi' | 'freelance' | (string & {});
+export type Contrat = "cdi" | "freelance" | (string & {});
 
 /** L'emoji fait partie du vocabulaire de marque, et il est décoratif. */
 const emojisContrat: Record<string, string> = {
-  cdi: '🤝', // Figma.md:47099
-  freelance: '⚡', // Figma.md:47456
+  cdi: "🤝", // Figma.md:47099
+  freelance: "⚡", // Figma.md:47456
 };
 
 const libellesContrat: Record<string, string> = {
-  cdi: 'CDI', // Figma.md:47120
-  freelance: 'Freelance', // Figma.md:47477
+  cdi: "CDI", // Figma.md:47120
+  freelance: "Freelance", // Figma.md:47477
 };
 
 /**
@@ -182,8 +154,8 @@ const libellesContrat: Record<string, string> = {
  * global d'app.css.
  */
 const fondsFocus: Record<string, string> = {
-  cdi: 'bg-[#ffe8e0]', // sans jeton exact — consigné
-  freelance: 'bg-[var(--violet-100)]',
+  cdi: "bg-[#ffe8e0]", // sans jeton exact — consigné
+  freelance: "bg-[var(--violet-100)]",
 };
 
 export function TagContrat({
@@ -214,23 +186,25 @@ export function TagContrat({
     <span
       className={cn(
         // Figma.md:47064 — padding 3px 7px, gap 4px, height 22px, rayon 8px
-        'inline-flex h-[22px] items-center gap-1 px-[7px] py-[3px]',
-        'rounded-[var(--r-md)] border',
-        't-caption-hl whitespace-nowrap', // Caption/Highlight 12px/500 — Figma.md:47128
+        "inline-flex h-[22px] items-center gap-1 px-[7px] py-[3px]",
+        "rounded-[var(--r-md)] border",
+        "t-caption-hl whitespace-nowrap", // Caption/Highlight 12px/500 — Figma.md:47128
         efface
           ? // Light mode=True : bordure, ombre, texte ET croix en #A8B1BD.
             // L'ombre grise a son jeton : --ombre-1-grise. Figma.md:47309-47310
-            'border-[var(--encre-300)] bg-white text-[var(--encre-300)] shadow-[var(--ombre-1-grise)]'
-          : 'border-black text-black shadow-[var(--ombre-1)]', // Figma.md:47071-47072
+            "border-[var(--encre-300)] bg-white text-[var(--encre-300)] shadow-[var(--ombre-1-grise)]"
+          : "border-black text-black shadow-[var(--ombre-1)]", // Figma.md:47071-47072
         // Le fond : blanc au repos, teinté au focus. Un contrat inconnu du
         // Figma reste blanc même en focus — on n'invente pas sa teinte.
-        !efface && (focus ? (fondsFocus[cle] ?? 'bg-white') : 'bg-white'),
+        !efface && (focus ? (fondsFocus[cle] ?? "bg-white") : "bg-white"),
         className,
       )}
     >
       {connu && emoji && <span aria-hidden="true">{emoji}</span>}
       {libelle}
-      {onRetirer && <BoutonRetirer onClick={onRetirer} libelle={libelle} attenue={efface} />}
+      {onRetirer && (
+        <BoutonRetirer onClick={onRetirer} libelle={libelle} attenue={efface} />
+      )}
     </span>
   );
 }
@@ -252,13 +226,13 @@ export function TagContrat({
  */
 export function TagInfo({
   emoji,
-  regime = 'travail',
+  regime = "travail",
   children,
   className,
 }: {
   emoji?: string;
   /** `travail` = ombre -2px (le composant nommé) · `accroche` = -3px (les cartes). */
-  regime?: 'travail' | 'accroche';
+  regime?: "travail" | "accroche";
   children: React.ReactNode;
   className?: string;
 }) {
@@ -266,11 +240,13 @@ export function TagInfo({
     <span
       className={cn(
         // Figma.md:58068 — padding 8px, gap 8px, height 35px
-        'inline-flex h-[var(--h-statut)] items-center gap-2 px-2',
-        'rounded-[var(--r-md)] border border-black bg-white',
-        regime === 'accroche' ? 'shadow-[var(--ombre-3)]' : 'shadow-[var(--ombre-2)]',
-        't-body text-black', // Body/Regular 14px/400 — Figma.md:58090
-        'whitespace-nowrap',
+        "inline-flex h-[var(--h-statut)] items-center gap-2 px-2",
+        "rounded-[var(--r-md)] border border-black bg-white",
+        regime === "accroche"
+          ? "shadow-[var(--ombre-3)]"
+          : "shadow-[var(--ombre-2)]",
+        "t-body text-black", // Body/Regular 14px/400 — Figma.md:58090
+        "whitespace-nowrap",
         className,
       )}
     >
@@ -309,7 +285,7 @@ export function TagAction({
   className,
   children,
   ...reste
-}: React.ComponentProps<'button'> & {
+}: React.ComponentProps<"button"> & {
   /** `State=Selected` du Figma. */
   actif?: boolean;
   /**
@@ -318,25 +294,25 @@ export function TagAction({
    * `faible` et `moyen` retombent sur Default — le niveau intermédiaire était
    * le survol, qui n'est pas un état persistant.
    */
-  appui?: 'faible' | 'moyen' | 'fort';
+  appui?: "faible" | "moyen" | "fort";
 }) {
-  const selectionne = actif ?? appui === 'fort';
+  const selectionne = actif ?? appui === "fort";
   return (
     <button
       type="button"
       aria-pressed={selectionne}
       className={cn(
         // Figma.md:18610 — padding 8px, gap 8px, height 35px, rayon 8px
-        'inline-flex h-[var(--h-statut)] items-center gap-2 rounded-[var(--r-md)] px-2',
-        't-body whitespace-nowrap', // Body/Regular 14px — Figma.md:18634
-        'transition-colors duration-150',
+        "inline-flex h-[var(--h-statut)] items-center gap-2 rounded-[var(--r-md)] px-2",
+        "t-body whitespace-nowrap", // Body/Regular 14px — Figma.md:18634
+        "transition-colors duration-150",
         selectionne
-          ? 'bg-[var(--violet-900)] text-white'
+          ? "bg-[var(--violet-900)] text-white"
           : cn(
-              'bg-[var(--violet-050)] text-black',
+              "bg-[var(--violet-050)] text-black",
               // L'ombre douce du survol n'est pas une ombre rétro : c'est de
               // l'élévation, et app.css autorise le flou dans ce seul cas.
-              'hover:bg-[var(--violet-200)] hover:shadow-[var(--ombre-douce)]',
+              "hover:bg-[var(--violet-200)] hover:shadow-[var(--ombre-douce)]",
             ),
         className,
       )}
