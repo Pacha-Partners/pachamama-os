@@ -1,0 +1,72 @@
+# ════════════════════════════════════════════════════════════════════════
+# LA MISE EN LIGNE — migrations sur le projet LIVE, puis la version.
+#
+# ⚠ LE SEUL ENDROIT DU DÉPÔT QUI TOUCHE LA PRODUCTION. 30 829 personnes
+# physiques sont derrière ce projet Supabase.
+#
+# ⚠ L'ORDRE COMPTE : le schéma AVANT le code. C'est le motif expand/contract.
+# Une migration doit être rétrocompatible avec le code ENCORE en ligne, parce
+# qu'entre les deux il s'écoule le temps du déploiement. On ajoute ici, on ne
+# retire jamais dans la même livraison — le retrait vient une version plus
+# tard, quand plus aucun code ne lit l'ancienne forme.
+#
+# ⚠ ET LE SCHÉMA NE REVIENT PAS EN ARRIÈRE. Le code se rétablit en un clic sur
+# le déploiement précédent ; une colonne créée reste créée. C'est la raison
+# pour laquelle une migration ne part jamais dans un correctif d'urgence.
+# ════════════════════════════════════════════════════════════════════════
+name: Mise en ligne
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  migrations:
+    name: Migrations → projet LIVE
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with: { version: latest }
+      - run: supabase link --project-ref "$PROJET"
+        env:
+          PROJET: ${{ secrets.SUPABASE_PROJECT_REF_LIVE }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
+      # On LIT d'abord ce qui va s'appliquer. Le journal du job garde la trace
+      # de ce qui a touché la production, et c'est la seule trace qu'on aura.
+      - run: supabase db push --dry-run
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
+      # Sans `--include-all` : voir dev.yml. Le garde reste armé.
+      - run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
+
+  version:
+    name: La version, calculée depuis les commits
+    needs: migrations
+    runs-on: ubuntu-latest
+    steps:
+      # `release-please` lit les commits conventionnels depuis le dernier tag,
+      # calcule le numéro (fix → correctif, feat → mineure, ! → majeure),
+      # rédige le CHANGELOG et ouvre une PULL REQUEST. Rien n'est publié sans
+      # qu'un humain l'ait relue — c'est ce qui le distingue de semantic-release.
+      #
+      # Pour imposer un numéro : un commit vide portant
+      #     Release-As: 2.0.0
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

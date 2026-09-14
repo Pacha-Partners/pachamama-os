@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "simple",
+  "include-component-in-tag": false,
+  "packages": {
+    ".": {
+      "package-name": "pachamama-os",
+      "changelog-path": "CHANGELOG.md"
+    }
+  },
+  "changelog-sections": [
+    { "type": "feat",    "section": "Ce qui est nouveau" },
+    { "type": "fix",     "section": "Ce qui est corrigé" },
+    { "type": "perf",    "section": "Ce qui est plus rapide" },
+    { "type": "outils",  "section": "Outillage" },
+    { "type": "docs",    "section": "Documentation", "hidden": true },
+    { "type": "chore",   "section": "Entretien", "hidden": true },
+    { "type": "test",    "section": "Tests", "hidden": true },
+    { "type": "refactor","section": "Remaniements", "hidden": true }
+  ]
+}

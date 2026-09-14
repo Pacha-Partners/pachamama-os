@@ -1,0 +1,80 @@
+# ════════════════════════════════════════════════════════════════════════
+# LE CONTRÔLE D'ENTRÉE — il tourne sur TOUTE pull request, sans un secret.
+#
+# ⚠ AUCUN SECRET N'EST EXPOSÉ ICI, ET C'EST LA RAISON DE LA COUPURE EN DEUX.
+# Ce dépôt est public. Les 270 tests unitaires, le typage, le lint et le
+# build ne touchent aucune base : ils peuvent donc tourner sur n'importe
+# quelle proposition de modification. Les harnais j1…j4, eux, exigent un
+# vrai projet Supabase et de vrais comptes — ils vivent dans `dev.yml`,
+# après fusion, là où les secrets du dépôt sont accessibles.
+#
+# ⚠ ON N'APPELLE PAS `npm run verifier` À LA RACINE. Ce script commence par
+# `npm run cible`, qui lit `env/projets.env` — ignoré par git, donc absent
+# en CI. On appelle les scripts granulaires.
+# ════════════════════════════════════════════════════════════════════════
+name: Contrôle
+
+on:
+  pull_request:
+    branches: [dev, recette, main]
+  push:
+    branches-ignore: [dev, recette, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  front:
+    name: Typage, lint, tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npx tsc --noEmit
+        working-directory: frontend
+      - run: npx eslint .
+        working-directory: frontend
+      - run: npx vitest run
+        working-directory: frontend
+      # Le build est le seul contrôle qui attrape une erreur de rendu serveur
+      # — un composant client importé depuis un Server Component, par exemple.
+      # Sans clé Supabase : `lib/session.ts` traite un environnement vide
+      # comme un visiteur non identifié, donc la compilation aboutit.
+      - run: npx next build
+        working-directory: frontend
+
+  migrations:
+    name: Les migrations rejouent sur une base vierge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # `supabase start` applique les 127 migrations dans l'ordre sur une base
+      # NEUVE. C'est le seul contrôle qui attrape une collision de schéma que
+      # git fusionne proprement — deux branches recréant la même vue, par
+      # exemple : le dépôt en compte déjà cinq sur `api.mandat_client`.
+      - run: supabase start
+      - run: supabase db lint --level warning
+
+  secrets:
+    name: Aucun secret dans le diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # La protection au push de GitHub couvre ~69 formats de jetons connus.
+      # gitleaks couvre le reste — dont les formats propres au projet. Le dépôt
+      # est PUBLIC : une fuite y est définitive, un `force-push` ne dépublie rien.
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
