@@ -1,5 +1,35 @@
 # Déployer le modèle de données en production
 
+> ## ✅ ÉTAPE 1 FAITE — le schéma est en production (14/09/2026)
+>
+> **18 migrations appliquées**, de `20260828093000_schema_ref` à
+> `20260908180000_correspondances_manquantes`. L'historique du live passe de
+> **2 à 20** migrations.
+>
+> ```
+> schémas ajoutés : app  config  core  ref
+> tables          : core=35  ref=17  config=8  app=6   (toutes VIDES)
+> référentiels    : ref.metier 255 · ref.etape_process 14
+> ```
+>
+> **Arrêt délibéré juste avant `reprise_socle`.** Aucune de ces 18 migrations ne
+> lit le miroir ni ne peuple `core` : la production a la structure, la reprise
+> des données reste entière. Lancer plus loin aurait échoué à la 23ᵉ (§4) et
+> laissé `core` à moitié peuplé — et le schéma ne revient pas en arrière.
+>
+> **Contrôles après coup :**
+> - miroir `public` intact — 107 tables, 7 224 candidats ;
+> - `avant_garde` et `avant_garde_dev` intacts — 14 + 14 tables ;
+> - RLS sur `public` : 107/107, **identique au dev, donc antérieure** — la
+>   migration `rls_ferme_par_defaut` ne nomme que `app`, `config`, `core`, `ref` ;
+> - **n8n tourne normalement** : `_sync_state` montre un passage il y a 4 s,
+>   22 lignes de suivi, **0 en erreur**, aucun message d'erreur. Ses cycles sont
+>   décennaux (10 min), d'où des fenêtres de mesure vides qui n'ont rien
+>   d'anormal.
+>
+> **Reste à faire : §4 (les deux fiches), puis la reprise d'un seul tenant.**
+
+
 **Mesuré et répété le 14/09/2026.** Ce document remplace l'idée d'une
 « réconciliation » : il n'y a rien à réconcilier, il y a un **premier
 déploiement** à conduire.
