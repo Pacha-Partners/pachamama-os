@@ -13,6 +13,26 @@ import { cookies } from 'next/headers';
  * On utilise la clé publique, jamais la clé de service : cette dernière
  * contourne la RLS et n'a rien à faire dans un chemin qui sert un utilisateur.
  */
+/**
+ * L'environnement porte-t-il de quoi joindre Supabase ?
+ *
+ * ⚠ CE PRÉDICAT EXISTE PARCE QUE `clientServeur()` MENT. Elle déréférence les
+ * deux variables avec des assertions non nulles ; sans elles,
+ * `createServerClient` LÈVE. Or « pas de configuration » n'est pas une erreur
+ * dans ce projet : c'est l'état d'un aperçu monté avant que les variables
+ * soient posées, et celui du déploiement public — qui ne porte volontairement
+ * AUCUNE clé d'accès à une base de 30 829 personnes physiques (DEPLOIEMENT.md).
+ *
+ * Les lectures PRIVÉES n'en ont pas besoin : `moiCourant()` teste déjà
+ * l'environnement et rend `null`, ce qui renvoie sur `/login`. Ce sont les
+ * pages PUBLIQUES qui lisent la base — le job board — qui doivent s'en servir.
+ */
+export function environnementConfigure(): boolean {
+  return Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  );
+}
+
 export async function clientServeur() {
   const magasin = await cookies();
   return createServerClient(

@@ -1,0 +1,135 @@
+# ════════════════════════════════════════════════════════════════════════
+# LA MISE EN LIGNE — migrations sur le projet LIVE, puis la version.
+#
+# ⚠ LE SEUL ENDROIT DU DÉPÔT QUI TOUCHE LA PRODUCTION. 30 829 personnes
+# physiques sont derrière ce projet Supabase.
+#
+# ⚠ L'ORDRE COMPTE : le schéma AVANT le code. C'est le motif expand/contract.
+# Une migration doit être rétrocompatible avec le code ENCORE en ligne, parce
+# qu'entre les deux il s'écoule le temps du déploiement. On ajoute ici, on ne
+# retire jamais dans la même livraison — le retrait vient une version plus
+# tard, quand plus aucun code ne lit l'ancienne forme.
+#
+# ⚠ ET LE SCHÉMA NE REVIENT PAS EN ARRIÈRE. Le code se rétablit en un clic sur
+# le déploiement précédent ; une colonne créée reste créée. C'est la raison
+# pour laquelle une migration ne part jamais dans un correctif d'urgence.
+# ════════════════════════════════════════════════════════════════════════
+name: Mise en ligne
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: main
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  migrations:
+    name: Migrations → projet LIVE
+    runs-on: ubuntu-latest
+    # ⚠ DEUXIÈME SERRURE, ET ELLE EST D'UN AUTRE ORDRE QUE LA PREMIÈRE.
+    # Le garde du nombre, plus bas, est un contrôle AUTOMATIQUE : il attrape un
+    # historique désaccordé. Celui-ci est un contrôle HUMAIN : l'environnement
+    # `base-de-production` exige une approbation explicite avant que ce job ne
+    # démarre. Le job attend, GitHub notifie, et rien ne touche les 30 829
+    # personnes physiques tant que quelqu'un n'a pas cliqué.
+    #
+    # Les deux sont nécessaires et ne se remplacent pas : une automatisation
+    # peut se tromper sur ce qu'elle mesure, un humain peut approuver sans lire.
+    # Ensemble, il faut les deux erreurs pour que ça passe.
+    environment: base-de-production
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with: { version: latest }
+      # ⚠ UN ÉCHEC QUI SE LIT. Sans ce garde, un secret absent produit une
+      # erreur du CLI Supabase sur `link` — illisible, et qui envoie chercher
+      # la panne du mauvais côté. Voir CONTRIBUTING.md §6.
+      - name: Les secrets attendus sont-ils posés ?
+        run: |
+          manque=""
+          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_LIVE; do
+            [ -z "${!v:-}" ] && manque="$manque $v"
+          done
+          if [ -n "$manque" ]; then
+            echo "::error::Secrets absents :$manque"
+            echo "Les poser avec : bash outils/secrets_ci.sh  (voir CONTRIBUTING.md §6)"
+            exit 1
+          fi
+          echo "Tous les secrets attendus sont présents."
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF_LIVE: ${{ secrets.SUPABASE_PROJECT_REF_LIVE }}
+      - run: supabase link --project-ref "$PROJET"
+        env:
+          PROJET: ${{ secrets.SUPABASE_PROJECT_REF_LIVE }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      # ⚠⚠ LE GARDE DU NOMBRE. MESURÉ LE 14/09, ET IL AURAIT ÉVITÉ UN DÉSASTRE.
+      #
+      # `supabase migration list` sur le projet LIVE rend **2** migrations
+      # connues, la dernière datant du 26/08. Le dépôt en compte **127**. Un
+      # `db push` vers la production aurait donc tenté d'en appliquer 125 —
+      # dont toute la reprise Bubble (`reprise_socle`, `reprise_contacts`,
+      # `reprise_fiche_talent`…), l'amorçage, les comptes de test et les
+      # fixtures — sur une base de 30 829 personnes physiques.
+      #
+      # La cause : la production n'a JAMAIS été construite par ces migrations.
+      # Elle vient de la reprise, exécutée autrement. Son historique
+      # `supabase_migrations.schema_migrations` ne reflète pas son schéma réel.
+      # Tant que ce n'est pas réconcilié — `supabase migration repair
+      # --status applied <version>` pour chacune de celles qui sont DÉJÀ dans
+      # son schéma — aucune poussée automatique ne doit l'atteindre.
+      #
+      # Une livraison normale porte zéro à quelques migrations. Au-delà du
+      # seuil, ce n'est pas une livraison : c'est un historique désaccordé, et
+      # ça demande un humain.
+      - name: Combien de migrations toucheraient la PRODUCTION ?
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SEUIL: ${{ vars.SEUIL_MIGRATIONS_LIVE || 20 }}
+        run: |
+          supabase db push --dry-run --output json > /tmp/simulation.json 2>&1 || true
+          cat /tmp/simulation.json
+          # `jq` est préinstallé sur les runners Ubuntu. On isole l'objet JSON
+          # du reste (le CLI y mêle ses avis de mise à jour) et on compte.
+          n=$(grep -o '{"upToDate".*}' /tmp/simulation.json | tail -1 | jq '.migrations | length' 2>/dev/null || echo -1)
+          echo "::notice::$n migration(s) seraient appliquées à la production."
+          if [ "$n" = "-1" ] || [ -z "$n" ]; then
+            echo "::error::Simulation illisible — on ne pousse pas à l'aveugle."
+            exit 1
+          fi
+          if [ "$n" -gt "$SEUIL" ]; then
+            echo "::error::$n migrations pour une seule livraison, au-delà du seuil de $SEUIL."
+            echo "Ce n'est pas une livraison : c'est un historique désaccordé."
+            echo "Réconcilier d'abord — supabase migration repair --status applied <version> —"
+            echo "puis relancer. Voir CONTRIBUTING.md section 4."
+            exit 1
+          fi
+
+      # Sans `--include-all` : voir dev.yml. Le garde reste armé.
+      - run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+  version:
+    name: La version, calculée depuis les commits
+    needs: migrations
+    runs-on: ubuntu-latest
+    steps:
+      # `release-please` lit les commits conventionnels depuis le dernier tag,
+      # calcule le numéro (fix → correctif, feat → mineure, ! → majeure),
+      # rédige le CHANGELOG et ouvre une PULL REQUEST. Rien n'est publié sans
+      # qu'un humain l'ait relue — c'est ce qui le distingue de semantic-release.
+      #
+      # Pour imposer un numéro : un commit vide portant
+      #     Release-As: 2.0.0
+      - uses: googleapis/release-please-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json

@@ -1,0 +1,5508 @@
+{
+ "colonnes": [
+  {
+   "table": "_fk_backup",
+   "nom": "id",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "constraint_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "table_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "column_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "ref_table",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "ref_column",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "on_delete",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_fk_backup",
+   "nom": "on_update",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "sauvegarde des contraintes FK supprimées pendant la migration ; aucune donnée métier"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "id",
+   "type": "bigint",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "type_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "supa_table",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "bubble_id",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "nature",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "classement",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "detail",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "premiere_passe",
+   "type": "bigint",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "derniere_passe",
+   "type": "bigint",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "premier_constat",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "dernier_constat",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "constats_consecutifs",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "constats_cumules",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_ecart",
+   "nom": "resolu_le",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des écarts miroir/Bubble (fantômes, manquantes, périmées) ; outillage de réconciliation"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "id",
+   "type": "bigint",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "debut",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "fin",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "types_demandes",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "types_analyses",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "complete",
+   "type": "boolean",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_passe",
+   "nom": "incidents",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "journal des passes de vérification de la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "id",
+   "type": "bigint",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "type_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "bubble_id",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "modified_date",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "motif",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_quarantine",
+   "nom": "detecte_le",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "mise en quarantaine des records refusés par la sync"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "type_name",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "supa_table",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "last_modified",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "watermark = max(Modified Date) déjà synchronisé ; c'est le NOW() au seed qui a causé la perte de 383 records (cf. CAUSE_RACINE_SYNC)"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "last_cursor",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "last_run_at",
+   "type": "timestamptz",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "last_run_status",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "items_synced",
+   "type": "integer",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "_sync_state",
+   "nom": "error_message",
+   "type": "text",
+   "nature": "TECHNIQUE",
+   "entite": "technique",
+   "commentaire": "état et watermark de la sync par type Bubble"
+  },
+  {
+   "table": "analyse",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 501"
+  },
+  {
+   "table": "analyse",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "corps de l'analyse de mandat"
+  },
+  {
+   "table": "analyse",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ public.mandat.id (pas de FK en base)"
+  },
+  {
+   "table": "analyse",
+   "nom": "niveau",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_niveau_analyse (pas de FK en base)"
+  },
+  {
+   "table": "analyse",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "analyse",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "analyse",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "analyse",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "business_maker",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 18"
+  },
+  {
+   "table": "business_maker",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ public.candidat.id : le business maker est un candidat portant une seconde casquette"
+  },
+  {
+   "table": "business_maker",
+   "nom": "prenom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "personne physique (apporteur d'affaires)"
+  },
+  {
+   "table": "business_maker",
+   "nom": "nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "personne physique"
+  },
+  {
+   "table": "business_maker",
+   "nom": "email",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "adresse nominative"
+  },
+  {
+   "table": "business_maker",
+   "nom": "company_label",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "raison sociale de l'apporteur, très souvent « Prénom Nom EI » : identifiante"
+  },
+  {
+   "table": "business_maker",
+   "nom": "picture_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "photo de visage"
+  },
+  {
+   "table": "business_maker",
+   "nom": "siret",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "identifiant d'organisation ; sur une EI il remonte à la personne"
+  },
+  {
+   "table": "business_maker",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "business_maker",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "business_maker",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "business_maker",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "candidat",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 333 au 05/05 ; 6 783 au 16/07"
+  },
+  {
+   "table": "candidat",
+   "nom": "nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "99,2 % (Bubble cand_lastname)"
+  },
+  {
+   "table": "candidat",
+   "nom": "prenom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "99,3 % (cand_firstname)"
+  },
+  {
+   "table": "candidat",
+   "nom": "prenom_lower",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "99,3 % — copie minuscule pour la recherche Bubble, dérivée : à abandonner"
+  },
+  {
+   "table": "candidat",
+   "nom": "nom_lower",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "99,2 % — copie minuscule pour la recherche Bubble, dérivée : à abandonner"
+  },
+  {
+   "table": "candidat",
+   "nom": "email_perso",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "95,3 % — clé de rapprochement pivot « e: »+email non générique"
+  },
+  {
+   "table": "candidat",
+   "nom": "linkedin",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "80,4 % — clé de rapprochement pivot « s: »+slug LinkedIn"
+  },
+  {
+   "table": "candidat",
+   "nom": "telephone",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "55,9 % (num_tel)"
+  },
+  {
+   "table": "candidat",
+   "nom": "photo_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "49,1 % — fourni aussi par le socle Jarvi"
+  },
+  {
+   "table": "candidat",
+   "nom": "cv_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "55,0 % — le PDF pointé porte l'intégralité du dossier réel"
+  },
+  {
+   "table": "candidat",
+   "nom": "portfolio_file_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "2,3 % (Portoflio_file) — spécifique Pacha mais rare : arbitrage v0"
+  },
+  {
+   "table": "candidat",
+   "nom": "genre",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "78,9 % — valeur de ref_gender ; donnée sensible, arbitrage RGPD"
+  },
+  {
+   "table": "candidat",
+   "nom": "niveau_anglais",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "43,9 % — valeur de ref_niveau_anglais"
+  },
+  {
+   "table": "candidat",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "84,1 % — valeur de ref_univers, cœur de la qualification Pacha"
+  },
+  {
+   "table": "candidat",
+   "nom": "opento",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "drapeau d'ouverture au marché ; absent de l'inventaire du 16/07, taux non mesuré"
+  },
+  {
+   "table": "candidat",
+   "nom": "metier_actuel",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "33,1 % — dénormalisation de recherche Bubble (« filtre »), redondant avec job_actuel.metier"
+  },
+  {
+   "table": "candidat",
+   "nom": "statut",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "49,3 % (_del_Statut, ex. « ✅ Qualifié ») — champ marqué _del_ / legacy côté Bubble"
+  },
+  {
+   "table": "candidat",
+   "nom": "mindset",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "33,5 % (_del_Mindset) — champ marqué _del_ / legacy côté Bubble, contenu à verser au journal de notes"
+  },
+  {
+   "table": "candidat",
+   "nom": "emoji_statut",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "3,9 % (_del_Emoji_Statut) — legacy décoratif"
+  },
+  {
+   "table": "candidat",
+   "nom": "contrat_actuel",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "11,8 % (_del_Contrat_actuel) — legacy ; perte assumée, ni job_actuel ni Jarvi ne portent le contrat du poste courant"
+  },
+  {
+   "table": "candidat",
+   "nom": "salaire_max_souhait",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "23,2 % — dénormalisation « filtre », redondant avec job_reve ; harmonisé en K€ le 01/07"
+  },
+  {
+   "table": "candidat",
+   "nom": "salaire_min_souhait",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "25,6 % — dénormalisation « filtre », redondant avec job_reve ; harmonisé en K€ le 01/07"
+  },
+  {
+   "table": "candidat",
+   "nom": "tjm_max_souhait",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "5,0 % — dénormalisation « filtre », redondant avec job_reve.tjm_maximum (TJM hors harmonisation K€)"
+  },
+  {
+   "table": "candidat",
+   "nom": "tjm_min_souhait",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "5,3 % — dénormalisation « filtre », redondant avec job_reve.tjm_minimum"
+  },
+  {
+   "table": "candidat",
+   "nom": "est_qualifie",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "64,6 % (Qualifié_niveau_1) — drapeau de qualification Pacha"
+  },
+  {
+   "table": "candidat",
+   "nom": "localisations",
+   "type": "jsonb",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "82,7 % — JSON brut [{lat,lng,address}] : NE PAS utiliser, il fabrique des milliers de faux conflits (3 574 faux patchs constatés)"
+  },
+  {
+   "table": "candidat",
+   "nom": "localisations_filtre",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "82,7 % (address_list_text) — c'est CETTE colonne que l'app lit et que le pivot doit lire"
+  },
+  {
+   "table": "candidat",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "49,4 % — → public.experience.id (1-1, pas de FK en base)"
+  },
+  {
+   "table": "candidat",
+   "nom": "job_actuel_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "49,4 % — → public.job_actuel.id (1-1)"
+  },
+  {
+   "table": "candidat",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "49,4 % — → public.job_reve.id (1-1)"
+  },
+  {
+   "table": "candidat",
+   "nom": "business_maker_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "0,2 % (candidate_bus_maker) — quasi vide : porter et réalimenter, ou écarter en v0 ?"
+  },
+  {
+   "table": "candidat",
+   "nom": "ajout_par_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "26,2 % (Ajouté_par) — → user, méta app"
+  },
+  {
+   "table": "candidat",
+   "nom": "agent_pachamama_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "8,9 % (_del_Agent_Pachamama) — → user, legacy"
+  },
+  {
+   "table": "candidat",
+   "nom": "early_stage",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "8,0 % (_del_Early_Stage, « yes ») — legacy, catégorisation calculable à la requête"
+  },
+  {
+   "table": "candidat",
+   "nom": "grandes_ecoles",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "7,7 % (_del_Grandes_Ecoles, « yes ») — legacy, calculable à la requête"
+  },
+  {
+   "table": "candidat",
+   "nom": "pachamama_like",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "11,7 % (_del_pachamama_like) — texte riche Bubble décoratif, à verser au journal de notes"
+  },
+  {
+   "table": "candidat",
+   "nom": "pachamama_personnalite",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "10,9 % (_del_pachamama_personnalité) — appréciation libre, à verser au journal de notes"
+  },
+  {
+   "table": "candidat",
+   "nom": "note_interne",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "4,5 % (_del_Note_interne) — texte libre, à verser au journal de notes"
+  },
+  {
+   "table": "candidat",
+   "nom": "portfolio",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "4,2 % (_del_portfolio) — URL de site personnel, doublon de portfolio_file_url"
+  },
+  {
+   "table": "candidat",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "candidat",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "candidat",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "candidat",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "candidat_contrat",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK, ON DELETE CASCADE)"
+  },
+  {
+   "table": "candidat_contrat",
+   "nom": "contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "30,8 % des candidats (_del_Contrats_souhaités « filtre ») — valeur de ref_contrat, AUCUNE FK en base ; redondant avec job_reve_contrat"
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 334"
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (1-1). table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "agent_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ user.id (agent Pachamama en charge). table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "is_complete",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "drapeau de complétude de la fiche. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "valeur de ref_contrat — doublon de candidat.contrat_actuel. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "ecole",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "nom d'établissement : quasi-identifiant fort — doublon de candidat.grandes_ecoles. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "emoji",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "valeur de ref_emoji — doublon de candidat.emoji_statut. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "mindset",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "valeur de ref_mindset — doublon de candidat.mindset. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "perso",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "texte libre sur la vie personnelle — doublon de candidat.pachamama_personnalite. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "portfolio",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "URL personnelle — doublon de candidat.portfolio. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "stage",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "appétence early stage — doublon de candidat.early_stage. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "statut",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "valeur de ref_statut_candidat — doublon de candidat.statut. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "note_1",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "note libre d'agent — à verser au journal de notes. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "note_2",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "note libre d'agent — à verser au journal de notes. table satellite « expanded » (6 334 lignes = 1 par candidat) : elle reprend les champs marqués _del_ dans candidat. Hypothèse à confirmer : c'est ici que ces champs vivent, candidat.* étant le legacy. Taux non mesuré, absente de l'inventaire du 16/07."
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "candidat_expanded",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "candidat_expertise",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_expertise",
+   "nom": "expertise",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "3,8 % (🔴Expertises « filtre ») — FK vers ref_expertise ; redondant avec experience_expertise"
+  },
+  {
+   "table": "candidat_jobtype",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_jobtype",
+   "nom": "jobtype",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "aucune table de référence « jobtype » dans le schéma et aucune FK : valeurs orphelines, origine Bubble non identifiée, taux non mesuré"
+  },
+  {
+   "table": "candidat_mandat",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_mandat",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandat.id (FK) — 22,2 % des candidats (🔴Jobs) ; c'est la candidature réduite à un lien"
+  },
+  {
+   "table": "candidat_note",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_note",
+   "nom": "note_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ note.id (FK) — 93,8 % des notes portent un candidat"
+  },
+  {
+   "table": "candidat_profile",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_profile",
+   "nom": "profile",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "3,8 % (🔴Profile « filtre ») — FK vers ref_profile ; redondant avec experience_profile"
+  },
+  {
+   "table": "candidat_remote",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_remote",
+   "nom": "remote",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "20,7 % (_old_Remotes) — valeur de ref_remote, AUCUNE FK en base ; redondant avec job_reve_remote"
+  },
+  {
+   "table": "candidat_secteur",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_secteur",
+   "nom": "secteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "3,7 % (🔴Secteurs « filtre ») — FK vers ref_secteur ; redondant avec job_reve_secteur"
+  },
+  {
+   "table": "candidat_tag",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id (FK)"
+  },
+  {
+   "table": "candidat_tag",
+   "nom": "tag_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ tag.id (FK) — 0,6 % des candidats portent un tag"
+  },
+  {
+   "table": "email_template",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 4"
+  },
+  {
+   "table": "email_template",
+   "nom": "label",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "nom du gabarit d'email (4 lignes) — paramétrage applicatif"
+  },
+  {
+   "table": "email_template",
+   "nom": "subject",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "objet du gabarit ; les noms y sont des jetons de fusion"
+  },
+  {
+   "table": "email_template",
+   "nom": "body",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "corps du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "is_agent_firstname",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "drapeau de personnalisation du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "is_agent_lastname",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "drapeau de personnalisation du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "is_company_name",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "drapeau de personnalisation du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "is_firstname",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "drapeau de personnalisation du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "is_custom",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "référentiel",
+   "commentaire": "drapeau de personnalisation du gabarit"
+  },
+  {
+   "table": "email_template",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "email_template",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "email_template",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "email_template",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "entreprise",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "entreprise",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 827 (828 côté Bubble, delta 1)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "raison sociale — identifie l'organisation ; publiée sur le Job Board. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "présentation publique de l'entreprise"
+  },
+  {
+   "table": "entreprise",
+   "nom": "fondateur",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "nom d'une personne physique"
+  },
+  {
+   "table": "entreprise",
+   "nom": "serie",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "série de levée de fonds (donnée publique)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "site_internet",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "URL publique — c'est la clé de dédoublonnage des entreprises ; les fiches recruteurs sans site fabriquent les doublons (303 dormantes restantes)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "siret",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "identifiant d'organisation, donnée de facturation"
+  },
+  {
+   "table": "entreprise",
+   "nom": "video",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "vidéo de marque publique"
+  },
+  {
+   "table": "entreprise",
+   "nom": "note",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "note interne libre sur le client"
+  },
+  {
+   "table": "entreprise",
+   "nom": "email_facturation",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "adresse nominative de contact facturation"
+  },
+  {
+   "table": "entreprise",
+   "nom": "nom_structure_facturation",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "raison sociale de facturation"
+  },
+  {
+   "table": "entreprise",
+   "nom": "exclu_details",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "clause contractuelle d'exclusivité"
+  },
+  {
+   "table": "entreprise",
+   "nom": "logo_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "logo public de l'organisation"
+  },
+  {
+   "table": "entreprise",
+   "nom": "localisation",
+   "type": "jsonb",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "JSON du siège (donnée publique, pas une adresse de personne)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "nb_employes",
+   "type": "integer",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "effectif"
+  },
+  {
+   "table": "entreprise",
+   "nom": "nb_techs",
+   "type": "integer",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "effectif tech"
+  },
+  {
+   "table": "entreprise",
+   "nom": "success_fee_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "condition commerciale (%)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "success_fee_abs",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "condition commerciale (montant absolu)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "success_fee_is_absolute",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "drapeau de calcul : le fee est-il absolu ou en %"
+  },
+  {
+   "table": "entreprise",
+   "nom": "apport_affaires",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "drapeau commercial d'apport d'affaires"
+  },
+  {
+   "table": "entreprise",
+   "nom": "apport_affaires_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "condition commerciale (%)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "exclu",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "drapeau contractuel d'exclusivité"
+  },
+  {
+   "table": "entreprise",
+   "nom": "duree_exclusivite_semaines",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "condition contractuelle"
+  },
+  {
+   "table": "entreprise",
+   "nom": "nb_mois_garantie",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "condition contractuelle"
+  },
+  {
+   "table": "entreprise",
+   "nom": "date_signature_contrat",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "jalon contractuel"
+  },
+  {
+   "table": "entreprise",
+   "nom": "date_fin_contrat",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "jalon contractuel"
+  },
+  {
+   "table": "entreprise",
+   "nom": "secteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_secteur (pas de FK)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "product_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_product_type (pas de FK)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "type_entreprise",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_company_type (pas de FK)"
+  },
+  {
+   "table": "entreprise",
+   "nom": "statut",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "statut commercial du client"
+  },
+  {
+   "table": "entreprise",
+   "nom": "statut_contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_contract_status"
+  },
+  {
+   "table": "entreprise",
+   "nom": "formule",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_formule"
+  },
+  {
+   "table": "entreprise",
+   "nom": "agence",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "agence rattachée ; aucune table de référence ni FK"
+  },
+  {
+   "table": "entreprise",
+   "nom": "niveau_anglais",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_niveau_anglais : exigence du client"
+  },
+  {
+   "table": "entreprise",
+   "nom": "recommandation",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "entreprise",
+   "commentaire": "champ libre portant le plus souvent le nom de la personne qui a recommandé le client"
+  },
+  {
+   "table": "entreprise",
+   "nom": "garantie",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "CHECK en base : « Remplacement » | « Remboursement »"
+  },
+  {
+   "table": "entreprise",
+   "nom": "paiement",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "CHECK en base : « Sign date » | « Start date »"
+  },
+  {
+   "table": "entreprise",
+   "nom": "agent_en_charge_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ user.id"
+  },
+  {
+   "table": "entreprise",
+   "nom": "produit_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ produit.id"
+  },
+  {
+   "table": "entreprise",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "entreprise",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "entreprise",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "entreprise",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "entreprise",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "entreprise",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "entreprise",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "entreprise",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "entreprise_mandat",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ entreprise.id (FK) : le client du mandat"
+  },
+  {
+   "table": "entreprise_mandat",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK) ; doublon de mandat.entreprise_id"
+  },
+  {
+   "table": "entreprise_note",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ entreprise.id (FK)"
+  },
+  {
+   "table": "entreprise_note",
+   "nom": "note_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ note.id (FK) — 7,1 % des notes portent une entreprise"
+  },
+  {
+   "table": "entreprise_remote",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ entreprise.id (FK)"
+  },
+  {
+   "table": "entreprise_remote",
+   "nom": "remote",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "entreprise",
+   "commentaire": "valeur de ref_remote, AUCUNE FK en base. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "entreprise_tag",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ entreprise.id (FK)"
+  },
+  {
+   "table": "entreprise_tag",
+   "nom": "tag_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ tag.id (FK)"
+  },
+  {
+   "table": "equipe",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "contact_client",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 650"
+  },
+  {
+   "table": "equipe",
+   "nom": "nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "650 contacts client : personnes physiques"
+  },
+  {
+   "table": "equipe",
+   "nom": "prenom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "personne physique"
+  },
+  {
+   "table": "equipe",
+   "nom": "email",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "adresse professionnelle nominative"
+  },
+  {
+   "table": "equipe",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "contact_client",
+   "commentaire": "texte libre sur le contact"
+  },
+  {
+   "table": "equipe",
+   "nom": "photo_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "visage"
+  },
+  {
+   "table": "equipe",
+   "nom": "contact_principal",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "contact_client",
+   "commentaire": "drapeau : contact principal du mandat"
+  },
+  {
+   "table": "equipe",
+   "nom": "metier",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "contact_client",
+   "commentaire": "valeur de ref_metier"
+  },
+  {
+   "table": "equipe",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "contact_client",
+   "commentaire": "valeur de ref_univers"
+  },
+  {
+   "table": "equipe",
+   "nom": "type_equipe",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "contact_client",
+   "commentaire": "CHECK en base : « Manager » | « Recruteur » — rôle sur le mandat"
+  },
+  {
+   "table": "equipe",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "contact_client",
+   "commentaire": "→ mandat.id : le contact est rattaché au mandat, pas à l'entreprise (anomalie de modèle)"
+  },
+  {
+   "table": "equipe",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "contact_client",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "equipe",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "contact_client",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "equipe",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "contact_client",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "equipe",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "contact_client",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "experience",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 354"
+  },
+  {
+   "table": "experience",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "99,7 % — → candidat.id (1-1)"
+  },
+  {
+   "table": "experience",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "seule référence de la table côté Bubble non encore mappée : le champ `actuel`, mesuré à 0,0 % le 16/07 (« champ mort »). Mapping déduit, à confirmer avant de l'abandonner"
+  },
+  {
+   "table": "experience",
+   "nom": "xp_pro",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "62,6 % — date de début de vie professionnelle = séniorité, qualification Pacha"
+  },
+  {
+   "table": "experience",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "experience",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "experience",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "experience",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "experience_background",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ experience.id, AUCUNE FK en base. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_background",
+   "nom": "background",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "49,6 % côté Bubble (Background) — FK vers ref_background. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_expertise",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ experience.id, AUCUNE FK en base. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_expertise",
+   "nom": "expertise",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "49,7 % côté Bubble (Expertises) — AUCUNE FK vers ref_expertise. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_product",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ experience.id, AUCUNE FK en base. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_product",
+   "nom": "product",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "55,9 % côté Bubble (Product) — FK vers ref_product. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_profile",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ experience.id, AUCUNE FK en base. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_profile",
+   "nom": "profile",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "51,2 % côté Bubble (Profile) — FK vers ref_profile. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_secteur",
+   "nom": "experience_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ experience.id, AUCUNE FK en base. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "experience_secteur",
+   "nom": "secteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "53,1 % côté Bubble (Secteur_Expertise) — FK vers ref_secteur. tables satellites présentes au schéma mais NON alimentées par la sync (constat du 21/08/2026) : la qualification app est appauvrie tant qu'elles ne sont pas resynchronisées"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 334"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "entreprise_nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "53,8 % (🟢 Entreprise) — employeur actuel saisi en texte libre : quasi-identifiant du candidat, pas une fiche client"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "100 % — → candidat.id (1-1)"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "MORTE",
+   "entite": "candidat",
+   "commentaire": "1,4 % (🔴 Entreprise) — référence quasi vide, doublon de entreprise_nom : abandon"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "metier",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "84,0 % — valeur de ref_metier (taxonomie Pacha)"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "74,1 % — valeur de ref_univers"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "pourquoi",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "40,1 % (Raison de quitter le job) — motivation de départ, spécifique Pacha"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "job_actuel",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "job_reve",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 334"
+  },
+  {
+   "table": "job_reve",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "100 % — → candidat.id (1-1) ; c'est la table des attentes"
+  },
+  {
+   "table": "job_reve",
+   "nom": "metier",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "62,6 % — valeur de ref_metier : métier visé"
+  },
+  {
+   "table": "job_reve",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "62,5 % — valeur de ref_univers : univers visé"
+  },
+  {
+   "table": "job_reve",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "35,2 % — attentes en texte libre"
+  },
+  {
+   "table": "job_reve",
+   "nom": "disponibilite",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "32,8 % — disponibilité saisie en texte (« 1er janvier »)"
+  },
+  {
+   "table": "job_reve",
+   "nom": "info_localisation",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "13,6 % — texte libre redondant avec localisations : abandon recommandé"
+  },
+  {
+   "table": "job_reve",
+   "nom": "infos_salaire",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "20,8 % (Infos rémunération) — contexte de rémunération en texte"
+  },
+  {
+   "table": "job_reve",
+   "nom": "salaire",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "salaire attendu, harmonisé en K€ le 01/07. ATTENTION : côté Bubble le couple est « Salaire minimum » (60,9 %) / « Salaire souhaité » (51,0 %) ; les fichiers cités n'établissent pas laquelle des deux colonnes du miroir porte laquelle"
+  },
+  {
+   "table": "job_reve",
+   "nom": "salaire_maximum",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "salaire attendu, harmonisé en K€ le 01/07. ATTENTION : côté Bubble le couple est « Salaire minimum » (60,9 %) / « Salaire souhaité » (51,0 %) ; les fichiers cités n'établissent pas laquelle des deux colonnes du miroir porte laquelle"
+  },
+  {
+   "table": "job_reve",
+   "nom": "tjm_minimum",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "16,2 % (TJM minimum) — euros/jour, hors harmonisation K€"
+  },
+  {
+   "table": "job_reve",
+   "nom": "tjm_maximum",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "15,5 % (TJM souhaité) — euros/jour, hors harmonisation K€"
+  },
+  {
+   "table": "job_reve",
+   "nom": "localisations",
+   "type": "jsonb",
+   "nature": "METIER",
+   "entite": "candidat",
+   "commentaire": "78,8 % — JSON des localisations cibles"
+  },
+  {
+   "table": "job_reve",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "job_reve",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "job_reve",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "job_reve",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "job_reve_contrat",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ job_reve.id (FK)"
+  },
+  {
+   "table": "job_reve_contrat",
+   "nom": "contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "78,3 % — valeur de ref_contrat, AUCUNE FK en base"
+  },
+  {
+   "table": "job_reve_critere",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ job_reve.id (FK)"
+  },
+  {
+   "table": "job_reve_critere",
+   "nom": "critere",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "37,9 % — FK vers ref_criteres"
+  },
+  {
+   "table": "job_reve_remote",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ job_reve.id (FK)"
+  },
+  {
+   "table": "job_reve_remote",
+   "nom": "remote",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "45,3 % — FK vers ref_remote"
+  },
+  {
+   "table": "job_reve_secteur",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ job_reve.id (FK)"
+  },
+  {
+   "table": "job_reve_secteur",
+   "nom": "secteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "11,9 % — FK vers ref_secteur : secteurs visés"
+  },
+  {
+   "table": "job_reve_secteur_nogo",
+   "nom": "job_reve_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ job_reve.id (FK)"
+  },
+  {
+   "table": "job_reve_secteur_nogo",
+   "nom": "secteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidat",
+   "commentaire": "9,9 % (NoGo) — FK vers ref_secteur : secteurs exclus"
+  },
+  {
+   "table": "mandat",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 455"
+  },
+  {
+   "table": "mandat",
+   "nom": "titre",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "intitulé de l'offre, publié sur le Job Board. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "mandat",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "description_manager",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "portrait du manager, publié sur l'annonce"
+  },
+  {
+   "table": "mandat",
+   "nom": "description_produit",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "missions",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "process_recrutement",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "pour_toi",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "pas_pour_toi",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "remote_infos",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "contenu d'annonce publié"
+  },
+  {
+   "table": "mandat",
+   "nom": "salaire_infos",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "fourchette publiée de l'offre (texte)"
+  },
+  {
+   "table": "mandat",
+   "nom": "format_mission",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "donnée d'offre"
+  },
+  {
+   "table": "mandat",
+   "nom": "duree_mission",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "donnée d'offre"
+  },
+  {
+   "table": "mandat",
+   "nom": "date_demarrage_mission",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "date de démarrage STOCKÉE EN TEXTE : anomalie de typage à corriger au modèle cible"
+  },
+  {
+   "table": "mandat",
+   "nom": "video_youtube",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "média public de l'annonce"
+  },
+  {
+   "table": "mandat",
+   "nom": "salaire_max",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "fourchette de l'offre, harmonisée en K€ le 01/07"
+  },
+  {
+   "table": "mandat",
+   "nom": "salaire_min",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "fourchette de l'offre, harmonisée en K€ le 01/07"
+  },
+  {
+   "table": "mandat",
+   "nom": "tjm_max",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "fourchette TJM de l'offre (euros/jour, hors harmonisation K€)"
+  },
+  {
+   "table": "mandat",
+   "nom": "tjm_min",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "fourchette TJM de l'offre (euros/jour)"
+  },
+  {
+   "table": "mandat",
+   "nom": "min_xp",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "exigence d'expérience minimale (années)"
+  },
+  {
+   "table": "mandat",
+   "nom": "z_legacy_number",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "numéro hérité Bubble, préfixé z_legacy : sans valeur métier"
+  },
+  {
+   "table": "mandat",
+   "nom": "delivery",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "pondération du poste (0-100)"
+  },
+  {
+   "table": "mandat",
+   "nom": "discovery",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "pondération du poste"
+  },
+  {
+   "table": "mandat",
+   "nom": "strategie",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "pondération du poste"
+  },
+  {
+   "table": "mandat",
+   "nom": "ops",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "pondération du poste"
+  },
+  {
+   "table": "mandat",
+   "nom": "management",
+   "type": "smallint",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "pondération du poste"
+  },
+  {
+   "table": "mandat",
+   "nom": "status_sort_order",
+   "type": "smallint",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "ordre d'affichage recopié de ref_mandate_status.status_sort_order : dénormalisation de présentation"
+  },
+  {
+   "table": "mandat",
+   "nom": "kickoff",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "jalon de lancement du mandat"
+  },
+  {
+   "table": "mandat",
+   "nom": "job_anonyme",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "drapeau de publication : annonce anonymisée"
+  },
+  {
+   "table": "mandat",
+   "nom": "job_off_market",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "drapeau de publication : offre hors marché"
+  },
+  {
+   "table": "mandat",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_univers"
+  },
+  {
+   "table": "mandat",
+   "nom": "metier",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_metier"
+  },
+  {
+   "table": "mandat",
+   "nom": "contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_contrat"
+  },
+  {
+   "table": "mandat",
+   "nom": "statut",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_mandate_status"
+  },
+  {
+   "table": "mandat",
+   "nom": "equity",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "CHECK en base : actions gratuites | bspce | peut-être plus tard | non"
+  },
+  {
+   "table": "mandat",
+   "nom": "contributor_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_contributor_type"
+  },
+  {
+   "table": "mandat",
+   "nom": "visibilite",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_mandate_visibility"
+  },
+  {
+   "table": "mandat",
+   "nom": "exclu_pachamama",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "CHECK en base : « Oui » | « Non » — clause d'exclusivité"
+  },
+  {
+   "table": "mandat",
+   "nom": "type_deal",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "CHECK en base : « New Business » | « Existing Business »"
+  },
+  {
+   "table": "mandat",
+   "nom": "source_marketing",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_source_marketing"
+  },
+  {
+   "table": "mandat",
+   "nom": "lead_apporteur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_apporteur_affaires (pas un nom saisi)"
+  },
+  {
+   "table": "mandat",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ entreprise.id : le client"
+  },
+  {
+   "table": "mandat",
+   "nom": "manager_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "contact_client",
+   "commentaire": "→ equipe.id : contact client manager"
+  },
+  {
+   "table": "mandat",
+   "nom": "recruteur_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "contact_client",
+   "commentaire": "→ equipe.id : contact client recruteur"
+  },
+  {
+   "table": "mandat",
+   "nom": "business_maker_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ business_maker.id"
+  },
+  {
+   "table": "mandat",
+   "nom": "personne_en_charge_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : agent Pachamama en charge"
+  },
+  {
+   "table": "mandat",
+   "nom": "agent_2_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : second agent (sert au split de commission)"
+  },
+  {
+   "table": "mandat",
+   "nom": "account_manager_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id"
+  },
+  {
+   "table": "mandat",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "mandat",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "mandat",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "mandat",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "mandat",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "mandat_analyse",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK)"
+  },
+  {
+   "table": "mandat_analyse",
+   "nom": "analyse_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ analyse.id (FK) ; doublon de analyse.mandat_id"
+  },
+  {
+   "table": "mandat_cible",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK)"
+  },
+  {
+   "table": "mandat_cible",
+   "nom": "cible",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "FK vers ref_cible : entreprises cibles du sourcing. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "mandat_equipe",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK)"
+  },
+  {
+   "table": "mandat_equipe",
+   "nom": "equipe_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "contact_client",
+   "commentaire": "→ equipe.id (FK) ; doublon de equipe.mandat_id"
+  },
+  {
+   "table": "mandat_note",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ mandat.id, AUCUNE FK en base"
+  },
+  {
+   "table": "mandat_note",
+   "nom": "note_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ note.id, AUCUNE FK en base — 7,1 % des notes portent un mandat"
+  },
+  {
+   "table": "mandat_remote",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK)"
+  },
+  {
+   "table": "mandat_remote",
+   "nom": "remote",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_remote, AUCUNE FK en base. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "mandat_tag_job",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id (FK)"
+  },
+  {
+   "table": "mandat_tag_job",
+   "nom": "tag_job",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "mandat",
+   "commentaire": "valeur de ref_tag_job, AUCUNE FK en base. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 184 (185 côté Bubble, delta 1)"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ candidat.id : le talent placé"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ entreprise.id : le client"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandat.id : l'offre pourvue"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "process_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ process.id : la candidature d'où vient le placement"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "split_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandate_closed_split.id : la répartition de commission"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "business_maker_coo_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ business_maker.id : apporteur cooptation"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "business_maker_deal_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ business_maker.id : apporteur du deal"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_univers"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "contributor_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_contributor_type"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "contrat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_contrat"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "statut_contrat_freelance",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_contract_status (volet freelance)"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "statut_contrat_entreprise",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_contract_status (volet entreprise)"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "date_closing",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon de facturation : c'est la date qui déclenche le chiffre d'affaires"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "date_debut",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon contractuel : début de mission"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "date_fin_garantie",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon contractuel : fin de la garantie de remplacement"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "date_fin_mission",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon contractuel : fin de mission"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "salaire_final",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "assiette de la commission — arithmétiquement liée à commission et à mandate_closed_split"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "commission",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "chiffre d'affaires Pachamama"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "commission_nette",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "chiffre d'affaires net"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "apport_affaires_k",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "montant d'apport d'affaires"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "cooptation_talent",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "montant de cooptation versé au talent"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "tjm_final_marge_inclus",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "TJM facturé au client, marge incluse"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "tjm_final_talent",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "TJM versé au freelance"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "note_user_ids",
+   "type": "text[]",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "tableau text[] d'_id user : relation dénormalisée en colonne, à normaliser au modèle cible"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "est_archive",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "drapeau d'archivage du placement"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "agent_filtre_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id — dénormalisation de recherche Bubble (« filtre »), doublon de mandat.personne_en_charge_id"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "agent_2_filtre_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id — dénormalisation de recherche Bubble (« filtre »), doublon de mandat.agent_2_id"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "mandatclose",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "mandatclose_note",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ mandatclose.id, AUCUNE FK en base"
+  },
+  {
+   "table": "mandatclose_note",
+   "nom": "note_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ note.id, AUCUNE FK en base — 5,2 % des notes portent un mandat closé"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 222"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandatclose.id ; doublon inverse de mandatclose.split_id"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_1_com",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission agent 1 (montant). répartition de commission du placement (222 lignes pour 184 placements : plusieurs splits par placement)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_1_com_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission agent 1 (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_1_com_is_absolute",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "drapeau de calcul : montant absolu ou %"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_2_com",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission agent 2 (montant)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_2_com_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission agent 2 (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "agent_2_com_is_absolute",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "drapeau de calcul : montant absolu ou %"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "bus_maker_coo_com",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission apporteur cooptation (montant)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "bus_maker_coo_com_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission apporteur cooptation (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "bus_maker_deal_com",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission apporteur du deal (montant)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "bus_maker_deal_com_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "commission apporteur du deal (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "pacha_com",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "part Pachamama (montant)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "pacha_com_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "part Pachamama (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "net",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "net (montant)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "net_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "net (%)"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "total",
+   "type": "numeric(12,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "total (montant) — agrégat recalculable"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "total_pct",
+   "type": "numeric(5,2)",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "total (%) — agrégat recalculable"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "mandate_closed_split",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "note",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 20 018"
+  },
+  {
+   "table": "note",
+   "nom": "commentaire",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "100 % — matière première du journal de notes (20 018 lignes)"
+  },
+  {
+   "table": "note",
+   "nom": "date_note",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "100 % — date métier de la note"
+  },
+  {
+   "table": "note",
+   "nom": "note_automatique",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "100 % — note générée par workflow vs saisie par un agent"
+  },
+  {
+   "table": "note",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "93,8 % — → candidat.id"
+  },
+  {
+   "table": "note",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "7,1 % — → entreprise.id"
+  },
+  {
+   "table": "note",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "7,1 % — → mandat.id"
+  },
+  {
+   "table": "note",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "5,2 % — → mandatclose.id"
+  },
+  {
+   "table": "note",
+   "nom": "note_event",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "note",
+   "commentaire": "5,0 % (note_event_os) — valeur de ref_note_event (24 options)"
+  },
+  {
+   "table": "note",
+   "nom": "note_event_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "note",
+   "commentaire": "5,0 % (note_event_type_os) — CHECK : contract|info|archive|task|team"
+  },
+  {
+   "table": "note",
+   "nom": "note_event_value_new",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "1,4 % — valeur APRÈS du champ modifié, rejouée en clair : canal de fuite, abandon recommandé"
+  },
+  {
+   "table": "note",
+   "nom": "note_event_value_prev",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "1,2 % — valeur AVANT du champ modifié : abandon recommandé"
+  },
+  {
+   "table": "note",
+   "nom": "user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "99,6 % — → user.id : auteur de la note"
+  },
+  {
+   "table": "note",
+   "nom": "note_user_tag_id",
+   "type": "text",
+   "nature": "MORTE",
+   "entite": "compte",
+   "commentaire": "0,0 % sur l'échantillon de 2 500 notes — « champ mort » : mention d'un user jamais utilisée"
+  },
+  {
+   "table": "note",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "note",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "note",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "note",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 19 778"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "commentaire",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "19 778 commentaires : ce sont des DOUBLONS archivés de note, avec de nouveaux _id, ~1 500/mois — un flux, pas un stock"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "date_note",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "date métier de la note archivée"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "note_automatique",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "note",
+   "commentaire": "note générée par workflow vs saisie"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ candidat.id"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ entreprise.id"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ mandat.id"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "note",
+   "commentaire": "→ mandatclose.id"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : auteur"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "note_archivee",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "note",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "id",
+   "type": "uuid",
+   "nature": "TECHNIQUE",
+   "entite": "contact_client",
+   "commentaire": "clé technique uuid générée. table native Supabase (uuid, gen_random_uuid), hors miroir Bubble : suivi des enquêtes NPS envoyées aux contacts client"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "bubble_contact_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "contact_client",
+   "commentaire": "_id Bubble du contact → equipe.id (pas de FK)"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "bubble_mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "_id Bubble du mandat → mandat.id (pas de FK)"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "contact_email",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "adresse nominative du contact client : destinataire réel de la relance"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "contact_firstname",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "contact_client",
+   "commentaire": "prénom du contact client"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "job_title",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "mandat",
+   "commentaire": "intitulé du poste, recopié du mandat au moment de l'envoi"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "company_name",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "entreprise",
+   "commentaire": "raison sociale, recopiée de l'entreprise au moment de l'envoi"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "candidate_firstname",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "candidat",
+   "commentaire": "prénom du talent placé, recopié au moment de l'envoi"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "nps_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "contact_client",
+   "commentaire": "CHECK : « close » | « termine » — type de campagne"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "status",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "contact_client",
+   "commentaire": "CHECK : sent | reminded | responded | ignored"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "contact_client",
+   "commentaire": "date d'envoi de l'enquête — horodatage métier, PAS un artefact Bubble (table native)"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "responded_at",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "contact_client",
+   "commentaire": "date de réponse à l'enquête"
+  },
+  {
+   "table": "nps_tracking",
+   "nom": "reminder_sent_at",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "contact_client",
+   "commentaire": "date de relance"
+  },
+  {
+   "table": "process",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 6 344 (delta -3 vs Bubble)"
+  },
+  {
+   "table": "process",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ candidat.id : le candidat de la candidature"
+  },
+  {
+   "table": "process",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandat.id : l'offre visée"
+  },
+  {
+   "table": "process",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ entreprise.id : dénormalisation, déductible via mandat"
+  },
+  {
+   "table": "process",
+   "nom": "etape",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "candidature",
+   "commentaire": "valeur de ref_process_etape : c'est l'étape du kanban"
+  },
+  {
+   "table": "process",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "compte rendu d'entretien en texte libre"
+  },
+  {
+   "table": "process",
+   "nom": "pachamama_like",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "appréciation libre sur le candidat dans ce process"
+  },
+  {
+   "table": "process",
+   "nom": "pachamama_personnalite",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "appréciation libre sur la personnalité"
+  },
+  {
+   "table": "process",
+   "nom": "plus_par_rapport_mission",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "évaluation : points forts face à la mission"
+  },
+  {
+   "table": "process",
+   "nom": "moins_par_rapport_mission",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "évaluation : points faibles face à la mission"
+  },
+  {
+   "table": "process",
+   "nom": "infos_remuneration",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "négociation salariale en texte libre"
+  },
+  {
+   "table": "process",
+   "nom": "salaire_minimum",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "prétention salariale dans ce process (K€ après harmonisation du 01/07)"
+  },
+  {
+   "table": "process",
+   "nom": "salaire_souhaite",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "prétention salariale dans ce process (K€)"
+  },
+  {
+   "table": "process",
+   "nom": "tjm_minimum",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "prétention TJM dans ce process (euros/jour)"
+  },
+  {
+   "table": "process",
+   "nom": "tjm_souhaite",
+   "type": "numeric",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "prétention TJM dans ce process (euros/jour)"
+  },
+  {
+   "table": "process",
+   "nom": "date_statut_applicant",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon de pipeline : passage en candidature"
+  },
+  {
+   "table": "process",
+   "nom": "date_statut_ko",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon de pipeline : date de refus"
+  },
+  {
+   "table": "process",
+   "nom": "date_update_etape",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon de pipeline : dernier changement d'étape"
+  },
+  {
+   "table": "process",
+   "nom": "next_step_date",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "candidature",
+   "commentaire": "jalon de pipeline : prochaine échéance"
+  },
+  {
+   "table": "process",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "process",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "process",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "process",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "candidature",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "process_mandatclose",
+   "nom": "process_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ process.id (FK)"
+  },
+  {
+   "table": "process_mandatclose",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidature",
+   "commentaire": "→ mandatclose.id, AUCUNE FK en base ; doublon de mandatclose.process_id"
+  },
+  {
+   "table": "produit",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "produit",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 103"
+  },
+  {
+   "table": "produit",
+   "nom": "description",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "produit",
+   "commentaire": "description du produit de l'entreprise cliente (103 lignes)"
+  },
+  {
+   "table": "produit",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ entreprise.id ; doublon inverse de entreprise.produit_id"
+  },
+  {
+   "table": "produit",
+   "nom": "maturite",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "produit",
+   "commentaire": "valeur de ref_maturite_produit"
+  },
+  {
+   "table": "produit",
+   "nom": "txt_explicatif",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "produit",
+   "commentaire": "texte produit destiné à l'annonce"
+  },
+  {
+   "table": "produit",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "produit",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "produit",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "produit",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "produit",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "produit",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "produit",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "produit",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : clé de marque blanche"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "background_asset1",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : visuel de fond de la marque blanche"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "background_asset2",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : visuel de fond de la marque blanche"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "background_image",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : image de fond"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "logo_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : logo"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "logo_mini_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : logo réduit"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "police",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : police de caractères"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "web_site",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : site web de la marque"
+  },
+  {
+   "table": "ref_app_branding",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_apporteur_affaires",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : canal d'apport d'affaires (mandat.lead_apporteur)"
+  },
+  {
+   "table": "ref_apporteur_affaires",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_background",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : background du talent (experience_background)"
+  },
+  {
+   "table": "ref_background",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_cible",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : entreprise cible de sourcing (mandat_cible)"
+  },
+  {
+   "table": "ref_cible",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_company_type",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type d'entreprise (entreprise.type_entreprise)"
+  },
+  {
+   "table": "ref_company_type",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_contract_status",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : statut de contrat (entreprise, mandatclose)"
+  },
+  {
+   "table": "ref_contract_status",
+   "nom": "couleur",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur d'affichage du statut"
+  },
+  {
+   "table": "ref_contract_status",
+   "nom": "signature_required",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : le statut exige-t-il une signature"
+  },
+  {
+   "table": "ref_contract_status",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_contrat",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type de contrat (candidat, mandat, job_reve, mandatclose)"
+  },
+  {
+   "table": "ref_contrat",
+   "nom": "color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur d'affichage"
+  },
+  {
+   "table": "ref_contrat",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_contributor_type",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type de contributeur (mandat, mandatclose)"
+  },
+  {
+   "table": "ref_contributor_type",
+   "nom": "full_display",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé long affiché"
+  },
+  {
+   "table": "ref_contributor_type",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_criteres",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : critère personnel du talent (job_reve_critere)"
+  },
+  {
+   "table": "ref_criteres",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_email_config",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : configuration d'envoi d'emails"
+  },
+  {
+   "table": "ref_email_config",
+   "nom": "email_adresses",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : adresses d'envoi rattachées : paramètre d'intégration, à sortir du modèle de données vers la configuration"
+  },
+  {
+   "table": "ref_email_config",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_emoji",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : emoji de statut candidat"
+  },
+  {
+   "table": "ref_emoji",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_expertise",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : expertise du talent (candidat_expertise, experience_expertise)"
+  },
+  {
+   "table": "ref_expertise",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_expertise_univers",
+   "nom": "expertise_value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_expertise : table de correspondance expertise↔univers"
+  },
+  {
+   "table": "ref_expertise_univers",
+   "nom": "univers_value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_univers : table de correspondance expertise↔univers"
+  },
+  {
+   "table": "ref_fonction",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : fonction applicative d'un compte (user.fonction)"
+  },
+  {
+   "table": "ref_fonction",
+   "nom": "label_en",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé anglais"
+  },
+  {
+   "table": "ref_fonction",
+   "nom": "label_fr",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé français"
+  },
+  {
+   "table": "ref_fonction",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_form_41",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : option de formulaire Bubble n°41 : aucune colonne du schéma ne la référence, origine et usage non identifiés"
+  },
+  {
+   "table": "ref_form_41",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_form_42",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : option de formulaire Bubble n°42 : aucune colonne du schéma ne la référence, origine et usage non identifiés"
+  },
+  {
+   "table": "ref_form_42",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_formule",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : formule commerciale (entreprise.formule)"
+  },
+  {
+   "table": "ref_formule",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_gender",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : genre (candidat.genre)"
+  },
+  {
+   "table": "ref_gender",
+   "nom": "label_en",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé anglais"
+  },
+  {
+   "table": "ref_gender",
+   "nom": "label_fr",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé français"
+  },
+  {
+   "table": "ref_gender",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_image",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : bibliothèque d'images de l'app"
+  },
+  {
+   "table": "ref_image",
+   "nom": "file_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : URL du fichier image"
+  },
+  {
+   "table": "ref_image",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_language",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : langue d'interface (user.langue)"
+  },
+  {
+   "table": "ref_language",
+   "nom": "label",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé de la langue"
+  },
+  {
+   "table": "ref_language",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_mandate_status",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : statut de mandat (mandat.statut)"
+  },
+  {
+   "table": "ref_mandate_status",
+   "nom": "status_admin_label",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé affiché côté admin"
+  },
+  {
+   "table": "ref_mandate_status",
+   "nom": "status_color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur d'affichage"
+  },
+  {
+   "table": "ref_mandate_status",
+   "nom": "status_sort_order",
+   "type": "smallint",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : ordre d'affichage du statut, recopié dans mandat.status_sort_order"
+  },
+  {
+   "table": "ref_mandate_status",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_mandate_visibility",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : visibilité du mandat (mandat.visibilite)"
+  },
+  {
+   "table": "ref_mandate_visibility",
+   "nom": "label_fr",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé français"
+  },
+  {
+   "table": "ref_mandate_visibility",
+   "nom": "tooltip_icon",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : icône d'infobulle"
+  },
+  {
+   "table": "ref_mandate_visibility",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_maturite_produit",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : maturité du produit (produit.maturite)"
+  },
+  {
+   "table": "ref_maturite_produit",
+   "nom": "image_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : illustration de la maturité"
+  },
+  {
+   "table": "ref_maturite_produit",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_metier",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : métier (candidat, equipe, mandat, job_actuel, job_reve)"
+  },
+  {
+   "table": "ref_metier",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_metier_univers",
+   "nom": "metier_value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_metier : table de correspondance métier↔univers"
+  },
+  {
+   "table": "ref_metier_univers",
+   "nom": "univers_value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_univers : table de correspondance métier↔univers"
+  },
+  {
+   "table": "ref_mindset",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : mindset du talent (candidat.mindset)"
+  },
+  {
+   "table": "ref_mindset",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_niveau_analyse",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : niveau d'analyse de mandat (analyse.niveau)"
+  },
+  {
+   "table": "ref_niveau_analyse",
+   "nom": "color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur d'affichage"
+  },
+  {
+   "table": "ref_niveau_analyse",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_niveau_anglais",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : niveau d'anglais (candidat, entreprise)"
+  },
+  {
+   "table": "ref_niveau_anglais",
+   "nom": "candidat_display",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé affiché au candidat"
+  },
+  {
+   "table": "ref_niveau_anglais",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_note_event",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : événement de note (note.note_event)"
+  },
+  {
+   "table": "ref_note_event",
+   "nom": "note_event_text",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : gabarit de texte de l'événement de note"
+  },
+  {
+   "table": "ref_note_event",
+   "nom": "note_event_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_note_event_type : type de l'événement"
+  },
+  {
+   "table": "ref_note_event",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_note_event_type",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type d'événement de note (note.note_event_type)"
+  },
+  {
+   "table": "ref_note_event_type",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : étape de pipeline (process.etape) : c'est le référentiel qui pilote le kanban"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "is_active",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : l'étape est-elle active"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "is_in_kanban_view_company",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : visible dans le kanban client"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "is_in_kanban_view_pachamama",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : visible dans le kanban Pachamama"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "is_ko",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : l'étape est-elle un refus"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "is_public",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : l'étape est-elle publique"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "kanban_column_color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur de colonne kanban"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "kanban_tag_color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur de pastille kanban"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "public_display",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : libellé affiché au candidat"
+  },
+  {
+   "table": "ref_process_etape",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_product",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : produit/domaine du talent (experience_product)"
+  },
+  {
+   "table": "ref_product",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_product_type",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type de produit (entreprise.product_type)"
+  },
+  {
+   "table": "ref_product_type",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_profile",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : profil du talent (candidat_profile, experience_profile)"
+  },
+  {
+   "table": "ref_profile",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_remote",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : modalité de télétravail (candidat, entreprise, mandat, job_reve)"
+  },
+  {
+   "table": "ref_remote",
+   "nom": "is_active",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : l'option est-elle encore proposée"
+  },
+  {
+   "table": "ref_remote",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_role",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : rôle applicatif (user_role.role)"
+  },
+  {
+   "table": "ref_role",
+   "nom": "role_category",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_role_category : regroupement de rôles"
+  },
+  {
+   "table": "ref_role",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_role_category",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : catégorie de rôle (ref_role.role_category)"
+  },
+  {
+   "table": "ref_role_category",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_secteur",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : secteur d'activité (candidat, entreprise, experience, job_reve, job_reve_nogo)"
+  },
+  {
+   "table": "ref_secteur",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_sendgrid_template",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : gabarit SendGrid"
+  },
+  {
+   "table": "ref_sendgrid_template",
+   "nom": "id_sendgrid",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : identifiant du gabarit chez SendGrid : paramètre d'intégration, à sortir du modèle de données"
+  },
+  {
+   "table": "ref_sendgrid_template",
+   "nom": "visible_pour_mandat",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : le gabarit est-il proposé sur un mandat"
+  },
+  {
+   "table": "ref_sendgrid_template",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_slack_channel",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : canal Slack de notification"
+  },
+  {
+   "table": "ref_slack_channel",
+   "nom": "webhook",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : URL de webhook Slack (secret) : paramètre d'intégration, à sortir du modèle de données"
+  },
+  {
+   "table": "ref_slack_channel",
+   "nom": "webhook_test",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : URL de webhook Slack de test (secret) : à sortir du modèle de données"
+  },
+  {
+   "table": "ref_slack_channel",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_source_marketing",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : source marketing du mandat (mandat.source_marketing)"
+  },
+  {
+   "table": "ref_source_marketing",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_statut_candidat",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : statut de suivi du candidat (candidat.statut)"
+  },
+  {
+   "table": "ref_statut_candidat",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_tag_job",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : tag d'offre (mandat_tag_job)"
+  },
+  {
+   "table": "ref_tag_job",
+   "nom": "icone_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : icône du tag d'offre"
+  },
+  {
+   "table": "ref_tag_job",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_task_anchor",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : ancre de déclenchement de tâche (ref_task_type.task_anchor)"
+  },
+  {
+   "table": "ref_task_anchor",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_task_event",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : événement déclencheur de tâche (ref_task_type.task_event)"
+  },
+  {
+   "table": "ref_task_event",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : type de tâche (task.task_type, task_notif.task_type)"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "is_admin",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : type de tâche réservé aux admins"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "relative_time",
+   "type": "smallint",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : décalage en jours par rapport à l'ancre"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "task_anchor",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_task_anchor : date d'ancrage du déclenchement"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "task_event",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : FK vers ref_task_event : événement déclencheur"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "task_text",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : gabarit du libellé de la tâche"
+  },
+  {
+   "table": "ref_task_type",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "value",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "clé de l'option set Bubble : univers Pacha — taxonomie faîtière de toute la base"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur primaire de l'univers"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "secondary_color",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : couleur secondaire"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "logo_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : logo de l'univers"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "logo_mini_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : logo réduit"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "talent_card_url",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : visuel de carte talent"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "is_live",
+   "type": "boolean",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "attribut du référentiel : l'univers est-il ouvert"
+  },
+  {
+   "table": "ref_univers",
+   "nom": "sort_order",
+   "type": "integer",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "ordre d'affichage de l'option set Bubble : présentation, aucune valeur métier"
+  },
+  {
+   "table": "tag",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 110"
+  },
+  {
+   "table": "tag",
+   "nom": "nom",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "libellé du tag (110 lignes) : vocabulaire d'affaires défini par les agents"
+  },
+  {
+   "table": "tag",
+   "nom": "description",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "description du tag"
+  },
+  {
+   "table": "tag",
+   "nom": "type_tag",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "référentiel",
+   "commentaire": "CHECK : « Candidat » | « Entreprise » | « Job » — portée du tag"
+  },
+  {
+   "table": "tag",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ entreprise.id : tag propre à un client"
+  },
+  {
+   "table": "tag",
+   "nom": "mandat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "mandat",
+   "commentaire": "→ mandat.id : tag propre à un mandat"
+  },
+  {
+   "table": "tag",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "tag",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "tag",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "tag",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "référentiel",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "task",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 864 (865 côté Bubble)"
+  },
+  {
+   "table": "task",
+   "nom": "task_text",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "libellé interpolé depuis ref_task_type.task_text : contient en clair le nom du talent et du client"
+  },
+  {
+   "table": "task",
+   "nom": "is_complete",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "drapeau d'achèvement de la tâche"
+  },
+  {
+   "table": "task",
+   "nom": "creation_date",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "champ applicatif « Creation Date » du type Bubble : doublon apparent de created_at, taux non mesuré"
+  },
+  {
+   "table": "task",
+   "nom": "due_date",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "échéance de la tâche"
+  },
+  {
+   "table": "task",
+   "nom": "task_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "tache",
+   "commentaire": "valeur de ref_task_type"
+  },
+  {
+   "table": "task",
+   "nom": "mandatclose_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "tache",
+   "commentaire": "→ mandatclose.id : la tâche est ancrée sur un placement"
+  },
+  {
+   "table": "task",
+   "nom": "task_notif_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "tache",
+   "commentaire": "→ task_notif.id ; doublon inverse de task_notif.task_id"
+  },
+  {
+   "table": "task",
+   "nom": "creation_user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : créateur"
+  },
+  {
+   "table": "task",
+   "nom": "update_user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : dernier modificateur"
+  },
+  {
+   "table": "task",
+   "nom": "assigned_user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id : assignataire"
+  },
+  {
+   "table": "task",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "task",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "task",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "task",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "task_notif",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 879 (881 côté Bubble)"
+  },
+  {
+   "table": "task_notif",
+   "nom": "task_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "tache",
+   "commentaire": "→ task.id ; doublon inverse de task.task_notif_id"
+  },
+  {
+   "table": "task_notif",
+   "nom": "is_sent",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "drapeau d'envoi de la notification"
+  },
+  {
+   "table": "task_notif",
+   "nom": "preview_text",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "aperçu du message : noms de talents et de clients en clair"
+  },
+  {
+   "table": "task_notif",
+   "nom": "sent_email",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "tache",
+   "commentaire": "adresse destinataire réelle de la notification"
+  },
+  {
+   "table": "task_notif",
+   "nom": "sent_text",
+   "type": "text",
+   "nature": "METIER",
+   "entite": "tache",
+   "commentaire": "corps du message envoyé"
+  },
+  {
+   "table": "task_notif",
+   "nom": "wf_date",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "horodatage du workflow Bubble planifié"
+  },
+  {
+   "table": "task_notif",
+   "nom": "wf_id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "identifiant du workflow programmé Bubble : n'a aucun sens hors Bubble"
+  },
+  {
+   "table": "task_notif",
+   "nom": "task_type",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "tache",
+   "commentaire": "valeur de ref_task_type ; doublon de task.task_type"
+  },
+  {
+   "table": "task_notif",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "task_notif",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "task_notif",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "task_notif",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "tache",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "user",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "_id Bubble opaque (4 045 lignes) — référencé par des dizaines de colonnes *_id : clé de migration"
+  },
+  {
+   "table": "user",
+   "nom": "auth_id",
+   "type": "uuid",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ auth.users.id : rattachement Supabase Auth, seul lien non-Bubble de la table"
+  },
+  {
+   "table": "user",
+   "nom": "nom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "compte",
+   "commentaire": "identité d'un agent, d'un candidat ou d'un contact client. taux de remplissage non mesuré (table hors périmètre de l'inventaire talent du 16/07)"
+  },
+  {
+   "table": "user",
+   "nom": "prenom",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "compte",
+   "commentaire": "identité directe"
+  },
+  {
+   "table": "user",
+   "nom": "photo_url",
+   "type": "text",
+   "nature": "IDENTITE",
+   "entite": "compte",
+   "commentaire": "visage"
+  },
+  {
+   "table": "user",
+   "nom": "candidat_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "candidat",
+   "commentaire": "→ candidat.id : le compte est celui d'un talent"
+  },
+  {
+   "table": "user",
+   "nom": "entreprise_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "entreprise",
+   "commentaire": "→ entreprise.id : le compte est celui d'un client"
+  },
+  {
+   "table": "user",
+   "nom": "fonction",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "compte",
+   "commentaire": "valeur de ref_fonction : rôle applicatif"
+  },
+  {
+   "table": "user",
+   "nom": "langue",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "compte",
+   "commentaire": "valeur de ref_language : préférence d'interface"
+  },
+  {
+   "table": "user",
+   "nom": "user_lang",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "compte",
+   "commentaire": "préférence d'interface — doublon apparent de langue, taux non mesuré : trancher lequel survit"
+  },
+  {
+   "table": "user",
+   "nom": "email_confirmed",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "compte",
+   "commentaire": "drapeau : email confirmé"
+  },
+  {
+   "table": "user",
+   "nom": "is_deleted",
+   "type": "boolean",
+   "nature": "METIER",
+   "entite": "compte",
+   "commentaire": "drapeau de suppression logique : porte le cycle de vie du compte"
+  },
+  {
+   "table": "user",
+   "nom": "popup_pas_de_nouvelles",
+   "type": "boolean",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "état d'affichage d'une popup Bubble : préférence d'UI, sans valeur métier"
+  },
+  {
+   "table": "user",
+   "nom": "popup_trouve_bonheur",
+   "type": "boolean",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "état d'affichage d'une popup Bubble : préférence d'UI, sans valeur métier"
+  },
+  {
+   "table": "user",
+   "nom": "premiere_connexion_at",
+   "type": "timestamptz",
+   "nature": "METIER",
+   "entite": "compte",
+   "commentaire": "date de première connexion : jalon d'usage du compte"
+  },
+  {
+   "table": "user",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "user",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "user",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "user_partner",
+   "nom": "id",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "_id Bubble opaque (100 %) : clé de migration et de matching, à remplacer par une clé native. Volume : 8"
+  },
+  {
+   "table": "user_partner",
+   "nom": "user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id (FK) — 8 lignes"
+  },
+  {
+   "table": "user_partner",
+   "nom": "univers",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "compte",
+   "commentaire": "valeur de ref_univers : univers confié au partenaire"
+  },
+  {
+   "table": "user_partner",
+   "nom": "slug",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "slug Bubble : route publique dérivée, aucune valeur métier"
+  },
+  {
+   "table": "user_partner",
+   "nom": "created_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "« Created Date » Bubble (100 %) : horodatage de plateforme"
+  },
+  {
+   "table": "user_partner",
+   "nom": "updated_at",
+   "type": "timestamptz",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "« Modified Date » Bubble (100 %) : horodatage de plateforme, sert de watermark à la sync"
+  },
+  {
+   "table": "user_partner",
+   "nom": "created_by",
+   "type": "text",
+   "nature": "ARTEFACT_BUBBLE",
+   "entite": "compte",
+   "commentaire": "« Created By » Bubble (_id user, 96,7 à 99,6 % selon la table) : méta app sans valeur métier"
+  },
+  {
+   "table": "user_role",
+   "nom": "user_id",
+   "type": "text",
+   "nature": "LIEN",
+   "entite": "compte",
+   "commentaire": "→ user.id (FK)"
+  },
+  {
+   "table": "user_role",
+   "nom": "role",
+   "type": "text",
+   "nature": "REFERENTIEL",
+   "entite": "compte",
+   "commentaire": "FK vers ref_role : rôle applicatif du compte"
+  }
+ ]
+}

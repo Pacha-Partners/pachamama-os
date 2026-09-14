@@ -1,0 +1,105 @@
+# ════════════════════════════════════════════════════════════════════════
+# LE CONTRÔLE D'ENTRÉE — il tourne sur TOUTE pull request, sans un secret.
+#
+# ⚠ AUCUN SECRET N'EST EXPOSÉ ICI, ET C'EST LA RAISON DE LA COUPURE EN DEUX.
+# Ce dépôt est public. Les 270 tests unitaires, le typage, le lint et le
+# build ne touchent aucune base : ils peuvent donc tourner sur n'importe
+# quelle proposition de modification. Les harnais j1…j4, eux, exigent un
+# vrai projet Supabase et de vrais comptes — ils vivent dans `dev.yml`,
+# après fusion, là où les secrets du dépôt sont accessibles.
+#
+# ⚠ ON N'APPELLE PAS `npm run verifier` À LA RACINE. Ce script commence par
+# `npm run cible`, qui lit `env/projets.env` — ignoré par git, donc absent
+# en CI. On appelle les scripts granulaires.
+# ════════════════════════════════════════════════════════════════════════
+name: Contrôle
+
+# ⚠ SUR LA PULL REQUEST SEULEMENT, PAS SUR LA POUSSÉE DE BRANCHE.
+# Les deux déclencheurs coexistaient : une branche portant une pull request
+# ouverte faisait tourner CHAQUE contrôle deux fois. Mesuré sur la #2 —
+# « Aucun secret dans le diff » et le rejeu des migrations apparaissaient en
+# double. Des minutes payées deux fois, et deux verdicts à lire pour un seul
+# fait.
+#
+# On garde la pull request, parce que c'est le seul moment qui compte : rien
+# n'entre dans `dev`, `recette` ou `main` autrement — les protections
+# l'imposent. `workflow_dispatch` reste pour lancer la CI à la main sur une
+# branche qui n'a pas encore de pull request.
+on:
+  pull_request:
+    branches: [dev, recette, main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  front:
+    name: Typage, lint, tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npx tsc --noEmit
+        working-directory: frontend
+      - run: npx eslint .
+        working-directory: frontend
+      - run: npx vitest run
+        working-directory: frontend
+      # Le build est le seul contrôle qui attrape une erreur de rendu serveur
+      # — un composant client importé depuis un Server Component, par exemple.
+      # Sans clé Supabase : `lib/session.ts` traite un environnement vide
+      # comme un visiteur non identifié, donc la compilation aboutit.
+      - run: npx next build
+        working-directory: frontend
+
+  migrations:
+    name: Les migrations rejouent sur une base vierge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      # `supabase start` applique les 127 migrations dans l'ordre sur une base
+      # NEUVE. C'est le seul contrôle qui attrape une collision de schéma que
+      # git fusionne proprement — deux branches recréant la même vue, par
+      # exemple : le dépôt en compte déjà cinq sur `api.mandat_client`.
+      # ⚠ ON N'EXCLUT NI `storage-api` NI `gotrue`, ET C'EST MESURÉ.
+      # Deux migrations écrivent dans `storage.buckets` et posent des policies
+      # sur `storage.objects` ; d'autres s'appuient sur `auth.users` et
+      # `auth.uid()`. Exclure ces deux services retirerait les schémas qu'elles
+      # visent, et le rejeu échouerait pour une raison qui n'a rien à voir avec
+      # les migrations. On n'écarte que l'interface et les services de bord.
+      - run: supabase start -x studio,edge-runtime,logflare,vector,imgproxy,mailpit,supavisor
+      - run: supabase db lint --level warning
+
+  secrets:
+    name: Aucun secret dans le diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # La protection au push de GitHub couvre ~69 formats de jetons connus.
+      # gitleaks couvre le reste — dont les formats propres au projet. Le dépôt
+      # est PUBLIC : une fuite y est définitive, un `force-push` ne dépublie rien.
+      #
+      # ⚠ LE BINAIRE, PAS L'ACTION `gitleaks/gitleaks-action`. Celle-ci exige
+      # une licence pour les comptes d'ORGANISATION. Le dépôt appartient
+      # aujourd'hui à un utilisateur, donc elle passerait — mais le jour où il
+      # migrerait vers une organisation, la CI casserait sans raison lisible.
+      - name: Installer gitleaks
+        run: |
+          V=8.28.0
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${V}/gitleaks_${V}_linux_x64.tar.gz" | tar -xz gitleaks
+          sudo mv gitleaks /usr/local/bin/
+      - name: Chercher un secret dans tout l'historique
+        run: gitleaks detect --no-banner --redact --verbose

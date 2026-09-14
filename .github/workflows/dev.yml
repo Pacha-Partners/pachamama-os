@@ -1,0 +1,140 @@
+# ════════════════════════════════════════════════════════════════════════
+# APRÈS FUSION DANS `dev` — les migrations partent sur le projet de DEV,
+# puis les six harnais tournent contre lui.
+#
+# ⚠ C'EST ICI QUE LES SECRETS ENTRENT, ET NULLE PART AILLEURS. Une pull
+# request peut venir de n'importe où ; une fusion dans `dev` est un acte
+# de quelqu'un qui a le droit d'écrire. Les identifiants du projet de dev
+# ne sont donc jamais exposés à `ci.yml`.
+#
+# ⚠ `db push` SANS `--include-all`, DÉLIBÉRÉMENT. Le drapeau désarmerait le
+# garde qui refuse une migration datée AVANT la dernière appliquée — le cas
+# exact que produit un hotfix passé par `main`. S'il tombe ici, c'est un
+# signal qui demande une décision humaine, pas un drapeau à ajouter une fois
+# pour toutes. Mesuré : le CLI rend `LegacyDbPushMissingRemoteError` et
+# nomme les fichiers concernés.
+# ════════════════════════════════════════════════════════════════════════
+name: Dev
+
+on:
+  push:
+    branches: [dev]
+
+concurrency:
+  group: dev
+  cancel-in-progress: false
+
+jobs:
+  migrations:
+    name: Migrations → projet dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: supabase/setup-cli@v1
+        with: { version: latest }
+      # ⚠ UN AIGUILLAGE À TROIS ISSUES, ET LA NUANCE COMPTE.
+      #   · aucun secret          → on SAUTE, en le disant. Tant que le dépôt
+      #     n'est pas configuré, une croix rouge à chaque poussée n'apprend
+      #     rien et finit par ne plus être lue.
+      #   · tous les secrets      → on pousse.
+      #   · quelques-uns seulement → on ÉCHOUE. C'est l'état dangereux : celui
+      #     où l'on croit le dépôt configuré alors qu'il ne l'est qu'à moitié.
+      - name: Les secrets sont-ils posés ?
+        id: secrets
+        run: |
+          poses=0; manque=""
+          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_DEV; do
+            if [ -n "${!v:-}" ]; then poses=$((poses+1)); else manque="$manque $v"; fi
+          done
+          if [ "$poses" = 0 ]; then
+            echo "::warning::Migrations NON poussées : aucun secret n'est posé sur ce dépôt."
+            echo "Les poser avec : bash outils/secrets_ci.sh  (voir CONTRIBUTING.md §6)"
+            echo "pret=false" >> "$GITHUB_OUTPUT"
+          elif [ -n "$manque" ]; then
+            echo "::error::Dépôt configuré À MOITIÉ. Secrets absents :$manque"
+            exit 1
+          else
+            echo "pret=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF_DEV: ${{ secrets.SUPABASE_PROJECT_REF_DEV }}
+      - if: steps.secrets.outputs.pret == 'true'
+        run: supabase link --project-ref "$PROJET"
+        env:
+          PROJET: ${{ secrets.SUPABASE_PROJECT_REF_DEV }}
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      - if: steps.secrets.outputs.pret == 'true'
+        run: supabase db push
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+
+  harnais:
+    name: Les six harnais contre le projet dev
+    needs: migrations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Les identifiants de test sont-ils posés ?
+        id: creds
+        run: |
+          if [ -z "${MDP:-}" ] || [ -z "${URL:-}" ]; then
+            echo "::warning::Harnais NON joués : les identifiants de test ne sont pas posés."
+            echo "pret=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "pret=true" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          MDP: ${{ secrets.TEST_MDP }}
+          URL: ${{ secrets.SUPABASE_URL_DEV }}
+      - if: steps.creds.outputs.pret == 'true'
+        run: npm ci
+        working-directory: frontend
+      # Les harnais lisent `.env.local` par `node --env-file`. On le fabrique
+      # depuis les secrets, et il n'existe que le temps du job.
+      - if: steps.creds.outputs.pret == 'true'
+        name: Fabriquer .env.local depuis les secrets
+        working-directory: frontend
+        run: |
+          cat > .env.local <<EOF
+          NEXT_PUBLIC_SUPABASE_URL=${{ secrets.SUPABASE_URL_DEV }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY_DEV }}
+          SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY_DEV }}
+          TEST_MDP=${{ secrets.TEST_MDP }}
+          TEST_ENTREPRISE_EMAIL=${{ secrets.TEST_ENTREPRISE_EMAIL }}
+          TEST_TALENT_EMAIL=${{ secrets.TEST_TALENT_EMAIL }}
+          TEST_RECRUTEUR_EMAIL=${{ secrets.TEST_RECRUTEUR_EMAIL }}
+          EOF
+      - if: steps.creds.outputs.pret == 'true'
+        run: npm run verifier:j1
+        working-directory: frontend
+      - if: steps.creds.outputs.pret == 'true'
+        run: npm run verifier:j2
+        working-directory: frontend
+      - if: steps.creds.outputs.pret == 'true'
+        run: npm run verifier:j3
+        working-directory: frontend
+      - if: steps.creds.outputs.pret == 'true'
+        run: npm run verifier:j4
+        working-directory: frontend
+      # Les deux harnais d'écrans exigent l'application en marche : ils
+      # interrogent des URL, pas seulement la base.
+      # Les deux harnais d'écrans interrogent des URL, pas seulement la base :
+      # il leur faut l'application en marche. `localhost:3000` est leur défaut.
+      - if: steps.creds.outputs.pret == 'true'
+        name: Lancer l'application, puis les harnais d'écrans
+        working-directory: frontend
+        run: |
+          npx next build
+          npx next start &
+          # Attente active plutôt qu'un paquet de plus : trente essais d'une
+          # seconde, et un échec explicite si le serveur ne répond jamais.
+          for i in $(seq 1 30); do curl -sf -o /dev/null http://localhost:3000/offres && break; sleep 1; done
+          curl -sf -o /dev/null http://localhost:3000/offres || { echo "l'application n'a pas démarré"; exit 1; }
+          npm run verifier:j3-ecrans
+          npm run verifier:j4-ecrans

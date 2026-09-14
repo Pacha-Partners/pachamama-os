@@ -1,10 +1,21 @@
+import { exigerVue } from '@/lib/acces';
+
 export const metadata = { title: 'Portail recruteur' };
 
-export default function Vue() {
-  return (
-    <main id="contenu" className="mx-auto max-w-5xl p-8">
-      <h1 className="text-3xl font-semibold">Portail recruteur</h1>
-      <p className="mt-2 text-sm text-[var(--pacha-ardoise)]">Pipeline, mandats, CRM talent et client.</p>
-    </main>
-  );
+/**
+ * Portail recruteur — vue VIDE, volontairement.
+ *
+ * Le jalon 2 ouvre les portes ; il ne meuble pas les pièces. Ce qui est réel
+ * ici, c'est le chemin : une session, une lecture de `api.moi`, un accès
+ * vérifié, une barre latérale et une sortie qui fonctionne. Le contenu viendra
+ * avec les jalons suivants, et il viendra dans cette coquille.
+ *
+ * `exigerVue` renvoie sur SA vue quiconque n'a pas cet accès : la disposition
+ * ne peut pas s'en charger, une disposition Next ne connaissant pas le chemin
+ * demandé. C'est un garde d'affichage — l'autorisation, elle, reste dans les
+ * policies PostgreSQL.
+ */
+export default async function Vue() {
+  await exigerVue('recruteur');
+  return null;
 }

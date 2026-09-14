@@ -32,14 +32,3 @@ export async function utilisateurCourant() {
     return null;
   }
 }
-
-/**
- * Rôles de l'utilisateur, lus dans `app_metadata` UNIQUEMENT.
- *
- * `user_metadata` est modifiable par l'utilisateur lui-même : y lire un rôle
- * reviendrait à laisser n'importe qui s'attribuer le rôle administrateur.
- */
-export function rolesDe(utilisateur: { app_metadata?: Record<string, unknown> } | null): string[] {
-  const brut = utilisateur?.app_metadata?.roles;
-  return Array.isArray(brut) ? brut.filter((r): r is string => typeof r === 'string') : [];
-}

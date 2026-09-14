@@ -113,6 +113,20 @@ export const FORMES: readonly NomForme[] = [
 export type ProprietesForme = {
   className?: string;
   /**
+   * La forme épouse sa boîte au lieu d'y tenir en gardant ses proportions.
+   *
+   * ⚠ SANS ÇA, LES MARQUES HORIZONTALES SONT INUTILISABLES EN SOULIGNEMENT.
+   * Leur viewBox est CARRÉE — `0 0 66 64` pour `forme-horizontale-1` — et seuls
+   * les rangs 25 à 38 sont encrés : le trait occupe le cinquième médian d'un
+   * carré. Avec le `preserveAspectRatio` par défaut, une boîte large et basse
+   * fait tenir la forme par sa HAUTEUR : 12px de haut donnaient 12px de large,
+   * centrés au milieu du mot. Mesuré, et invisible.
+   *
+   * À n'employer que pour les formes qui sont des traits. Une étoile étirée
+   * devient une ellipse.
+   */
+  etirer?: boolean;
+  /**
    * Absent = la forme est décorative, elle est masquée aux lecteurs d'écran.
    * Présent = elle porte du sens : role="img" et <title>. Une forme abstraite
    * est décorative dans la quasi-totalité des cas.
@@ -125,6 +139,7 @@ function Cadre({
   boite,
   className,
   titre,
+  etirer,
   children,
 }: ProprietesForme & { boite: string; children: React.ReactNode }) {
   return (
@@ -132,6 +147,7 @@ function Cadre({
       viewBox={boite}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio={etirer ? 'none' : undefined}
       className={cn('h-16 w-16 shrink-0', className)}
       role={titre ? 'img' : undefined}
       aria-hidden={titre ? undefined : true}

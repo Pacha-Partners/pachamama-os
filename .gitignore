@@ -58,3 +58,29 @@ Thumbs.db
 
 # Identifiants de démonstration : transmis dans le rendu, jamais versionnés
 IDENTIFIANTS_DEMO.md
+
+# Comptes de test du projet de développement : adresses de personnes réelles
+# et mots de passe en clair. Le dépôt est public.
+COMPTES_DE_TEST.md
+
+# Artefacts des connecteurs (manifestes de rollback, sauvegardes) — datés,
+# volumineux, parfois porteurs de données personnelles. Jamais versionnés.
+var/
+
+# Source unique des accès aux deux projets Supabase.
+env/*.env
+
+# Cache des adresses tirées de Bubble pour l'activation des comptes :
+# 4 720 adresses nominatives réelles. Le dépôt est public.
+backend/database/activation/*.json
+
+# Adresses réelles et mots de passe en clair — dépôt public.
+ACCES_DE_TEST.md
+
+# Sauvegardes laissées par un script
+*.avant_archive
+*.bak
+*.orig
+
+# Vercel
+.vercel/

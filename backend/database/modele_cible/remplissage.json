@@ -1,0 +1,4818 @@
+[
+ {
+  "table": "_fk_backup",
+  "colonne": "id",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "constraint_name",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "table_name",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "column_name",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "ref_table",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "ref_column",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "on_delete",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_fk_backup",
+  "colonne": "on_update",
+  "lignes": 161,
+  "remplies": 161,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "id",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "type_name",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "supa_table",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "bubble_id",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "nature",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "classement",
+  "lignes": 6200,
+  "remplies": 5540,
+  "taux": 89.4
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "detail",
+  "lignes": 6200,
+  "remplies": 5540,
+  "taux": 89.4
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "premiere_passe",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "derniere_passe",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "premier_constat",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "dernier_constat",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "constats_consecutifs",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "constats_cumules",
+  "lignes": 6200,
+  "remplies": 6200,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_ecart",
+  "colonne": "resolu_le",
+  "lignes": 6200,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "id",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "debut",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "fin",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "types_demandes",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "types_analyses",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "complete",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_passe",
+  "colonne": "incidents",
+  "lignes": 2,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "id",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "type_name",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "bubble_id",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "modified_date",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "motif",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_quarantine",
+  "colonne": "detecte_le",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "type_name",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "supa_table",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "last_modified",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "last_cursor",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "last_run_at",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "last_run_status",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "items_synced",
+  "lignes": 22,
+  "remplies": 22,
+  "taux": 100.0
+ },
+ {
+  "table": "_sync_state",
+  "colonne": "error_message",
+  "lignes": 22,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "id",
+  "lignes": 501,
+  "remplies": 501,
+  "taux": 100.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "description",
+  "lignes": 501,
+  "remplies": 501,
+  "taux": 100.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "mandat_id",
+  "lignes": 501,
+  "remplies": 481,
+  "taux": 96.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "niveau",
+  "lignes": 501,
+  "remplies": 500,
+  "taux": 99.8
+ },
+ {
+  "table": "analyse",
+  "colonne": "slug",
+  "lignes": 501,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "created_at",
+  "lignes": 501,
+  "remplies": 501,
+  "taux": 100.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "updated_at",
+  "lignes": 501,
+  "remplies": 501,
+  "taux": 100.0
+ },
+ {
+  "table": "analyse",
+  "colonne": "created_by",
+  "lignes": 501,
+  "remplies": 501,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "id",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "candidat_id",
+  "lignes": 20,
+  "remplies": 15,
+  "taux": 75.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "prenom",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "nom",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "email",
+  "lignes": 20,
+  "remplies": 19,
+  "taux": 95.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "company_label",
+  "lignes": 20,
+  "remplies": 1,
+  "taux": 5.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "picture_url",
+  "lignes": 20,
+  "remplies": 10,
+  "taux": 50.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "siret",
+  "lignes": 20,
+  "remplies": 1,
+  "taux": 5.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "slug",
+  "lignes": 20,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "created_at",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "updated_at",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "business_maker",
+  "colonne": "created_by",
+  "lignes": 20,
+  "remplies": 20,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "id",
+  "lignes": 7028,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "nom",
+  "lignes": 7028,
+  "remplies": 6971,
+  "taux": 99.2
+ },
+ {
+  "table": "candidat",
+  "colonne": "prenom",
+  "lignes": 7028,
+  "remplies": 6976,
+  "taux": 99.3
+ },
+ {
+  "table": "candidat",
+  "colonne": "prenom_lower",
+  "lignes": 7028,
+  "remplies": 6976,
+  "taux": 99.3
+ },
+ {
+  "table": "candidat",
+  "colonne": "nom_lower",
+  "lignes": 7028,
+  "remplies": 6971,
+  "taux": 99.2
+ },
+ {
+  "table": "candidat",
+  "colonne": "email_perso",
+  "lignes": 7028,
+  "remplies": 6702,
+  "taux": 95.4
+ },
+ {
+  "table": "candidat",
+  "colonne": "linkedin",
+  "lignes": 7028,
+  "remplies": 5670,
+  "taux": 80.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "telephone",
+  "lignes": 7028,
+  "remplies": 3984,
+  "taux": 56.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "photo_url",
+  "lignes": 7028,
+  "remplies": 3429,
+  "taux": 48.8
+ },
+ {
+  "table": "candidat",
+  "colonne": "cv_url",
+  "lignes": 7028,
+  "remplies": 3923,
+  "taux": 55.8
+ },
+ {
+  "table": "candidat",
+  "colonne": "portfolio_file_url",
+  "lignes": 7028,
+  "remplies": 161,
+  "taux": 2.3
+ },
+ {
+  "table": "candidat",
+  "colonne": "genre",
+  "lignes": 7028,
+  "remplies": 5566,
+  "taux": 79.2
+ },
+ {
+  "table": "candidat",
+  "colonne": "niveau_anglais",
+  "lignes": 7028,
+  "remplies": 3115,
+  "taux": 44.3
+ },
+ {
+  "table": "candidat",
+  "colonne": "univers",
+  "lignes": 7028,
+  "remplies": 5936,
+  "taux": 84.5
+ },
+ {
+  "table": "candidat",
+  "colonne": "opento",
+  "lignes": 7028,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "metier_actuel",
+  "lignes": 7028,
+  "remplies": 2243,
+  "taux": 31.9
+ },
+ {
+  "table": "candidat",
+  "colonne": "statut",
+  "lignes": 7028,
+  "remplies": 3347,
+  "taux": 47.6
+ },
+ {
+  "table": "candidat",
+  "colonne": "mindset",
+  "lignes": 7028,
+  "remplies": 2275,
+  "taux": 32.4
+ },
+ {
+  "table": "candidat",
+  "colonne": "emoji_statut",
+  "lignes": 7028,
+  "remplies": 265,
+  "taux": 3.8
+ },
+ {
+  "table": "candidat",
+  "colonne": "contrat_actuel",
+  "lignes": 7028,
+  "remplies": 798,
+  "taux": 11.4
+ },
+ {
+  "table": "candidat",
+  "colonne": "salaire_max_souhait",
+  "lignes": 7028,
+  "remplies": 1574,
+  "taux": 22.4
+ },
+ {
+  "table": "candidat",
+  "colonne": "salaire_min_souhait",
+  "lignes": 7028,
+  "remplies": 1739,
+  "taux": 24.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "tjm_max_souhait",
+  "lignes": 7028,
+  "remplies": 336,
+  "taux": 4.8
+ },
+ {
+  "table": "candidat",
+  "colonne": "tjm_min_souhait",
+  "lignes": 7028,
+  "remplies": 359,
+  "taux": 5.1
+ },
+ {
+  "table": "candidat",
+  "colonne": "est_qualifie",
+  "lignes": 7028,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "localisations",
+  "lignes": 7028,
+  "remplies": 5842,
+  "taux": 83.1
+ },
+ {
+  "table": "candidat",
+  "colonne": "localisations_filtre",
+  "lignes": 7028,
+  "remplies": 5841,
+  "taux": 83.1
+ },
+ {
+  "table": "candidat",
+  "colonne": "experience_id",
+  "lignes": 7028,
+  "remplies": 3352,
+  "taux": 47.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "job_actuel_id",
+  "lignes": 7028,
+  "remplies": 3352,
+  "taux": 47.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "job_reve_id",
+  "lignes": 7028,
+  "remplies": 3352,
+  "taux": 47.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "business_maker_id",
+  "lignes": 7028,
+  "remplies": 14,
+  "taux": 0.2
+ },
+ {
+  "table": "candidat",
+  "colonne": "ajout_par_id",
+  "lignes": 7028,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "agent_pachamama_id",
+  "lignes": 7028,
+  "remplies": 605,
+  "taux": 8.6
+ },
+ {
+  "table": "candidat",
+  "colonne": "early_stage",
+  "lignes": 7028,
+  "remplies": 544,
+  "taux": 7.7
+ },
+ {
+  "table": "candidat",
+  "colonne": "grandes_ecoles",
+  "lignes": 7028,
+  "remplies": 520,
+  "taux": 7.4
+ },
+ {
+  "table": "candidat",
+  "colonne": "pachamama_like",
+  "lignes": 7028,
+  "remplies": 503,
+  "taux": 7.2
+ },
+ {
+  "table": "candidat",
+  "colonne": "pachamama_personnalite",
+  "lignes": 7028,
+  "remplies": 742,
+  "taux": 10.6
+ },
+ {
+  "table": "candidat",
+  "colonne": "note_interne",
+  "lignes": 7028,
+  "remplies": 135,
+  "taux": 1.9
+ },
+ {
+  "table": "candidat",
+  "colonne": "portfolio",
+  "lignes": 7028,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "slug",
+  "lignes": 7028,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "created_at",
+  "lignes": 7028,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "updated_at",
+  "lignes": 7028,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat",
+  "colonne": "created_by",
+  "lignes": 7028,
+  "remplies": 6808,
+  "taux": 96.9
+ },
+ {
+  "table": "candidat_contrat",
+  "colonne": "candidat_id",
+  "lignes": 2460,
+  "remplies": 2460,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_contrat",
+  "colonne": "contrat",
+  "lignes": 2460,
+  "remplies": 2460,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "id",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "candidat_id",
+  "lignes": 7029,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "agent_id",
+  "lignes": 7029,
+  "remplies": 1955,
+  "taux": 27.8
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "is_complete",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "contrat",
+  "lignes": 7029,
+  "remplies": 3495,
+  "taux": 49.7
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "ecole",
+  "lignes": 7029,
+  "remplies": 1807,
+  "taux": 25.7
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "emoji",
+  "lignes": 7029,
+  "remplies": 715,
+  "taux": 10.2
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "mindset",
+  "lignes": 7029,
+  "remplies": 5426,
+  "taux": 77.2
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "perso",
+  "lignes": 7029,
+  "remplies": 2152,
+  "taux": 30.6
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "portfolio",
+  "lignes": 7029,
+  "remplies": 735,
+  "taux": 10.5
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "stage",
+  "lignes": 7029,
+  "remplies": 1815,
+  "taux": 25.8
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "statut",
+  "lignes": 7029,
+  "remplies": 6634,
+  "taux": 94.4
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "note_1",
+  "lignes": 7029,
+  "remplies": 459,
+  "taux": 6.5
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "note_2",
+  "lignes": 7029,
+  "remplies": 843,
+  "taux": 12.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "slug",
+  "lignes": 7029,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "created_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "updated_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expanded",
+  "colonne": "created_by",
+  "lignes": 7029,
+  "remplies": 7026,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expertise",
+  "colonne": "candidat_id",
+  "lignes": 807,
+  "remplies": 807,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_expertise",
+  "colonne": "expertise",
+  "lignes": 807,
+  "remplies": 807,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_jobtype",
+  "colonne": "candidat_id",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "candidat_jobtype",
+  "colonne": "jobtype",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "candidat_mandat",
+  "colonne": "candidat_id",
+  "lignes": 2603,
+  "remplies": 2603,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_mandat",
+  "colonne": "mandat_id",
+  "lignes": 2603,
+  "remplies": 2603,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_note",
+  "colonne": "candidat_id",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "candidat_note",
+  "colonne": "note_id",
+  "lignes": 0,
+  "remplies": 0,
+  "taux": null
+ },
+ {
+  "table": "candidat_profile",
+  "colonne": "candidat_id",
+  "lignes": 408,
+  "remplies": 408,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_profile",
+  "colonne": "profile",
+  "lignes": 408,
+  "remplies": 408,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_remote",
+  "colonne": "candidat_id",
+  "lignes": 1999,
+  "remplies": 1999,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_remote",
+  "colonne": "remote",
+  "lignes": 1999,
+  "remplies": 1999,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_secteur",
+  "colonne": "candidat_id",
+  "lignes": 747,
+  "remplies": 747,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_secteur",
+  "colonne": "secteur",
+  "lignes": 747,
+  "remplies": 747,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_tag",
+  "colonne": "candidat_id",
+  "lignes": 86,
+  "remplies": 86,
+  "taux": 100.0
+ },
+ {
+  "table": "candidat_tag",
+  "colonne": "tag_id",
+  "lignes": 86,
+  "remplies": 86,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "id",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "label",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "subject",
+  "lignes": 4,
+  "remplies": 3,
+  "taux": 75.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "body",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "is_agent_firstname",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "is_agent_lastname",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "is_company_name",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "is_firstname",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "is_custom",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "slug",
+  "lignes": 4,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "created_at",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "updated_at",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "email_template",
+  "colonne": "created_by",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "id",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "nom",
+  "lignes": 850,
+  "remplies": 841,
+  "taux": 98.9
+ },
+ {
+  "table": "entreprise",
+  "colonne": "description",
+  "lignes": 850,
+  "remplies": 94,
+  "taux": 11.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "fondateur",
+  "lignes": 850,
+  "remplies": 61,
+  "taux": 7.2
+ },
+ {
+  "table": "entreprise",
+  "colonne": "serie",
+  "lignes": 850,
+  "remplies": 55,
+  "taux": 6.5
+ },
+ {
+  "table": "entreprise",
+  "colonne": "site_internet",
+  "lignes": 850,
+  "remplies": 259,
+  "taux": 30.5
+ },
+ {
+  "table": "entreprise",
+  "colonne": "siret",
+  "lignes": 850,
+  "remplies": 88,
+  "taux": 10.4
+ },
+ {
+  "table": "entreprise",
+  "colonne": "video",
+  "lignes": 850,
+  "remplies": 47,
+  "taux": 5.5
+ },
+ {
+  "table": "entreprise",
+  "colonne": "note",
+  "lignes": 850,
+  "remplies": 51,
+  "taux": 6.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "email_facturation",
+  "lignes": 850,
+  "remplies": 15,
+  "taux": 1.8
+ },
+ {
+  "table": "entreprise",
+  "colonne": "nom_structure_facturation",
+  "lignes": 850,
+  "remplies": 11,
+  "taux": 1.3
+ },
+ {
+  "table": "entreprise",
+  "colonne": "exclu_details",
+  "lignes": 850,
+  "remplies": 22,
+  "taux": 2.6
+ },
+ {
+  "table": "entreprise",
+  "colonne": "logo_url",
+  "lignes": 850,
+  "remplies": 363,
+  "taux": 42.7
+ },
+ {
+  "table": "entreprise",
+  "colonne": "localisation",
+  "lignes": 850,
+  "remplies": 121,
+  "taux": 14.2
+ },
+ {
+  "table": "entreprise",
+  "colonne": "nb_employes",
+  "lignes": 850,
+  "remplies": 111,
+  "taux": 13.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "nb_techs",
+  "lignes": 850,
+  "remplies": 57,
+  "taux": 6.7
+ },
+ {
+  "table": "entreprise",
+  "colonne": "success_fee_pct",
+  "lignes": 850,
+  "remplies": 136,
+  "taux": 16.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "success_fee_abs",
+  "lignes": 850,
+  "remplies": 5,
+  "taux": 0.6
+ },
+ {
+  "table": "entreprise",
+  "colonne": "success_fee_is_absolute",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "apport_affaires",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "apport_affaires_pct",
+  "lignes": 850,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "exclu",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "duree_exclusivite_semaines",
+  "lignes": 850,
+  "remplies": 69,
+  "taux": 8.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "nb_mois_garantie",
+  "lignes": 850,
+  "remplies": 137,
+  "taux": 16.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "date_signature_contrat",
+  "lignes": 850,
+  "remplies": 141,
+  "taux": 16.6
+ },
+ {
+  "table": "entreprise",
+  "colonne": "date_fin_contrat",
+  "lignes": 850,
+  "remplies": 138,
+  "taux": 16.2
+ },
+ {
+  "table": "entreprise",
+  "colonne": "secteur",
+  "lignes": 850,
+  "remplies": 180,
+  "taux": 21.2
+ },
+ {
+  "table": "entreprise",
+  "colonne": "product_type",
+  "lignes": 850,
+  "remplies": 145,
+  "taux": 17.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "type_entreprise",
+  "lignes": 850,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "statut",
+  "lignes": 850,
+  "remplies": 831,
+  "taux": 97.8
+ },
+ {
+  "table": "entreprise",
+  "colonne": "statut_contrat",
+  "lignes": 850,
+  "remplies": 194,
+  "taux": 22.8
+ },
+ {
+  "table": "entreprise",
+  "colonne": "formule",
+  "lignes": 850,
+  "remplies": 59,
+  "taux": 6.9
+ },
+ {
+  "table": "entreprise",
+  "colonne": "agence",
+  "lignes": 850,
+  "remplies": 58,
+  "taux": 6.8
+ },
+ {
+  "table": "entreprise",
+  "colonne": "niveau_anglais",
+  "lignes": 850,
+  "remplies": 63,
+  "taux": 7.4
+ },
+ {
+  "table": "entreprise",
+  "colonne": "recommandation",
+  "lignes": 850,
+  "remplies": 59,
+  "taux": 6.9
+ },
+ {
+  "table": "entreprise",
+  "colonne": "garantie",
+  "lignes": 850,
+  "remplies": 137,
+  "taux": 16.1
+ },
+ {
+  "table": "entreprise",
+  "colonne": "paiement",
+  "lignes": 850,
+  "remplies": 136,
+  "taux": 16.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "agent_en_charge_id",
+  "lignes": 850,
+  "remplies": 80,
+  "taux": 9.4
+ },
+ {
+  "table": "entreprise",
+  "colonne": "produit_id",
+  "lignes": 850,
+  "remplies": 56,
+  "taux": 6.6
+ },
+ {
+  "table": "entreprise",
+  "colonne": "slug",
+  "lignes": 850,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "created_at",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "updated_at",
+  "lignes": 850,
+  "remplies": 850,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise",
+  "colonne": "created_by",
+  "lignes": 850,
+  "remplies": 796,
+  "taux": 93.6
+ },
+ {
+  "table": "entreprise_mandat",
+  "colonne": "entreprise_id",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_mandat",
+  "colonne": "mandat_id",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_note",
+  "colonne": "entreprise_id",
+  "lignes": 991,
+  "remplies": 991,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_note",
+  "colonne": "note_id",
+  "lignes": 991,
+  "remplies": 991,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_remote",
+  "colonne": "entreprise_id",
+  "lignes": 58,
+  "remplies": 58,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_remote",
+  "colonne": "remote",
+  "lignes": 58,
+  "remplies": 58,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_tag",
+  "colonne": "entreprise_id",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "entreprise_tag",
+  "colonne": "tag_id",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "id",
+  "lignes": 766,
+  "remplies": 766,
+  "taux": 100.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "nom",
+  "lignes": 766,
+  "remplies": 724,
+  "taux": 94.5
+ },
+ {
+  "table": "equipe",
+  "colonne": "prenom",
+  "lignes": 766,
+  "remplies": 737,
+  "taux": 96.2
+ },
+ {
+  "table": "equipe",
+  "colonne": "email",
+  "lignes": 766,
+  "remplies": 674,
+  "taux": 88.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "description",
+  "lignes": 766,
+  "remplies": 1,
+  "taux": 0.1
+ },
+ {
+  "table": "equipe",
+  "colonne": "photo_url",
+  "lignes": 766,
+  "remplies": 191,
+  "taux": 24.9
+ },
+ {
+  "table": "equipe",
+  "colonne": "contact_principal",
+  "lignes": 766,
+  "remplies": 766,
+  "taux": 100.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "metier",
+  "lignes": 766,
+  "remplies": 660,
+  "taux": 86.2
+ },
+ {
+  "table": "equipe",
+  "colonne": "univers",
+  "lignes": 766,
+  "remplies": 684,
+  "taux": 89.3
+ },
+ {
+  "table": "equipe",
+  "colonne": "type_equipe",
+  "lignes": 766,
+  "remplies": 80,
+  "taux": 10.4
+ },
+ {
+  "table": "equipe",
+  "colonne": "mandat_id",
+  "lignes": 766,
+  "remplies": 644,
+  "taux": 84.1
+ },
+ {
+  "table": "equipe",
+  "colonne": "slug",
+  "lignes": 766,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "created_at",
+  "lignes": 766,
+  "remplies": 766,
+  "taux": 100.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "updated_at",
+  "lignes": 766,
+  "remplies": 766,
+  "taux": 100.0
+ },
+ {
+  "table": "equipe",
+  "colonne": "created_by",
+  "lignes": 766,
+  "remplies": 762,
+  "taux": 99.5
+ },
+ {
+  "table": "experience",
+  "colonne": "id",
+  "lignes": 7049,
+  "remplies": 7049,
+  "taux": 100.0
+ },
+ {
+  "table": "experience",
+  "colonne": "candidat_id",
+  "lignes": 7049,
+  "remplies": 7028,
+  "taux": 99.7
+ },
+ {
+  "table": "experience",
+  "colonne": "entreprise_id",
+  "lignes": 7049,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "experience",
+  "colonne": "xp_pro",
+  "lignes": 7049,
+  "remplies": 4445,
+  "taux": 63.1
+ },
+ {
+  "table": "experience",
+  "colonne": "slug",
+  "lignes": 7049,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "experience",
+  "colonne": "created_at",
+  "lignes": 7049,
+  "remplies": 7049,
+  "taux": 100.0
+ },
+ {
+  "table": "experience",
+  "colonne": "updated_at",
+  "lignes": 7049,
+  "remplies": 7049,
+  "taux": 100.0
+ },
+ {
+  "table": "experience",
+  "colonne": "created_by",
+  "lignes": 7049,
+  "remplies": 6828,
+  "taux": 96.9
+ },
+ {
+  "table": "experience_background",
+  "colonne": "experience_id",
+  "lignes": 5218,
+  "remplies": 5218,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_background",
+  "colonne": "background",
+  "lignes": 5218,
+  "remplies": 5218,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_expertise",
+  "colonne": "experience_id",
+  "lignes": 9478,
+  "remplies": 9478,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_expertise",
+  "colonne": "expertise",
+  "lignes": 9478,
+  "remplies": 9478,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_product",
+  "colonne": "experience_id",
+  "lignes": 11350,
+  "remplies": 11350,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_product",
+  "colonne": "product",
+  "lignes": 11350,
+  "remplies": 11350,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_profile",
+  "colonne": "experience_id",
+  "lignes": 5223,
+  "remplies": 5223,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_profile",
+  "colonne": "profile",
+  "lignes": 5223,
+  "remplies": 5223,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_secteur",
+  "colonne": "experience_id",
+  "lignes": 10342,
+  "remplies": 10342,
+  "taux": 100.0
+ },
+ {
+  "table": "experience_secteur",
+  "colonne": "secteur",
+  "lignes": 10342,
+  "remplies": 10342,
+  "taux": 100.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "id",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "entreprise_nom",
+  "lignes": 7029,
+  "remplies": 1285,
+  "taux": 18.3
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "candidat_id",
+  "lignes": 7029,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "entreprise_id",
+  "lignes": 7029,
+  "remplies": 6,
+  "taux": 0.1
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "metier",
+  "lignes": 7029,
+  "remplies": 5931,
+  "taux": 84.4
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "univers",
+  "lignes": 7029,
+  "remplies": 5173,
+  "taux": 73.6
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "pourquoi",
+  "lignes": 7029,
+  "remplies": 2840,
+  "taux": 40.4
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "slug",
+  "lignes": 7029,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "created_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "updated_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_actuel",
+  "colonne": "created_by",
+  "lignes": 7029,
+  "remplies": 6808,
+  "taux": 96.9
+ },
+ {
+  "table": "job_reve",
+  "colonne": "id",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "candidat_id",
+  "lignes": 7029,
+  "remplies": 7028,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "metier",
+  "lignes": 7029,
+  "remplies": 4404,
+  "taux": 62.7
+ },
+ {
+  "table": "job_reve",
+  "colonne": "univers",
+  "lignes": 7029,
+  "remplies": 4400,
+  "taux": 62.6
+ },
+ {
+  "table": "job_reve",
+  "colonne": "description",
+  "lignes": 7029,
+  "remplies": 2335,
+  "taux": 33.2
+ },
+ {
+  "table": "job_reve",
+  "colonne": "disponibilite",
+  "lignes": 7029,
+  "remplies": 2308,
+  "taux": 32.8
+ },
+ {
+  "table": "job_reve",
+  "colonne": "info_localisation",
+  "lignes": 7029,
+  "remplies": 981,
+  "taux": 14.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "infos_salaire",
+  "lignes": 7029,
+  "remplies": 1475,
+  "taux": 21.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "salaire",
+  "lignes": 7029,
+  "remplies": 4293,
+  "taux": 61.1
+ },
+ {
+  "table": "job_reve",
+  "colonne": "salaire_maximum",
+  "lignes": 7029,
+  "remplies": 3616,
+  "taux": 51.4
+ },
+ {
+  "table": "job_reve",
+  "colonne": "tjm_minimum",
+  "lignes": 7029,
+  "remplies": 1146,
+  "taux": 16.3
+ },
+ {
+  "table": "job_reve",
+  "colonne": "tjm_maximum",
+  "lignes": 7029,
+  "remplies": 271,
+  "taux": 3.9
+ },
+ {
+  "table": "job_reve",
+  "colonne": "localisations",
+  "lignes": 7029,
+  "remplies": 5583,
+  "taux": 79.4
+ },
+ {
+  "table": "job_reve",
+  "colonne": "slug",
+  "lignes": 7029,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "created_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "updated_at",
+  "lignes": 7029,
+  "remplies": 7029,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve",
+  "colonne": "created_by",
+  "lignes": 7029,
+  "remplies": 6808,
+  "taux": 96.9
+ },
+ {
+  "table": "job_reve_contrat",
+  "colonne": "job_reve_id",
+  "lignes": 6444,
+  "remplies": 6444,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_contrat",
+  "colonne": "contrat",
+  "lignes": 6444,
+  "remplies": 6444,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_critere",
+  "colonne": "job_reve_id",
+  "lignes": 8882,
+  "remplies": 8882,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_critere",
+  "colonne": "critere",
+  "lignes": 8882,
+  "remplies": 8882,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_remote",
+  "colonne": "job_reve_id",
+  "lignes": 4469,
+  "remplies": 4469,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_remote",
+  "colonne": "remote",
+  "lignes": 4469,
+  "remplies": 4469,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_secteur",
+  "colonne": "job_reve_id",
+  "lignes": 2846,
+  "remplies": 2846,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_secteur",
+  "colonne": "secteur",
+  "lignes": 2846,
+  "remplies": 2846,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_secteur_nogo",
+  "colonne": "job_reve_id",
+  "lignes": 1803,
+  "remplies": 1803,
+  "taux": 100.0
+ },
+ {
+  "table": "job_reve_secteur_nogo",
+  "colonne": "secteur",
+  "lignes": 1803,
+  "remplies": 1803,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "id",
+  "lignes": 534,
+  "remplies": 534,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "titre",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "description",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "description_manager",
+  "lignes": 534,
+  "remplies": 76,
+  "taux": 14.2
+ },
+ {
+  "table": "mandat",
+  "colonne": "description_produit",
+  "lignes": 534,
+  "remplies": 62,
+  "taux": 11.6
+ },
+ {
+  "table": "mandat",
+  "colonne": "missions",
+  "lignes": 534,
+  "remplies": 6,
+  "taux": 1.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "process_recrutement",
+  "lignes": 534,
+  "remplies": 369,
+  "taux": 69.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "pour_toi",
+  "lignes": 534,
+  "remplies": 375,
+  "taux": 70.2
+ },
+ {
+  "table": "mandat",
+  "colonne": "pas_pour_toi",
+  "lignes": 534,
+  "remplies": 381,
+  "taux": 71.3
+ },
+ {
+  "table": "mandat",
+  "colonne": "remote_infos",
+  "lignes": 534,
+  "remplies": 153,
+  "taux": 28.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "salaire_infos",
+  "lignes": 534,
+  "remplies": 73,
+  "taux": 13.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "format_mission",
+  "lignes": 534,
+  "remplies": 38,
+  "taux": 7.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "duree_mission",
+  "lignes": 534,
+  "remplies": 79,
+  "taux": 14.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "date_demarrage_mission",
+  "lignes": 534,
+  "remplies": 80,
+  "taux": 15.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "video_youtube",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "salaire_max",
+  "lignes": 534,
+  "remplies": 376,
+  "taux": 70.4
+ },
+ {
+  "table": "mandat",
+  "colonne": "salaire_min",
+  "lignes": 534,
+  "remplies": 375,
+  "taux": 70.2
+ },
+ {
+  "table": "mandat",
+  "colonne": "tjm_max",
+  "lignes": 534,
+  "remplies": 100,
+  "taux": 18.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "tjm_min",
+  "lignes": 534,
+  "remplies": 100,
+  "taux": 18.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "min_xp",
+  "lignes": 534,
+  "remplies": 136,
+  "taux": 25.5
+ },
+ {
+  "table": "mandat",
+  "colonne": "z_legacy_number",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "delivery",
+  "lignes": 534,
+  "remplies": 84,
+  "taux": 15.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "discovery",
+  "lignes": 534,
+  "remplies": 84,
+  "taux": 15.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "strategie",
+  "lignes": 534,
+  "remplies": 78,
+  "taux": 14.6
+ },
+ {
+  "table": "mandat",
+  "colonne": "ops",
+  "lignes": 534,
+  "remplies": 71,
+  "taux": 13.3
+ },
+ {
+  "table": "mandat",
+  "colonne": "management",
+  "lignes": 534,
+  "remplies": 68,
+  "taux": 12.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "status_sort_order",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "kickoff",
+  "lignes": 534,
+  "remplies": 428,
+  "taux": 80.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "job_anonyme",
+  "lignes": 534,
+  "remplies": 534,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "job_off_market",
+  "lignes": 534,
+  "remplies": 534,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "univers",
+  "lignes": 534,
+  "remplies": 460,
+  "taux": 86.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "metier",
+  "lignes": 534,
+  "remplies": 530,
+  "taux": 99.3
+ },
+ {
+  "table": "mandat",
+  "colonne": "contrat",
+  "lignes": 534,
+  "remplies": 522,
+  "taux": 97.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "statut",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "equity",
+  "lignes": 534,
+  "remplies": 118,
+  "taux": 22.1
+ },
+ {
+  "table": "mandat",
+  "colonne": "contributor_type",
+  "lignes": 534,
+  "remplies": 96,
+  "taux": 18.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "visibilite",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "exclu_pachamama",
+  "lignes": 534,
+  "remplies": 400,
+  "taux": 74.9
+ },
+ {
+  "table": "mandat",
+  "colonne": "type_deal",
+  "lignes": 534,
+  "remplies": 139,
+  "taux": 26.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "source_marketing",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "lead_apporteur",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "entreprise_id",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat",
+  "colonne": "manager_id",
+  "lignes": 534,
+  "remplies": 77,
+  "taux": 14.4
+ },
+ {
+  "table": "mandat",
+  "colonne": "recruteur_id",
+  "lignes": 534,
+  "remplies": 46,
+  "taux": 8.6
+ },
+ {
+  "table": "mandat",
+  "colonne": "business_maker_id",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "personne_en_charge_id",
+  "lignes": 534,
+  "remplies": 478,
+  "taux": 89.5
+ },
+ {
+  "table": "mandat",
+  "colonne": "agent_2_id",
+  "lignes": 534,
+  "remplies": 25,
+  "taux": 4.7
+ },
+ {
+  "table": "mandat",
+  "colonne": "account_manager_id",
+  "lignes": 534,
+  "remplies": 173,
+  "taux": 32.4
+ },
+ {
+  "table": "mandat",
+  "colonne": "slug",
+  "lignes": 534,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "created_at",
+  "lignes": 534,
+  "remplies": 534,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "updated_at",
+  "lignes": 534,
+  "remplies": 534,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat",
+  "colonne": "created_by",
+  "lignes": 534,
+  "remplies": 533,
+  "taux": 99.8
+ },
+ {
+  "table": "mandat_analyse",
+  "colonne": "mandat_id",
+  "lignes": 481,
+  "remplies": 481,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_analyse",
+  "colonne": "analyse_id",
+  "lignes": 481,
+  "remplies": 481,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_cible",
+  "colonne": "mandat_id",
+  "lignes": 92,
+  "remplies": 92,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_cible",
+  "colonne": "cible",
+  "lignes": 92,
+  "remplies": 92,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_equipe",
+  "colonne": "mandat_id",
+  "lignes": 705,
+  "remplies": 705,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_equipe",
+  "colonne": "equipe_id",
+  "lignes": 705,
+  "remplies": 705,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_note",
+  "colonne": "mandat_id",
+  "lignes": 2008,
+  "remplies": 2008,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_note",
+  "colonne": "note_id",
+  "lignes": 2008,
+  "remplies": 2008,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_remote",
+  "colonne": "mandat_id",
+  "lignes": 430,
+  "remplies": 430,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_remote",
+  "colonne": "remote",
+  "lignes": 430,
+  "remplies": 430,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_tag_job",
+  "colonne": "mandat_id",
+  "lignes": 830,
+  "remplies": 830,
+  "taux": 100.0
+ },
+ {
+  "table": "mandat_tag_job",
+  "colonne": "tag_job",
+  "lignes": 830,
+  "remplies": 830,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "id",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "candidat_id",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "entreprise_id",
+  "lignes": 227,
+  "remplies": 226,
+  "taux": 99.6
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "mandat_id",
+  "lignes": 227,
+  "remplies": 226,
+  "taux": 99.6
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "process_id",
+  "lignes": 227,
+  "remplies": 226,
+  "taux": 99.6
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "split_id",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "business_maker_coo_id",
+  "lignes": 227,
+  "remplies": 2,
+  "taux": 0.9
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "business_maker_deal_id",
+  "lignes": 227,
+  "remplies": 16,
+  "taux": 7.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "univers",
+  "lignes": 227,
+  "remplies": 225,
+  "taux": 99.1
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "contributor_type",
+  "lignes": 227,
+  "remplies": 18,
+  "taux": 7.9
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "contrat",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "statut_contrat_freelance",
+  "lignes": 227,
+  "remplies": 221,
+  "taux": 97.4
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "statut_contrat_entreprise",
+  "lignes": 227,
+  "remplies": 221,
+  "taux": 97.4
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "date_closing",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "date_debut",
+  "lignes": 227,
+  "remplies": 226,
+  "taux": 99.6
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "date_fin_garantie",
+  "lignes": 227,
+  "remplies": 160,
+  "taux": 70.5
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "date_fin_mission",
+  "lignes": 227,
+  "remplies": 78,
+  "taux": 34.4
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "salaire_final",
+  "lignes": 227,
+  "remplies": 147,
+  "taux": 64.8
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "commission",
+  "lignes": 227,
+  "remplies": 147,
+  "taux": 64.8
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "commission_nette",
+  "lignes": 227,
+  "remplies": 43,
+  "taux": 18.9
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "apport_affaires_k",
+  "lignes": 227,
+  "remplies": 43,
+  "taux": 18.9
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "cooptation_talent",
+  "lignes": 227,
+  "remplies": 21,
+  "taux": 9.3
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "tjm_final_marge_inclus",
+  "lignes": 227,
+  "remplies": 80,
+  "taux": 35.2
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "tjm_final_talent",
+  "lignes": 227,
+  "remplies": 80,
+  "taux": 35.2
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "note_user_ids",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "est_archive",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "agent_filtre_id",
+  "lignes": 227,
+  "remplies": 224,
+  "taux": 98.7
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "agent_2_filtre_id",
+  "lignes": 227,
+  "remplies": 14,
+  "taux": 6.2
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "slug",
+  "lignes": 227,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "created_at",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "updated_at",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose",
+  "colonne": "created_by",
+  "lignes": 227,
+  "remplies": 227,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose_note",
+  "colonne": "mandatclose_id",
+  "lignes": 1289,
+  "remplies": 1289,
+  "taux": 100.0
+ },
+ {
+  "table": "mandatclose_note",
+  "colonne": "note_id",
+  "lignes": 1289,
+  "remplies": 1289,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "id",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "mandatclose_id",
+  "lignes": 266,
+  "remplies": 261,
+  "taux": 98.1
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_1_com",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_1_com_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_1_com_is_absolute",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_2_com",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_2_com_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "agent_2_com_is_absolute",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "bus_maker_coo_com",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "bus_maker_coo_com_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "bus_maker_deal_com",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "bus_maker_deal_com_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "pacha_com",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "pacha_com_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "net",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "net_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "total",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "total_pct",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "slug",
+  "lignes": 266,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "created_at",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "updated_at",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "mandate_closed_split",
+  "colonne": "created_by",
+  "lignes": 266,
+  "remplies": 266,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "id",
+  "lignes": 25728,
+  "remplies": 25728,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "commentaire",
+  "lignes": 25728,
+  "remplies": 24672,
+  "taux": 95.9
+ },
+ {
+  "table": "note",
+  "colonne": "date_note",
+  "lignes": 25728,
+  "remplies": 25728,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "note_automatique",
+  "lignes": 25728,
+  "remplies": 25728,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "candidat_id",
+  "lignes": 25728,
+  "remplies": 23419,
+  "taux": 91.0
+ },
+ {
+  "table": "note",
+  "colonne": "entreprise_id",
+  "lignes": 25728,
+  "remplies": 2082,
+  "taux": 8.1
+ },
+ {
+  "table": "note",
+  "colonne": "mandat_id",
+  "lignes": 25728,
+  "remplies": 2062,
+  "taux": 8.0
+ },
+ {
+  "table": "note",
+  "colonne": "mandatclose_id",
+  "lignes": 25728,
+  "remplies": 1750,
+  "taux": 6.8
+ },
+ {
+  "table": "note",
+  "colonne": "note_event",
+  "lignes": 25728,
+  "remplies": 1477,
+  "taux": 5.7
+ },
+ {
+  "table": "note",
+  "colonne": "note_event_type",
+  "lignes": 25728,
+  "remplies": 1477,
+  "taux": 5.7
+ },
+ {
+  "table": "note",
+  "colonne": "note_event_value_new",
+  "lignes": 25728,
+  "remplies": 79,
+  "taux": 0.3
+ },
+ {
+  "table": "note",
+  "colonne": "note_event_value_prev",
+  "lignes": 25728,
+  "remplies": 77,
+  "taux": 0.3
+ },
+ {
+  "table": "note",
+  "colonne": "user_id",
+  "lignes": 25728,
+  "remplies": 25663,
+  "taux": 99.7
+ },
+ {
+  "table": "note",
+  "colonne": "note_user_tag_id",
+  "lignes": 25728,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "note",
+  "colonne": "slug",
+  "lignes": 25728,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "note",
+  "colonne": "created_at",
+  "lignes": 25728,
+  "remplies": 25728,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "updated_at",
+  "lignes": 25728,
+  "remplies": 25728,
+  "taux": 100.0
+ },
+ {
+  "table": "note",
+  "colonne": "created_by",
+  "lignes": 25728,
+  "remplies": 25663,
+  "taux": 99.7
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "id",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "commentaire",
+  "lignes": 25318,
+  "remplies": 24196,
+  "taux": 95.6
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "date_note",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "note_automatique",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "candidat_id",
+  "lignes": 25318,
+  "remplies": 23106,
+  "taux": 91.3
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "entreprise_id",
+  "lignes": 25318,
+  "remplies": 1223,
+  "taux": 4.8
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "mandat_id",
+  "lignes": 25318,
+  "remplies": 992,
+  "taux": 3.9
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "mandatclose_id",
+  "lignes": 25318,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "user_id",
+  "lignes": 25318,
+  "remplies": 24712,
+  "taux": 97.6
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "slug",
+  "lignes": 25318,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "created_at",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "updated_at",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "note_archivee",
+  "colonne": "created_by",
+  "lignes": 25318,
+  "remplies": 25318,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "id",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "bubble_contact_id",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "bubble_mandat_id",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "contact_email",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "contact_firstname",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "job_title",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "company_name",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "candidate_firstname",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "nps_type",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "status",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "created_at",
+  "lignes": 118,
+  "remplies": 118,
+  "taux": 100.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "responded_at",
+  "lignes": 118,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "nps_tracking",
+  "colonne": "reminder_sent_at",
+  "lignes": 118,
+  "remplies": 95,
+  "taux": 80.5
+ },
+ {
+  "table": "process",
+  "colonne": "id",
+  "lignes": 7243,
+  "remplies": 7243,
+  "taux": 100.0
+ },
+ {
+  "table": "process",
+  "colonne": "candidat_id",
+  "lignes": 7243,
+  "remplies": 7224,
+  "taux": 99.7
+ },
+ {
+  "table": "process",
+  "colonne": "mandat_id",
+  "lignes": 7243,
+  "remplies": 7223,
+  "taux": 99.7
+ },
+ {
+  "table": "process",
+  "colonne": "entreprise_id",
+  "lignes": 7243,
+  "remplies": 7223,
+  "taux": 99.7
+ },
+ {
+  "table": "process",
+  "colonne": "etape",
+  "lignes": 7243,
+  "remplies": 7213,
+  "taux": 99.6
+ },
+ {
+  "table": "process",
+  "colonne": "description",
+  "lignes": 7243,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "process",
+  "colonne": "pachamama_like",
+  "lignes": 7243,
+  "remplies": 1635,
+  "taux": 22.6
+ },
+ {
+  "table": "process",
+  "colonne": "pachamama_personnalite",
+  "lignes": 7243,
+  "remplies": 3586,
+  "taux": 49.5
+ },
+ {
+  "table": "process",
+  "colonne": "plus_par_rapport_mission",
+  "lignes": 7243,
+  "remplies": 3023,
+  "taux": 41.7
+ },
+ {
+  "table": "process",
+  "colonne": "moins_par_rapport_mission",
+  "lignes": 7243,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "process",
+  "colonne": "infos_remuneration",
+  "lignes": 7243,
+  "remplies": 2224,
+  "taux": 30.7
+ },
+ {
+  "table": "process",
+  "colonne": "salaire_minimum",
+  "lignes": 7243,
+  "remplies": 6084,
+  "taux": 84.0
+ },
+ {
+  "table": "process",
+  "colonne": "salaire_souhaite",
+  "lignes": 7243,
+  "remplies": 5236,
+  "taux": 72.3
+ },
+ {
+  "table": "process",
+  "colonne": "tjm_minimum",
+  "lignes": 7243,
+  "remplies": 1881,
+  "taux": 26.0
+ },
+ {
+  "table": "process",
+  "colonne": "tjm_souhaite",
+  "lignes": 7243,
+  "remplies": 1705,
+  "taux": 23.5
+ },
+ {
+  "table": "process",
+  "colonne": "date_statut_applicant",
+  "lignes": 7243,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "process",
+  "colonne": "date_statut_ko",
+  "lignes": 7243,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "process",
+  "colonne": "date_update_etape",
+  "lignes": 7243,
+  "remplies": 5771,
+  "taux": 79.7
+ },
+ {
+  "table": "process",
+  "colonne": "next_step_date",
+  "lignes": 7243,
+  "remplies": 466,
+  "taux": 6.4
+ },
+ {
+  "table": "process",
+  "colonne": "slug",
+  "lignes": 7243,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "process",
+  "colonne": "created_at",
+  "lignes": 7243,
+  "remplies": 7243,
+  "taux": 100.0
+ },
+ {
+  "table": "process",
+  "colonne": "updated_at",
+  "lignes": 7243,
+  "remplies": 7243,
+  "taux": 100.0
+ },
+ {
+  "table": "process",
+  "colonne": "created_by",
+  "lignes": 7243,
+  "remplies": 7235,
+  "taux": 99.9
+ },
+ {
+  "table": "process_mandatclose",
+  "colonne": "process_id",
+  "lignes": 226,
+  "remplies": 226,
+  "taux": 100.0
+ },
+ {
+  "table": "process_mandatclose",
+  "colonne": "mandatclose_id",
+  "lignes": 226,
+  "remplies": 226,
+  "taux": 100.0
+ },
+ {
+  "table": "produit",
+  "colonne": "id",
+  "lignes": 103,
+  "remplies": 103,
+  "taux": 100.0
+ },
+ {
+  "table": "produit",
+  "colonne": "description",
+  "lignes": 103,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "produit",
+  "colonne": "entreprise_id",
+  "lignes": 103,
+  "remplies": 103,
+  "taux": 100.0
+ },
+ {
+  "table": "produit",
+  "colonne": "maturite",
+  "lignes": 103,
+  "remplies": 84,
+  "taux": 81.6
+ },
+ {
+  "table": "produit",
+  "colonne": "txt_explicatif",
+  "lignes": 103,
+  "remplies": 86,
+  "taux": 83.5
+ },
+ {
+  "table": "produit",
+  "colonne": "slug",
+  "lignes": 103,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "produit",
+  "colonne": "created_at",
+  "lignes": 103,
+  "remplies": 103,
+  "taux": 100.0
+ },
+ {
+  "table": "produit",
+  "colonne": "updated_at",
+  "lignes": 103,
+  "remplies": 103,
+  "taux": 100.0
+ },
+ {
+  "table": "produit",
+  "colonne": "created_by",
+  "lignes": 103,
+  "remplies": 103,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "value",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "background_asset1",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "background_asset2",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "background_image",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "logo_url",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "logo_mini_url",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "police",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "web_site",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_app_branding",
+  "colonne": "sort_order",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_apporteur_affaires",
+  "colonne": "value",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_apporteur_affaires",
+  "colonne": "sort_order",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_background",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_background",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_cible",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_cible",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_company_type",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_company_type",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contract_status",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contract_status",
+  "colonne": "couleur",
+  "lignes": 5,
+  "remplies": 4,
+  "taux": 80.0
+ },
+ {
+  "table": "ref_contract_status",
+  "colonne": "signature_required",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contract_status",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contrat",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contrat",
+  "colonne": "color",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contrat",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contributor_type",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contributor_type",
+  "colonne": "full_display",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_contributor_type",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_criteres",
+  "colonne": "value",
+  "lignes": 32,
+  "remplies": 32,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_criteres",
+  "colonne": "sort_order",
+  "lignes": 32,
+  "remplies": 32,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_email_config",
+  "colonne": "value",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_email_config",
+  "colonne": "email_adresses",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_email_config",
+  "colonne": "sort_order",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_emoji",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_emoji",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_expertise",
+  "colonne": "value",
+  "lignes": 31,
+  "remplies": 31,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_expertise",
+  "colonne": "sort_order",
+  "lignes": 31,
+  "remplies": 31,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_expertise_univers",
+  "colonne": "expertise_value",
+  "lignes": 49,
+  "remplies": 49,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_expertise_univers",
+  "colonne": "univers_value",
+  "lignes": 49,
+  "remplies": 49,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_fonction",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_fonction",
+  "colonne": "label_en",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_fonction",
+  "colonne": "label_fr",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_fonction",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_form_41",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_form_41",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_form_42",
+  "colonne": "value",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_form_42",
+  "colonne": "sort_order",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_formule",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_formule",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_gender",
+  "colonne": "value",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_gender",
+  "colonne": "label_en",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_gender",
+  "colonne": "label_fr",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_gender",
+  "colonne": "sort_order",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_image",
+  "colonne": "value",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_image",
+  "colonne": "file_url",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_image",
+  "colonne": "sort_order",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_language",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_language",
+  "colonne": "label",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_language",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_status",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_status",
+  "colonne": "status_admin_label",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_status",
+  "colonne": "status_color",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_status",
+  "colonne": "status_sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_status",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_visibility",
+  "colonne": "value",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_visibility",
+  "colonne": "label_fr",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_visibility",
+  "colonne": "tooltip_icon",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mandate_visibility",
+  "colonne": "sort_order",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_maturite_produit",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_maturite_produit",
+  "colonne": "image_url",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_maturite_produit",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_metier",
+  "colonne": "value",
+  "lignes": 238,
+  "remplies": 238,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_metier",
+  "colonne": "sort_order",
+  "lignes": 238,
+  "remplies": 238,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_metier_univers",
+  "colonne": "metier_value",
+  "lignes": 361,
+  "remplies": 361,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_metier_univers",
+  "colonne": "univers_value",
+  "lignes": 361,
+  "remplies": 361,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mindset",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_mindset",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_analyse",
+  "colonne": "value",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_analyse",
+  "colonne": "color",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_analyse",
+  "colonne": "sort_order",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_anglais",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_anglais",
+  "colonne": "candidat_display",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_niveau_anglais",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_note_event",
+  "colonne": "value",
+  "lignes": 24,
+  "remplies": 24,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_note_event",
+  "colonne": "note_event_text",
+  "lignes": 24,
+  "remplies": 20,
+  "taux": 83.3
+ },
+ {
+  "table": "ref_note_event",
+  "colonne": "note_event_type",
+  "lignes": 24,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_note_event",
+  "colonne": "sort_order",
+  "lignes": 24,
+  "remplies": 24,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_note_event_type",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_note_event_type",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "value",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "is_active",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "is_in_kanban_view_company",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "is_in_kanban_view_pachamama",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "is_ko",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "is_public",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "kanban_column_color",
+  "lignes": 70,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "kanban_tag_color",
+  "lignes": 70,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "public_display",
+  "lignes": 70,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_process_etape",
+  "colonne": "sort_order",
+  "lignes": 70,
+  "remplies": 70,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_product",
+  "colonne": "value",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_product",
+  "colonne": "sort_order",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_product_type",
+  "colonne": "value",
+  "lignes": 9,
+  "remplies": 9,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_product_type",
+  "colonne": "sort_order",
+  "lignes": 9,
+  "remplies": 9,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_profile",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_profile",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_remote",
+  "colonne": "value",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_remote",
+  "colonne": "is_active",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_remote",
+  "colonne": "sort_order",
+  "lignes": 4,
+  "remplies": 4,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_role",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_role",
+  "colonne": "role_category",
+  "lignes": 5,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_role",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_role_category",
+  "colonne": "value",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_role_category",
+  "colonne": "sort_order",
+  "lignes": 1,
+  "remplies": 1,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_secteur",
+  "colonne": "value",
+  "lignes": 52,
+  "remplies": 52,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_secteur",
+  "colonne": "sort_order",
+  "lignes": 52,
+  "remplies": 52,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_sendgrid_template",
+  "colonne": "value",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_sendgrid_template",
+  "colonne": "id_sendgrid",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_sendgrid_template",
+  "colonne": "visible_pour_mandat",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_sendgrid_template",
+  "colonne": "sort_order",
+  "lignes": 6,
+  "remplies": 6,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_slack_channel",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_slack_channel",
+  "colonne": "webhook",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_slack_channel",
+  "colonne": "webhook_test",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_slack_channel",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_source_marketing",
+  "colonne": "value",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_source_marketing",
+  "colonne": "sort_order",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_statut_candidat",
+  "colonne": "value",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_statut_candidat",
+  "colonne": "sort_order",
+  "lignes": 5,
+  "remplies": 5,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_tag_job",
+  "colonne": "value",
+  "lignes": 74,
+  "remplies": 74,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_tag_job",
+  "colonne": "icone_url",
+  "lignes": 74,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_tag_job",
+  "colonne": "sort_order",
+  "lignes": 74,
+  "remplies": 74,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_anchor",
+  "colonne": "value",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_anchor",
+  "colonne": "sort_order",
+  "lignes": 3,
+  "remplies": 3,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_event",
+  "colonne": "value",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_event",
+  "colonne": "sort_order",
+  "lignes": 2,
+  "remplies": 2,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "value",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "is_admin",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "relative_time",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "task_anchor",
+  "lignes": 12,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "task_event",
+  "lignes": 12,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "task_text",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_task_type",
+  "colonne": "sort_order",
+  "lignes": 12,
+  "remplies": 12,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "value",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "color",
+  "lignes": 8,
+  "remplies": 4,
+  "taux": 50.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "secondary_color",
+  "lignes": 8,
+  "remplies": 4,
+  "taux": 50.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "logo_url",
+  "lignes": 8,
+  "remplies": 3,
+  "taux": 37.5
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "logo_mini_url",
+  "lignes": 8,
+  "remplies": 3,
+  "taux": 37.5
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "talent_card_url",
+  "lignes": 8,
+  "remplies": 4,
+  "taux": 50.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "is_live",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "ref_univers",
+  "colonne": "sort_order",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "id",
+  "lignes": 110,
+  "remplies": 110,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "nom",
+  "lignes": 110,
+  "remplies": 110,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "description",
+  "lignes": 110,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "tag",
+  "colonne": "type_tag",
+  "lignes": 110,
+  "remplies": 110,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "entreprise_id",
+  "lignes": 110,
+  "remplies": 5,
+  "taux": 4.5
+ },
+ {
+  "table": "tag",
+  "colonne": "mandat_id",
+  "lignes": 110,
+  "remplies": 16,
+  "taux": 14.5
+ },
+ {
+  "table": "tag",
+  "colonne": "slug",
+  "lignes": 110,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "tag",
+  "colonne": "created_at",
+  "lignes": 110,
+  "remplies": 110,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "updated_at",
+  "lignes": 110,
+  "remplies": 110,
+  "taux": 100.0
+ },
+ {
+  "table": "tag",
+  "colonne": "created_by",
+  "lignes": 110,
+  "remplies": 108,
+  "taux": 98.2
+ },
+ {
+  "table": "task",
+  "colonne": "id",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "task_text",
+  "lignes": 1136,
+  "remplies": 69,
+  "taux": 6.1
+ },
+ {
+  "table": "task",
+  "colonne": "is_complete",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "creation_date",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "due_date",
+  "lignes": 1136,
+  "remplies": 1124,
+  "taux": 98.9
+ },
+ {
+  "table": "task",
+  "colonne": "task_type",
+  "lignes": 1136,
+  "remplies": 1067,
+  "taux": 93.9
+ },
+ {
+  "table": "task",
+  "colonne": "mandatclose_id",
+  "lignes": 1136,
+  "remplies": 1099,
+  "taux": 96.7
+ },
+ {
+  "table": "task",
+  "colonne": "task_notif_id",
+  "lignes": 1136,
+  "remplies": 1130,
+  "taux": 99.5
+ },
+ {
+  "table": "task",
+  "colonne": "creation_user_id",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "update_user_id",
+  "lignes": 1136,
+  "remplies": 351,
+  "taux": 30.9
+ },
+ {
+  "table": "task",
+  "colonne": "assigned_user_id",
+  "lignes": 1136,
+  "remplies": 1071,
+  "taux": 94.3
+ },
+ {
+  "table": "task",
+  "colonne": "slug",
+  "lignes": 1136,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "task",
+  "colonne": "created_at",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "updated_at",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task",
+  "colonne": "created_by",
+  "lignes": 1136,
+  "remplies": 1136,
+  "taux": 100.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "id",
+  "lignes": 1152,
+  "remplies": 1152,
+  "taux": 100.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "task_id",
+  "lignes": 1152,
+  "remplies": 1136,
+  "taux": 98.6
+ },
+ {
+  "table": "task_notif",
+  "colonne": "is_sent",
+  "lignes": 1152,
+  "remplies": 1152,
+  "taux": 100.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "preview_text",
+  "lignes": 1152,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "sent_email",
+  "lignes": 1152,
+  "remplies": 929,
+  "taux": 80.6
+ },
+ {
+  "table": "task_notif",
+  "colonne": "sent_text",
+  "lignes": 1152,
+  "remplies": 981,
+  "taux": 85.2
+ },
+ {
+  "table": "task_notif",
+  "colonne": "wf_date",
+  "lignes": 1152,
+  "remplies": 1124,
+  "taux": 97.6
+ },
+ {
+  "table": "task_notif",
+  "colonne": "wf_id",
+  "lignes": 1152,
+  "remplies": 1124,
+  "taux": 97.6
+ },
+ {
+  "table": "task_notif",
+  "colonne": "task_type",
+  "lignes": 1152,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "slug",
+  "lignes": 1152,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "created_at",
+  "lignes": 1152,
+  "remplies": 1152,
+  "taux": 100.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "updated_at",
+  "lignes": 1152,
+  "remplies": 1152,
+  "taux": 100.0
+ },
+ {
+  "table": "task_notif",
+  "colonne": "created_by",
+  "lignes": 1152,
+  "remplies": 1136,
+  "taux": 98.6
+ },
+ {
+  "table": "user",
+  "colonne": "id",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "auth_id",
+  "lignes": 4605,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "user",
+  "colonne": "nom",
+  "lignes": 4605,
+  "remplies": 4527,
+  "taux": 98.3
+ },
+ {
+  "table": "user",
+  "colonne": "prenom",
+  "lignes": 4605,
+  "remplies": 4530,
+  "taux": 98.4
+ },
+ {
+  "table": "user",
+  "colonne": "photo_url",
+  "lignes": 4605,
+  "remplies": 1018,
+  "taux": 22.1
+ },
+ {
+  "table": "user",
+  "colonne": "candidat_id",
+  "lignes": 4605,
+  "remplies": 4158,
+  "taux": 90.3
+ },
+ {
+  "table": "user",
+  "colonne": "entreprise_id",
+  "lignes": 4605,
+  "remplies": 344,
+  "taux": 7.5
+ },
+ {
+  "table": "user",
+  "colonne": "fonction",
+  "lignes": 4605,
+  "remplies": 4,
+  "taux": 0.1
+ },
+ {
+  "table": "user",
+  "colonne": "langue",
+  "lignes": 4605,
+  "remplies": 2052,
+  "taux": 44.6
+ },
+ {
+  "table": "user",
+  "colonne": "user_lang",
+  "lignes": 4605,
+  "remplies": 2052,
+  "taux": 44.6
+ },
+ {
+  "table": "user",
+  "colonne": "email_confirmed",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "is_deleted",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "popup_pas_de_nouvelles",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "popup_trouve_bonheur",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "premiere_connexion_at",
+  "lignes": 4605,
+  "remplies": 323,
+  "taux": 7.0
+ },
+ {
+  "table": "user",
+  "colonne": "slug",
+  "lignes": 4605,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "user",
+  "colonne": "created_at",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user",
+  "colonne": "updated_at",
+  "lignes": 4605,
+  "remplies": 4605,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "id",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "user_id",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "univers",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "slug",
+  "lignes": 8,
+  "remplies": 0,
+  "taux": 0.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "created_at",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "updated_at",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_partner",
+  "colonne": "created_by",
+  "lignes": 8,
+  "remplies": 8,
+  "taux": 100.0
+ },
+ {
+  "table": "user_role",
+  "colonne": "user_id",
+  "lignes": 4601,
+  "remplies": 4601,
+  "taux": 100.0
+ },
+ {
+  "table": "user_role",
+  "colonne": "role",
+  "lignes": 4601,
+  "remplies": 4601,
+  "taux": 100.0
+ }
+]

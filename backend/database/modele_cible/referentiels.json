@@ -1,0 +1,648 @@
+{
+ "referentiels": [
+  {
+   "source": "ref_metier",
+   "valeurs_reelles": "238 lignes mesurees (le COMMENT du schema annonce 273 entrees / 238 uniques : le dedoublonnage a deja eu lieu). 222/238 valeurs contiennent un espace, longueur max 42 (« Director of Product Marketing, Strategy & Enablement » cote consommateurs). Consommateurs mesures : job_actuel.metier 5931/7029, job_reve.metier 4404/7029, equipe.metier 660/766, mandat.metier 530/534, candidat.metier_actuel 2243/7028. 16 valeurs orphelines (52 occurrences) presentes dans les donnees et absentes du referentiel : Engineering Director 12, Program Manager 7, Platform Owner 5, Lead ML 5, Web Analytics Manager 5, Business Process Owner 4, Founding Engineer 4, Senior DevOps 2, puis 8 valeurs a 1 occurrence (Director of Product Marketing/Strategy & Enablement, Responsable acquisition abonnement, Senior Product Builder - Data, Staff Product Manager, Senior ML, Consultant-e CRO, Head of RSSI, Principal Engineer). 97 valeurs du referentiel jamais utilisees par mandat.metier, 27 par job_actuel.metier.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table metier(metier_id uuid PK, code text UNIQUE, libelle_fr text NOT NULL, ordre int, actif bool). code = slug ASCII du libelle (engineering_director, head_of_product...). PAS d'enum.",
+   "attributs": "value -> libelle_fr (conserve tel quel) + code derive. sort_order -> ordre. Aucune colonne source perdue (2 colonnes).",
+   "justification": "238 valeurs, vocabulaire OUVERT : 16 intitules de poste sont apparus dans les donnees sans passer par le referentiel, ce qui prouve que la liste bouge en continu au rythme du marche. Un enum imposerait un ALTER TYPE (donc une migration) a chaque nouveau poste : inacceptable pour un referentiel alimente par les recruteurs. Aucun attribut propre au-dela du libelle et de l'ordre, mais la cardinalite et l'ouverture suffisent a justifier la table.",
+   "orphelins_a_absorber": 16,
+   "occurrences_orphelines": 52,
+   "action_migration": "Charger les 238 valeurs + creer les 16 orphelines en actif=true avec une marque origine='decouvert_en_donnees' pour arbitrage. Zero ligne consommateur rejetee."
+  },
+  {
+   "source": "ref_metier_univers",
+   "valeurs_reelles": "361 lignes mesurees. 237 metiers sur 238 sont rattaches a au moins un univers (1 metier non rattache), 77 metiers portent PLUSIEURS univers. Repartition : Product 106, Tech 78, Sales 47, Data 37, Marketing 34, People & Finance 26, Design 25, Finance 8.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table metier_univers(metier_id FK metier, univers_id FK univers, PK composite).",
+   "attributs": "metier_value -> metier_id (resolu par code), univers_value -> univers_id. 2 colonnes, aucune perdue.",
+   "justification": "Vraie relation N-N portee par les donnees : 77 metiers multi-univers interdisent de replier l'univers en colonne scalaire sur metier. C'est la seule table du lot qui n'est pas un vocabulaire mais un rattachement, elle reste une table de liaison.",
+   "point_attention": "1 metier sur 238 n'a aucun univers : a completer, sinon il sera invisible dans tout filtre par univers."
+  },
+  {
+   "source": "ref_secteur",
+   "valeurs_reelles": "52 lignes. Aucun emoji, aucune valeur > 24 caracteres, 11/52 avec espace (Adtech, Fintech, Consulting / Services, Blockchain / NFT...). Consommateurs : experience_secteur 10342 lignes (52/52 utilisees), job_reve_secteur_nogo 1803 (52/52), job_reve_secteur 2846 (50/52), candidat_secteur 747 (46/52), entreprise.secteur 180/850 (38/52). ZERO orpheline sur les 5 consommateurs.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table secteur(secteur_id uuid PK, code text UNIQUE, libelle_fr text, ordre int, actif bool). code = slug (adtech, fintech, consulting_services...).",
+   "attributs": "value -> libelle_fr + code. sort_order -> ordre. 2 colonnes, aucune perdue.",
+   "justification": "52 valeurs : au-dela du seuil ou un enum reste lisible et manipulable. Vocabulaire ouvert (les secteurs tech se creent : ClimateTech, Spacetech, Regtech sont recents et deja presents). Referentiel le plus sain du lot (0 orpheline sur 15 918 lignes consommatrices) : il n'y a rien a reparer, seulement a normaliser en code + libelle."
+  },
+  {
+   "source": "ref_expertise",
+   "valeurs_reelles": "31 lignes (GenAI, NoCode, Growth, IA, Data, Early-stage, Design, Impact, Internationalisation, UX, UI, Design System, Design Ops, UXR, SQL, Python, Machine Learning, C#, C++, NodeJS, TypeScript, PHP, ReactJS, VueJS, Ruby, Mobile, Golang, Scala, Rust, Elixir, N/A). Consommateurs : experience_expertise 9478 lignes, candidat_expertise 807 lignes. 2 orphelines mesurees sur experience_expertise : « UX/UI » 29, « Integrations » 20. 6 valeurs jamais utilisees par candidat_expertise (C#, C++, Elixir, Golang, Rust, Scala).",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table expertise(expertise_id uuid PK, code text UNIQUE, libelle_fr text, ordre int, actif bool). code = slug (genai, nocode, machine_learning, c_sharp, c_plus_plus...).",
+   "attributs": "value -> libelle_fr + code. sort_order -> ordre. 2 colonnes, aucune perdue.",
+   "justification": "31 valeurs, vocabulaire techniquement OUVERT : une stack d'expertises suit le marche (GenAI est recent, 2 valeurs sont deja apparues hors referentiel). Les noms comportent des caracteres hostiles a un identifiant (C#, C++, N/A, UX/UI) : raison supplementaire de separer un code ASCII du libelle affiche. La table permet d'ajouter une expertise sans migration.",
+   "orphelins_a_absorber": 2,
+   "point_attention": "« UX/UI » (29 occurrences) est probablement la fusion de UX et UI qui existent tous les deux : arbitrage humain requis (eclater en 2 rattachements ou creer une 3e valeur). « Integrations » (20) est une expertise legitime absente du referentiel."
+  },
+  {
+   "source": "ref_expertise_univers",
+   "valeurs_reelles": "49 lignes. 31 expertises sur 31 sont rattachees, 10 portent plusieurs univers.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table expertise_univers(expertise_id FK, univers_id FK, PK composite).",
+   "attributs": "expertise_value -> expertise_id, univers_value -> univers_id. 2 colonnes, aucune perdue.",
+   "justification": "Relation N-N reelle (10 expertises multi-univers) : impossible a replier en colonne. Couverture complete, rien a reparer."
+  },
+  {
+   "source": "ref_criteres",
+   "valeurs_reelles": "32 lignes, 28/32 avec espace, longueur max 36 (Ambition, App Mobile, Autonomie, Challenge intellectuel, Confiance dans la vision fondateurs, Culture non toxique, Equilibre vie pro-perso, Feeling avec l'equipe, Full-remote obligatoire...). Consommateur unique : job_reve_critere 8882 lignes, 32/32 utilisees, ZERO orpheline.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table critere(critere_id uuid PK, code text UNIQUE, libelle_fr text, ordre int, actif bool).",
+   "attributs": "value -> libelle_fr + code. sort_order -> ordre. 2 colonnes, aucune perdue.",
+   "justification": "32 valeurs de libelles produit longs (« Confiance dans la vision fondateurs ») destines a etre affiches et reformules : un enum figerait la formulation marketing dans le type SQL, et toute reecriture d'un libelle deviendrait une migration de schema. C'est exactement le piege a eviter. Table, code stable, libelle librement editable."
+  },
+  {
+   "source": "ref_univers",
+   "valeurs_reelles": "8 lignes : Product, Tech, Design, Data, Finance, People & Finance, Marketing, Sales. Attributs renseignes seulement sur Product et Tech (color, secondary_color, logo_url, logo_mini_url, talent_card_url, is_live=true) ; les 6 autres ont tous les attributs NULL et is_live=false. Consommateurs (9) : candidat.univers 5936/7028, job_actuel.univers 5173/7029, job_reve.univers 4400/7029, equipe.univers 684/766, mandat.univers 460/534, mandatclose.univers 225/227, user_partner.univers 8/8, plus ref_metier_univers et ref_expertise_univers. ZERO orpheline. Design, Data et Finance ne sont utilises PAR AUCUNE donnee metier (seulement par user_partner qui contient exactement 1 ligne par univers).",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table univers(univers_id uuid PK, code text UNIQUE, libelle_fr text, couleur_primaire text, couleur_secondaire text, logo_url text, logo_mini_url text, talent_card_url text, is_live bool, ordre int). code = product, tech, design, data, finance, people_finance, marketing, sales.",
+   "attributs": "value -> code + libelle_fr ; color -> couleur_primaire ; secondary_color -> couleur_secondaire ; logo_url, logo_mini_url, talent_card_url -> idem ; is_live -> is_live ; sort_order -> ordre. 8 colonnes, aucune perdue.",
+   "justification": "8 valeurs seulement, MAIS 6 attributs propres dont 3 URLs d'assets et un drapeau is_live qui pilote l'ouverture commerciale d'une verticale. C'est une dimension metier, pas une enumeration : les couleurs et les logos sont des donnees que l'application lit, pas de la presentation codee en dur. Un enum obligerait a stocker ces 6 attributs ailleurs, donc a inventer une table de toute facon.",
+   "point_attention": "Les 5 URLs pointent sur le CDN Bubble (98119bfbf8cfc027dc70db6c69918bd3.cdn.bubble.io) : elles meurent avec l'abonnement Bubble. A rapatrier dans le stockage cible avant coupure."
+  },
+  {
+   "source": "ref_process_etape",
+   "valeurs_reelles": "DETRUITE. 70 lignes contenant chacune UN caractere isole. La sequence des valeurs demarre par { \" d i s p l a y : puis les caracteres du reste du payload. Preuve du mecanisme : l'ETL a recu un objet JSON du type {\"display\": \"⚡️ Applicant\", \"is_ko\": ..., \"kanban_column_color\": \"#...\"} et l'a itere caractere par caractere, une ligne par caractere distinct. Toutes les colonnes d'attributs sont perdues : is_active/is_ko/is_public/is_in_kanban_view_company/is_in_kanban_view_pachamama = false sur 70/70, kanban_column_color/kanban_tag_color/public_display = NULL sur 70/70. Le jeu de caracteres retrouve contient bien les 12 emoji des libelles, le # et les chiffres hexadecimaux des couleurs, et un « e accent aigu » qui n'apparait dans AUCUN des 14 libelles : il venait de public_display, donc des libelles publics francais existaient.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table process_etape(etape_id uuid PK, code text UNIQUE, libelle_fr text, emoji text, is_ko bool, is_terminale bool, is_active bool, is_public bool, libelle_public text, kanban_column_color text, kanban_tag_color text, visible_kanban_client bool, visible_kanban_pachamama bool, ordre int). 14 lignes reconstruites depuis process.etape.",
+   "attributs": "10 colonnes source. value -> code + libelle_fr + emoji (le libelle porte l'emoji en prefixe, on le separe). is_ko -> is_ko, is_active -> is_active, is_public -> is_public, is_in_kanban_view_company -> visible_kanban_client, is_in_kanban_view_pachamama -> visible_kanban_pachamama, kanban_column_color/kanban_tag_color -> idem, public_display -> libelle_public, sort_order -> ordre. Les 8 colonnes d'attributs sont CONSERVEES dans le cible mais leur CONTENU est irrecuperable depuis le miroir.",
+   "justification": "14 etapes, mais 8 attributs dont 5 drapeaux qui pilotent de la logique metier (is_ko decide si une candidature compte comme perdue, is_public et libelle_public decident ce que voit le candidat, les 2 drapeaux kanban decident de l'affichage cote client vs cote Pachamama, les 2 couleurs pilotent le kanban). Un enum ne peut porter aucun de ces attributs. C'est le referentiel le plus charge en logique du lot : table obligatoire.",
+   "reconstruction": "Les 14 codes se deduisent des 7 213 valeurs de process.etape mesurees : ko_pachamama (4302, is_ko), ko_client (1471, is_ko), ko_candidat (468, is_ko), hired (235, is_terminale), applicant (208), to_contact (176), contacted (110), send_out (87), interview_1 (48), interview_2 (46), ko (46, is_ko), final_interview (9), screen_pachamama (5), push_candidature (2). is_ko est deductible avec certitude (les 4 libelles portant le prefixe KO). L'ordre du tunnel est deductible de la logique de recrutement.",
+   "non_recuperable": "kanban_column_color, kanban_tag_color, libelle_public, is_active, is_public, visible_kanban_client, visible_kanban_pachamama : 7 attributs a re-extraire de Bubble (option set Process_Etape_OS) ou a re-decider. Ne PAS les inventer."
+  },
+  {
+   "source": "ref_tag_job",
+   "valeurs_reelles": "DETRUITE par le meme mecanisme. 74 lignes d'un caractere. La sequence demarre par \" d i s p l a y : puis les caracteres du payload. icone_url renseigne sur 0/74 lignes : l'attribut est entierement perdu. Le jeu de caracteres retrouve contient 15 emoji distincts, exactement les 15 emoji des 15 libelles a emoji presents dans mandat_tag_job.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table tag_job(tag_job_id uuid PK, code text UNIQUE, libelle_fr text, emoji text, icone_url text, ordre int, actif bool). 16 lignes reconstruites depuis mandat_tag_job.",
+   "attributs": "3 colonnes source. value -> code + libelle_fr + emoji. icone_url -> icone_url (colonne conservee, contenu perdu : 0/74 renseigne). sort_order -> ordre.",
+   "justification": "16 valeurs porteuses d'un attribut d'asset (icone_url) et d'un emoji distinct de son libelle. Vocabulaire marketing susceptible d'evoluer (ce sont des arguments de vente d'une offre : « Croissance saine », « Product-led », « Max de BSPCE »). Table plutot qu'enum pour pouvoir ajouter un argument sans migration et pour porter l'icone.",
+   "reconstruction": "Deduite des 830 lignes de mandat_tag_job, 16 valeurs distinctes mesurees : boite_fr (152), croissance_saine (84), cas_usage_concrets (82), stabilite_financiere (74), international (74), career_move (74), cible_users_sympa (69), boite_a_impact (57), product_led (37), full_remote (34), intrapreneuriat (25), lancement_produit (25), job_exclu (18), max_bspce (15), diversite (9), licorne (1).",
+   "decouverte": "« Job exclu » (18 mandats) N'A JAMAIS EXISTE dans l'option set : la lettre J est absente du jeu de 74 caracteres exploses, alors que l'explosion a capture tous les caracteres du payload. Preuve formelle que cette 16e valeur est une saisie hors referentiel. Le COMMENT du schema annonce d'ailleurs 15 options.",
+   "non_recuperable": "icone_url pour les 16 tags (0/74 renseigne dans le miroir)."
+  },
+  {
+   "source": "ref_contract_status",
+   "valeurs_reelles": "5 lignes, TOUTES avec emoji en prefixe : « ⏳ Contrat non signe » (#F47777, signature_required=true), « 📥 Contrat envoye » (#6B55D8, true), « ✅ Contrat signe » (#81CF81, false), « ❌ Contrat expire » (#F47777, true), « ✅ Not required » (couleur NULL, false). Consommateurs : mandatclose.statut_contrat_freelance 221/227, mandatclose.statut_contrat_entreprise 221/227, entreprise.statut_contrat 194/850. ZERO orpheline. « ❌ Contrat expire » n'est utilise par aucun consommateur.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table statut_contrat(code text PK, libelle_fr text, emoji text, couleur text, signature_requise bool, ordre int). codes : non_signe, envoye, signe, expire, non_requis.",
+   "attributs": "4 colonnes source. value -> code + libelle_fr + emoji ; couleur -> couleur ; signature_required -> signature_requise ; sort_order -> ordre. Aucune perdue.",
+   "justification": "5 valeurs seulement, mais signature_required est un drapeau de LOGIQUE METIER (il decide si un contrat doit etre relance), pas un attribut d'affichage. Un enum le laisserait sans domicile. Table minuscule assumee, avec le drapeau et la couleur.",
+   "point_attention": "« ✅ Not required » est un statut en anglais dans une liste francaise, et le couple emoji ✅ est partage avec « Contrat signe » : deux etats differents avec le meme signal visuel. A arbitrer au moment de fixer les libelles."
+  },
+  {
+   "source": "ref_maturite_produit",
+   "valeurs_reelles": "5 lignes : A, B, C, D, E, chacune avec une image_url sur le CDN Bubble. Consommateur unique : produit.maturite 84/103 lignes, valeurs mesurees B 36, C 30, A 13, D 5. « E » n'est jamais utilise.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table maturite_produit(code text PK, libelle_fr text, image_url text, ordre int). codes : a, b, c, d, e.",
+   "attributs": "3 colonnes source. value -> code (deja un code : une lettre) ; image_url -> image_url ; sort_order -> ordre. Aucune perdue. Le libelle_fr est A CREER : le miroir ne contient AUCUN libelle explicatif pour A..E.",
+   "justification": "5 valeurs et la cle est deja un code propre (une lettre), donc l'enum serait tentant. Mais chaque niveau porte une image_url : l'attribut impose une table. Cas rare ou la valeur interne est deja saine et ou c'est l'attribut qui decide.",
+   "point_attention": "Aucun libelle nulle part : le sens de A..E n'existe que dans les 5 images Bubble et dans la tete de l'equipe. A documenter avant la coupure Bubble, sinon l'information est perdue pour de bon. Les 5 URLs sont sur le CDN Bubble."
+  },
+  {
+   "source": "ref_task_type",
+   "valeurs_reelles": "12 lignes, cles DEJA en snake_case propre (mandate_clo_free_onboarding, mandate_clo_cdi_invoice_cus...). Attributs : is_admin bool, relative_time smallint (valeurs mesurees -1, 0, 1, 15...), task_text porteur de balisage BBCode ([b]Onboarding[/b] du talent place). task_anchor NULL sur 12/12 et task_event NULL sur 12/12. Consommateurs : task.task_type 1067/1136 lignes, les 12 valeurs sont utilisees (112 max, 58 min) ; task_notif.task_type 0/1152 (100% NULL).",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table task_type(code text PK, libelle_fr text, gabarit_texte text, is_admin bool, delai_relatif_jours int, ancre ancre_tache, evenement evenement_tache, ordre int).",
+   "attributs": "7 colonnes source. value -> code ; task_text -> gabarit_texte ; is_admin -> is_admin ; relative_time -> delai_relatif_jours ; task_anchor -> ancre (colonne conservee, contenu 100% NULL) ; task_event -> evenement (idem) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "12 valeurs mais la ligne EST une regle de planification (un gabarit de texte + un decalage en jours + une ancre temporelle + un drapeau admin). C'est de la configuration executable, pas un vocabulaire : table obligatoire. Le gabarit contient du BBCode a convertir.",
+   "point_attention": "task_anchor et task_event vides sur 12/12 : la regle « J+15 apres QUOI » est incomplete dans le miroir. evenement est REDERIVABLE avec certitude du prefixe du code (mandate_clo_free_* -> mandate_clo_free, mandate_clo_cdi_* -> mandate_clo_cdi). ancre ne l'est pas : arbitrage requis, sinon la planification automatique des taches n'est pas reimplementable."
+  },
+  {
+   "source": "ref_note_event",
+   "valeurs_reelles": "24 lignes, cles DEJA en snake_case (contract_free_update, info_salary, task_create, team_agent_1_com...). note_event_text porte la phrase francaise (« Mise a jour du salaire »), NULL sur les 4 evenements task_*. note_event_type NULL sur 24/24 alors qu'une FK vers ref_note_event_type existe. Consommateur : note.note_event 1477/25728 lignes, 18/24 valeurs utilisees ; jamais utilisees : archive, contract_cus_update, contract_free_update, team_agent_2_com, team_coo, team_coo_com.",
+   "devenir": "table_cible",
+   "valeur_interne_proposee": "table note_event(code text PK, type_note_event type_note_event NOT NULL, libelle_fr text, ordre int).",
+   "attributs": "4 colonnes source. value -> code ; note_event_text -> libelle_fr ; note_event_type -> type_note_event (colonne conservee, contenu 100% NULL mais RECALCULABLE) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "24 valeurs : trop pour un enum confortable, et surtout le referentiel GRANDIT a chaque nouveau champ tracable dans le journal (chaque « Mise a jour de X » est une ligne). Un enum imposerait une migration a chaque champ nouvellement audite. La ligne porte en plus un gabarit de message. Table.",
+   "recuperation": "note_event_type est reconstituable a 100% par le prefixe du code : contract_* -> contract, info_* -> info, task_* -> task, team_* -> team, archive -> archive. La FK vide n'entraine donc aucune perte. A poser en colonne generee ou en contrainte de coherence prefixe/type."
+  },
+  {
+   "source": "ref_background",
+   "valeurs_reelles": "4 lignes : Business, Tech, Data, Marketing. Consommateur unique : experience_background.background 5218 lignes, 4/4 utilisees (Tech 2223, Business 1608, Marketing 736, Data 651). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE background_talent AS ENUM ('business','tech','data','marketing')",
+   "attributs": "2 colonnes source. value -> code de l'enum + libelle dans ref_libelle. sort_order -> ref_libelle.ordre. Aucune perdue.",
+   "justification": "4 valeurs, aucun attribut propre, vocabulaire ferme et structurel (les grandes familles de parcours ne changent pas au rythme du produit). 5218 lignes deja parfaitement conformes : l'enum verrouille cette proprete a cout nul."
+  },
+  {
+   "source": "ref_cible",
+   "valeurs_reelles": "4 lignes : B2B, B2B2C, B2C, Users internes. Consommateur unique : mandat_cible.cible 92 lignes, 4/4 utilisees (B2B 59, B2B2C 15, B2C 12, Users internes 6). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE cible_produit AS ENUM ('b2b','b2b2c','b2c','users_internes')",
+   "attributs": "2 colonnes source. value -> code + libelle dans ref_libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "4 valeurs, aucun attribut, taxonomie universelle et stable (B2B/B2C n'evolue pas). Reste une table de liaison mandat_cible cote cible, mais la valeur devient un enum."
+  },
+  {
+   "source": "ref_company_type",
+   "valeurs_reelles": "5 lignes : Startup, Scaleup, ETI, Corporate, VC / Private Equity. Consommateur : entreprise.type_entreprise 0/850 lignes renseignees. Les 5 valeurs sont INUTILISEES.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_entreprise AS ENUM ('startup','scaleup','eti','corporate','vc_private_equity')",
+   "attributs": "2 colonnes source. value -> code + libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "5 valeurs, aucun attribut, taxonomie stable. Le referentiel est vide d'usage (0/850) mais il n'est PAS mort : c'est une segmentation client evidente qui n'a jamais ete saisie. On conserve le vocabulaire et la colonne (nullable) au lieu de le jeter : cout nul, et l'abandonner reviendrait a perdre une intention de modele.",
+   "lignes_a_migrer": 0
+  },
+  {
+   "source": "ref_apporteur_affaires",
+   "valeurs_reelles": "3 lignes : Pacha Partners, Head of BU, Collectif. Consommateur : mandat.lead_apporteur 0/534 lignes renseignees. Les 3 valeurs sont INUTILISEES.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_apporteur AS ENUM ('pacha_partners','head_of_bu','collectif')",
+   "attributs": "2 colonnes source. value -> code + libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "3 valeurs, aucun attribut. Vide d'usage (0/534) mais le concept est vivant ailleurs dans le modele : business_maker existe comme table, et mandate_closed_split porte bus_maker_coo_com et bus_maker_deal_com. Le vocabulaire d'origine de l'apport reste donc pertinent : on le garde en enum, cout nul.",
+   "lignes_a_migrer": 0
+  },
+  {
+   "source": "ref_source_marketing",
+   "valeurs_reelles": "12 lignes : Avant-Garde, Collectif, Emailing, Events, Inbound, Linkedin, Nurturing, Outbound, Partner - Bizmaker, Recommendation, « Communaute metier (TechRocks, FrenchProduct...) » (47 car.), Website. Consommateur : mandat.source_marketing 0/534 lignes renseignees. INUTILISE.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE source_marketing AS ENUM ('avant_garde','collectif','emailing','events','inbound','linkedin','nurturing','outbound','partner_bizmaker','recommendation','communaute_metier','website')",
+   "attributs": "2 colonnes source. value -> code + libelle (la valeur longue « Communaute metier (TechRocks, FrenchProduct...) » devient le libelle du code communaute_metier). sort_order -> ordre. Aucune perdue.",
+   "justification": "12 valeurs, aucun attribut, ferme. Vide d'usage aujourd'hui mais c'est un axe d'analyse d'acquisition que le cible voudra remplir : conserver. Une valeur porte deja des exemples entre parentheses dans la cle, ce qui illustre pourquoi la cle ne doit pas etre le libelle.",
+   "lignes_a_migrer": 0
+  },
+  {
+   "source": "ref_contrat",
+   "valeurs_reelles": "2 lignes, TOUTES a emoji : « 🤝 CDI » (#FFE8E0) et « ⚡️ Freelance » (#E9E0FF). Consommateurs : job_reve_contrat 6444 lignes, candidat_contrat 2460, mandat.contrat 522/534, mandatclose.contrat 227/227, candidat.contrat_actuel 798/7028. Orpheline mesuree : « Entrepreneur » 38 occurrences (20 dans candidat_contrat, 17 dans job_reve_contrat, 1 dans mandat.contrat).",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_contrat AS ENUM ('cdi','freelance','entrepreneur')",
+   "attributs": "3 colonnes source. value -> code + libelle_fr + emoji dans ref_libelle ; color -> ref_libelle.couleur ; sort_order -> ordre. Aucune perdue.",
+   "justification": "2 valeurs (3 avec l'orpheline), vocabulaire juridique parfaitement ferme. La couleur et l'emoji ne justifient pas une table : ce sont de la presentation, et ref_libelle les accueille pour TOUS les enums. Enum, avec 10 451 lignes consommatrices a remapper sur 3 codes.",
+   "orphelins_a_absorber": 1,
+   "occurrences_orphelines": 38,
+   "point_attention": "« Entrepreneur » est aussi une valeur de ref_profile (831 lignes dans experience_profile). Meme mot, deux referentiels, deux sens : statut juridique vs posture professionnelle. Arbitrage requis : creer le 3e type de contrat, ou reconnaitre 38 saisies erronees qui appartenaient au profil."
+  },
+  {
+   "source": "ref_contributor_type",
+   "valeurs_reelles": "2 lignes mesurees : « IC » (full_display « Contributeur Individuel », sort_order 1) et « Manager / C-level » (full_display identique a la valeur, sort_order 3). Le COMMENT du schema annonce 4 entrees avec doublons : le trou dans sort_order (1 puis 3) confirme que 2 doublons ont deja ete supprimes. Consommateurs : mandat.contributor_type 96/534 (IC 73, Manager / C-level 23), mandatclose.contributor_type 18/227 (IC 15, Manager 3). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_contributeur AS ENUM ('ic','manager_c_level')",
+   "attributs": "3 colonnes source. value -> code + libelle_court dans ref_libelle ; full_display -> ref_libelle.libelles->>'long' (« Contributeur Individuel ») ; sort_order -> ordre. Aucune perdue.",
+   "justification": "2 valeurs, ferme. full_display est un SECOND libelle, pas un attribut metier : ref_libelle porte plusieurs registres de libelle par code, donc un second libelle ne justifie jamais une table a lui seul. C'est precisement le mecanisme qui permet de reduire 47 referentiels a 13 tables."
+  },
+  {
+   "source": "ref_emoji",
+   "valeurs_reelles": "4 lignes ou la valeur EST l'emoji, longueur 1 : 🔥, 👍, 👀, 👎. Consommateur unique : candidat.emoji_statut 265/7028 (🔥 135, 👍 117, 👀 11, 👎 2). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE emoji_statut AS ENUM ('feu','pouce_haut','yeux','pouce_bas')",
+   "attributs": "2 colonnes source. value -> ref_libelle.emoji (l'emoji est ici la DONNEE, pas une decoration du libelle) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "4 valeurs, ferme. Cas particulier revendique : c'est le seul referentiel ou l'emoji est legitimement la valeur affichee, parce que l'appreciation d'un recruteur EST le pictogramme. On lui donne quand meme un code interne nommable, sinon il devient impossible d'ecrire une requete ou un test lisible (WHERE emoji_statut = 'feu' plutot qu'un caractere invisible dans le code source)."
+  },
+  {
+   "source": "ref_fonction",
+   "valeurs_reelles": "2 lignes, cles DEJA propres : career_agent (label_fr « Agent de carriere des experts Produit », label_en « Product experts career agent ») et recruiter (label_fr « Recruiter - partenaire Pachamama »). Consommateur : user.fonction 4/4605 lignes seulement (recruiter 2, career_agent 2).",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE fonction_user AS ENUM ('career_agent','recruiter')",
+   "attributs": "4 colonnes source. value -> code (inchange) ; label_fr et label_en -> ref_libelle.libelles {fr, en} ; sort_order -> ordre. Aucune perdue.",
+   "justification": "2 valeurs, ferme, et surtout REFERENTIEL MODELE : la separation code interne / libelle FR / libelle EN existe deja ici. C'est la preuve interne que le schema cible propose n'invente rien, il generalise le meilleur cas deja present dans le miroir.",
+   "point_attention": "4 lignes renseignees sur 4605 users : la fonction n'est presque jamais saisie. Ne pas conclure a un referentiel inutile, conclure a un formulaire non rempli."
+  },
+  {
+   "source": "ref_gender",
+   "valeurs_reelles": "3 lignes, cles DEJA propres : male (Homme/Male), female (Femme/Female), non-binary (Non binaire/Non-binary). Consommateur : candidat.genre 5566/7028 (male 3611, female 1950, non-binary 5). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE genre AS ENUM ('male','female','non_binary')",
+   "attributs": "4 colonnes source. value -> code (le tiret de non-binary devient un underscore) ; label_fr, label_en -> ref_libelle.libelles {fr, en}. sort_order -> ordre. Aucune perdue.",
+   "justification": "3 valeurs, ferme, deja code + 2 libelles. Autre referentiel modele. Seule normalisation : non-binary -> non_binary pour rester un identifiant SQL sans guillemets."
+  },
+  {
+   "source": "ref_language",
+   "valeurs_reelles": "2 lignes, cles DEJA propres : en_us (« English (us) »), fr_fr (« Francais »). Consommateurs : user.langue 2052/4605 et user.user_lang 2052/4605, tous deux a 100% fr_fr. en_us jamais utilise.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE langue AS ENUM ('fr_fr','en_us')",
+   "attributs": "3 colonnes source. value -> code (inchange) ; label -> ref_libelle.libelles.fr ; sort_order -> ordre. Aucune perdue.",
+   "justification": "2 valeurs, code deja propre, standard BCP-47 de fait. Enum evident.",
+   "point_attention": "user.langue et user.user_lang portent EXACTEMENT la meme information (2052 lignes, meme distribution) : deux colonnes pour un seul fait. Le cible doit n'en garder qu'une. C'est une duplication a trancher, pas une perte."
+  },
+  {
+   "source": "ref_mandate_status",
+   "valeurs_reelles": "4 lignes avec attributs : Nouveau (admin_label « Nouveau », #6B55D8, ordre 1), En cours (« En cours », #81CF81, 2), Termine (« Termine », #F47777, 3), « Close par Pachamama » (admin_label « Close », #F3AF00, 4). Consommateur : mandat.statut 533/534, mesure le 26/08 : Termine 271, Close par Pachamama 204, En cours 39, Nouveau 19. ZERO orpheline, 4/4 utilisees.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE statut_mandat AS ENUM ('nouveau','en_cours','termine','close_pachamama')",
+   "attributs": "5 colonnes source. value -> code + libelle_fr ; status_admin_label -> ref_libelle.libelles.court (« Close ») ; status_color -> ref_libelle.couleur ; status_sort_order ET sort_order -> ref_libelle.ordre (les deux colonnes portent la MEME sequence 1,2,3,4 : duplication, on n'en garde qu'une). Aucune information perdue.",
+   "justification": "4 valeurs, cycle de vie ferme d'un mandat. Couleur + second libelle + ordre sont tous absorbes par ref_libelle. Enum : il gagne en plus une garantie de coherence sur un champ qui pilote des filtres partout dans l'application.",
+   "point_attention": "mandat.status_sort_order existe AUSSI comme colonne sur la table mandat : un ordre de statut denormalise sur chaque ligne. A supprimer dans le cible, il se lit par jointure."
+  },
+  {
+   "source": "ref_mandate_visibility",
+   "valeurs_reelles": "3 lignes, cles DEJA propres : private (« Non publie », icone eye-off), talent_only (« Visible espace Talent », icone view-lock), public (« Visible job board public », icone eye). Consommateur : mandat.visibilite 533/534, mesure le 26/08 : private 496, public 35, talent_only 2. ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE visibilite_mandat AS ENUM ('private','talent_only','public')",
+   "attributs": "4 colonnes source. value -> code (inchange) ; label_fr -> ref_libelle.libelles.fr ; tooltip_icon -> ref_libelle.icone_url ; sort_order -> ordre. Aucune perdue.",
+   "justification": "3 valeurs, code deja propre, semantique d'exposition strictement fermee (et sensible : c'est ce qui decide qu'une offre est publique). Enum, pour que la base refuse structurellement une 4e valeur inventee.",
+   "point_attention": "Les 3 tooltip_icon sont des SVG sur le CDN Bubble : a rapatrier."
+  },
+  {
+   "source": "ref_mindset",
+   "valeurs_reelles": "5 lignes, TOUTES a emoji, 4/5 depassent 40 caracteres, longueur max 69. Ce sont des PHRASES a la premiere personne : « Je ne suis pas en recherche, je suis bien dans mon job 😎 », « Je suis en veille uniquement pour ne pas rater la bonne opportunite 👀 », « Je vais lancer mes recherches dans les 6 prochains mois 😴 », « Je vais lancer mes recherches dans les 3 prochains mois ✌️ », « Je suis deja en recherche active  🚀 ». Consommateur : candidat.mindset 2275/7028, 5/5 utilisees, ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE mindset_talent AS ENUM ('pas_en_recherche','en_veille','recherche_6_mois','recherche_3_mois','recherche_active')",
+   "attributs": "2 colonnes source. value -> ref_libelle.libelles.fr (phrase conservee au caractere pres) + emoji ; sort_order -> ordre (l'ordre 1..5 encode une intensite croissante d'intention : information metier a conserver). Aucune perdue.",
+   "justification": "5 valeurs, ferme, mais le cas le PLUS abusif du lot : la cle primaire est une phrase de formulaire de 69 caracteres avec un emoji. Toute reformulation marketing casserait 2275 lignes. Enum a codes courts + phrase dans ref_libelle : la phrase devient editable sans migration.",
+   "point_attention": "La valeur « Je suis deja en recherche active  🚀 » (1672 occurrences, la plus fréquente) contient un DOUBLE espace avant l'emoji et un espace final. Le mapping doit se faire sur la chaine brute exacte, pas sur une version normalisee a la main, sinon 1672 lignes tombent a NULL."
+  },
+  {
+   "source": "ref_niveau_analyse",
+   "valeurs_reelles": "3 lignes avec couleur : Bien (#008000), Moyen (#FF8C00), Vigilance (#CD5C5C). Consommateur unique : analyse.niveau 500/501 (Bien 402, Moyen 88, Vigilance 10). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE niveau_analyse AS ENUM ('bien','moyen','vigilance')",
+   "attributs": "3 colonnes source. value -> code + libelle ; color -> ref_libelle.couleur ; sort_order -> ordre. Aucune perdue.",
+   "justification": "3 valeurs, echelle d'appreciation fermee et ordonnee. La couleur est de la presentation, absorbee par ref_libelle. Enum."
+  },
+  {
+   "source": "ref_niveau_anglais",
+   "valeurs_reelles": "4 lignes. La cle est une phrase du point de vue RECRUTEUR (« Pas besoin », « Maitriser l'ecrit, oral pas obligatoire », « Utile a l'ecrit, pas tous les jours », « Mandatory all day every day ») et candidat_display porte une phrase du point de vue CANDIDAT (« Ne maitrise pas », « Maitrise a l'ecrit seulement », « Bon niveau ecrit et oral dans un contexte pro », « Natif ou Top niveau ecrit et oral »). Consommateurs : candidat.niveau_anglais 3115/7028, entreprise.niveau_anglais 63/850. Orpheline mesuree : « Bon niveau global mais pas au quotidien » 59 occurrences sur candidat.niveau_anglais.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE niveau_anglais AS ENUM ('aucun','ecrit_seulement','courant_occasionnel','courant_quotidien')",
+   "attributs": "3 colonnes source. value -> ref_libelle.libelles.recruteur ; candidat_display -> ref_libelle.libelles.candidat ; sort_order -> ordre (echelle croissante, information a conserver). Aucune perdue.",
+   "justification": "4 valeurs, echelle fermee et ordonnee. Cas d'ecole de la separation valeur/libelle : DEUX registres de libelle pour une meme valeur interne (recruteur et candidat), plus un melange francais/anglais dans les cles. Un code neutre est la seule facon de tenir les deux registres sans dupliquer la valeur.",
+   "orphelins_a_absorber": 1,
+   "occurrences_orphelines": 59,
+   "point_attention": "« Bon niveau global mais pas au quotidien » (59 lignes) ressemble a une ancienne formulation de « Utile a l'ecrit, pas tous les jours ». Fusionner les deux est un choix METIER : ne pas le decider seul, sinon on ecrase 59 declarations de candidats."
+  },
+  {
+   "source": "ref_note_event_type",
+   "valeurs_reelles": "5 lignes, cles DEJA propres : contract, info, archive, task, team. Consommateur : note.note_event_type 1477/25728, valeurs mesurees task 1140, info 221, team 116 ; contract et archive jamais utilises. Une contrainte CHECK identique existe DEJA sur note.note_event_type dans le schema actuel.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_note_event AS ENUM ('contract','info','task','team','archive')",
+   "attributs": "2 colonnes source. value -> code (inchange) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "5 valeurs, ferme, cles deja propres, et le miroir applique DEJA un CHECK sur le consommateur : la table ref_note_event_type est donc redondante avec une contrainte qui existe. Enum : on supprime une table de 5 lignes sans rien perdre.",
+   "precedent": "Le schema actuel contient deja 8 colonnes contraintes par CHECK sans table de reference (mandat.equity 4 valeurs, mandat.type_deal 2, mandat.exclu_pachamama 2, entreprise.garantie 2, entreprise.paiement 2, equipe.type_equipe 2, tag.type_tag 3, note.note_event_type 5, nps_tracking.nps_type 2, nps_tracking.status 4). Le pattern « valeur contrainte sans table » est deja la norme locale pour les petits vocabulaires : la proposition ne fait que l'etendre."
+  },
+  {
+   "source": "ref_product",
+   "valeurs_reelles": "6 lignes : B2B, B2C, B2B2C, Marketplace, SaaS, API. Consommateur unique : experience_product.product 11350 lignes, 6/6 utilisees (B2B 3602, SaaS 2169, B2C 1940, B2B2C 1477, API 1383, Marketplace 779). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_produit_xp AS ENUM ('b2b','b2c','b2b2c','marketplace','saas','api')",
+   "attributs": "2 colonnes source. value -> code + libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "6 valeurs, aucun attribut, taxonomie produit universelle. 11 350 lignes deja conformes.",
+   "point_attention": "Recouvre partiellement ref_cible (B2B/B2B2C/B2C) et ref_product_type (SaaS B2B, Marketplace/B2B2C, B2C). Trois referentiels pour un meme axe, sur trois entites differentes (experience, mandat, entreprise). Consolidation possible mais c'est un choix metier, pas une evidence technique."
+  },
+  {
+   "source": "ref_product_type",
+   "valeurs_reelles": "9 lignes : SaaS B2B, Marketplace/B2B2C, App Mobile, « API / Business-to-developer », E-commerce, Hardware, Digital Transformation, IA, B2C. Consommateur : entreprise.product_type 145/850. 5 ORPHELINES mesurees (16 lignes) : « Hybride Hardware Software » 9, « Hybride On Premise-SaaS » 2, « Media » 2, « On-Premise » 2, « Jeux-videos » 1. Jamais utilisees : E-commerce, Hardware, IA.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE type_produit_entreprise AS ENUM ('saas_b2b','marketplace_b2b2c','app_mobile','api_b2d','e_commerce','hardware','digital_transformation','ia','b2c','hybride_hardware_software','hybride_onpremise_saas','media','on_premise','jeux_videos')",
+   "attributs": "2 colonnes source. value -> code + libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "9 valeurs d'origine + 5 apparues hors referentiel = 14, aucun attribut. Reste sous le seuil de l'enum, mais l'apparition de 5 valeurs libres sur seulement 145 saisies (1 saisie sur 9 est hors referentiel) est un signal : si le cible veut laisser cette liberte, il faudra passer en table. Recommandation : enum + contrainte, precisement pour ARRETER la derive.",
+   "orphelins_a_absorber": 5,
+   "occurrences_orphelines": 16
+  },
+  {
+   "source": "ref_profile",
+   "valeurs_reelles": "4 lignes : IC, Manager, Entrepreneur, Agence. Consommateurs : experience_profile 5223 lignes (IC 2450, Manager 1722, Entrepreneur 831, Agence 220), candidat_profile 408 lignes. 4/4 utilisees, ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE profil_talent AS ENUM ('ic','manager','entrepreneur','agence')",
+   "attributs": "2 colonnes source. value -> code + libelle. sort_order -> ordre. Aucune perdue.",
+   "justification": "4 valeurs, ferme, aucun attribut. 5631 lignes deja conformes.",
+   "point_attention": "« IC » et « Manager » recoupent ref_contributor_type (ic / manager_c_level) : deux referentiels pour la meme distinction, sur deux entites. Et « Entrepreneur » est l'orpheline de ref_contrat. Ces collisions doivent etre tranchees avant de figer les enums."
+  },
+  {
+   "source": "ref_remote",
+   "valeurs_reelles": "4 lignes avec drapeau is_active (true sur 4/4) : Hybride, Full Remote France, Full Remote Europe, Full Remote Worldwide. Consommateurs : job_reve_remote 4469 lignes (4/4, 0 orpheline), candidat_remote 1999, mandat_remote 430, entreprise_remote 58. 3 ORPHELINES mesurees, 526 lignes au total : « Teletravail » 398 (367 candidat_remote + 21 mandat_remote + 10 entreprise_remote), « Indifferent » 77 (76 + 1), « Presentiel » 51 (47 + 4).",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE rythme_remote AS ENUM ('hybride','full_remote_fr','full_remote_eu','full_remote_ww','teletravail_legacy','presentiel_legacy','indifferent_legacy')",
+   "attributs": "3 colonnes source. value -> code + libelle ; is_active -> ref_libelle.actif ; sort_order -> ordre. Aucune perdue.",
+   "justification": "4 valeurs officielles, aucun attribut hors is_active (absorbe par ref_libelle.actif). Enum, MAIS il doit accueillir 3 codes supplementaires marques actif=false pour ne pas detruire 526 lignes.",
+   "orphelins_a_absorber": 3,
+   "occurrences_orphelines": 526,
+   "point_attention": "Teletravail/Presentiel/Indifferent forment un vocabulaire ANTERIEUR (l'axe presence/absence) tandis que Hybride/Full Remote X est l'axe actuel (perimetre geographique). Ils ne sont pas traduisibles l'un dans l'autre : « Teletravail » n'a pas de perimetre, « Presentiel » n'existe plus dans la grille actuelle. Les mapper serait inventer une donnee. Il faut les conserver comme codes obsoletes et laisser le metier decider d'une reprise. C'est le plus gros volume de lignes en jeu du lot."
+  },
+  {
+   "source": "ref_role",
+   "valeurs_reelles": "5 lignes : Admin, Candidat, Entreprise, Recruiter Core Team, Recruiter Support Crew. role_category NULL sur 5/5 malgre une FK vers ref_role_category. Consommateur : user_role.role 4601 lignes, 5/5 utilisees (Candidat 4213, Entreprise 347, Recruiter Support Crew 18, Recruiter Core Team 13, Admin 10). ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE role_user AS ENUM ('admin','candidat','entreprise','recruiter_core_team','recruiter_support_crew')",
+   "attributs": "3 colonnes source. value -> code + libelle ; role_category -> ABANDONNEE (100% NULL, voir ref_role_category) mais l'information est reconstituable en drapeau est_recruteur sur les 2 codes recruiter_* ; sort_order -> ordre.",
+   "justification": "5 valeurs, ferme, structurel (c'est le modele d'autorisation). Enum : sur une colonne qui decide des droits, la garantie de type est un gain de securite, pas seulement de proprete. Reste une table de liaison user_role (un user peut porter plusieurs roles).",
+   "point_attention": "A relier a la politique RLS : la migration 20260826072934_revoquer_execution_publique.sql montre que les droits sont un chantier actif. Les 5 roles ne doivent pas etre renommes sans revoir les policies."
+  },
+  {
+   "source": "ref_statut_candidat",
+   "valeurs_reelles": "5 lignes, 3 avec emoji : « ⭐️ Nouveau », « ✅ Qualifie », « ❌ Non qualifie », « Lead », « Client ». DEUX consommateurs aux semantiques differentes : candidat.statut 3347/7028 (Lead 2161, ✅ Qualifie 833, ❌ Non qualifie 334, ⭐️ Nouveau 16, Client 3) et entreprise.statut 831/850 (Lead 743, Client 78, ✅ Qualifie 5, ❌ Non qualifie 4, ⭐️ Nouveau 1). Les deux utilisent les 5 memes valeurs. ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE statut_relation AS ENUM ('nouveau','qualifie','non_qualifie','lead','client')",
+   "attributs": "2 colonnes source. value -> code + libelle_fr + emoji ; sort_order -> ordre. Aucune perdue.",
+   "justification": "5 valeurs, ferme. Enum unique conserve car les DEUX consommateurs utilisent effectivement les 5 memes valeurs : les scinder en deux enums serait une decision metier non etayee par les donnees.",
+   "point_attention": "Le referentiel MELANGE deux axes : un axe de qualification (Nouveau -> Qualifie / Non qualifie) et un axe de cycle commercial (Lead -> Client). « Lead » domine les deux consommateurs (2161 et 743) alors qu'il n'appartient pas a l'axe de qualification. Une entreprise « ❌ Non qualifie » (4 lignes) et un candidat « Client » (3 lignes) sont des non-sens semantiques. Scinder en deux enums est probablement le bon modele mais c'est un arbitrage humain : 4178 lignes en dependent."
+  },
+  {
+   "source": "ref_form_41",
+   "valeurs_reelles": "5 lignes, reponses de formulaire, 3 avec emoji, 4/5 depassent 40 caracteres, longueur MAX DU LOT : 122 caracteres (« J'ai deja demarre avec d'autres agences... Mais n'ayant pas eu de resultats concluants jusqu'ici, je me tourne vers vous 😅 »). Consommateur : entreprise.agence 58/850, 5/5 utilisees, ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE form_concurrence AS ENUM ('pachamama_en_premier','plusieurs_agences_simultanees','autres_agences_recent','autres_agences_sans_resultat','autre')",
+   "attributs": "2 colonnes source. value -> ref_libelle.libelles.fr (phrase conservee au caractere pres) + emoji ; sort_order -> ordre. Aucune perdue.",
+   "justification": "5 valeurs, ferme. Pire cas du lot pour la cle : une cle primaire de 122 caracteres avec ponctuation, apostrophes typographiques et emoji. C'est une reponse de questionnaire, donc un libelle par nature reformulable. Enum a codes courts obligatoire."
+  },
+  {
+   "source": "ref_form_42",
+   "valeurs_reelles": "6 lignes, reponses de formulaire, 1 avec emoji : « Ancien talent 🤘 », « Deja client chez vous », « Recommandation », « Via un article ou un podcast », « Via un evenement », « Via LinkedIn ». Consommateur : entreprise.recommandation 59/850 (Recommandation 26, Via LinkedIn 16, Deja client 6, Via un article ou un podcast 6, Ancien talent 5). « Via un evenement » jamais utilise.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE form_provenance AS ENUM ('ancien_talent','deja_client','recommandation','article_podcast','evenement','linkedin')",
+   "attributs": "2 colonnes source. value -> libelle + emoji ; sort_order -> ordre. Aucune perdue.",
+   "justification": "6 valeurs, ferme, aucun attribut. Reponses de questionnaire : libelles reformulables, codes stables.",
+   "point_attention": "Recouvre ref_source_marketing (Events, Linkedin, Recommendation, « Ancien talent » vs « Partner - Bizmaker »). Deux referentiels d'origine de lead, l'un a 0 usage, l'autre a 59. Candidat evident a la consolidation."
+  },
+  {
+   "source": "ref_formule",
+   "valeurs_reelles": "4 lignes : « Recrutement - CDI », « Recrutement - Freelance/Presta », « RPO - Conseil RH & Recrutement », « Je ne sais pas encore, je prefere que l'on en discute ensemble ! » (64 caracteres). Consommateur : entreprise.formule 59/850 (38, 11, 6, 4). 4/4 utilisees, ZERO orpheline.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE formule_mission AS ENUM ('recrutement_cdi','recrutement_freelance','rpo_conseil','a_definir')",
+   "attributs": "2 colonnes source. value -> libelle ; sort_order -> ordre. Aucune perdue.",
+   "justification": "4 valeurs, ferme, aucun attribut. Melange typique : 3 vraies formules commerciales et 1 phrase d'echappatoire de formulaire (« Je ne sais pas encore... ») utilisee 4 fois. Le code a_definir rend cette 4e valeur exploitable en requete, ce que la phrase ne permettait pas."
+  },
+  {
+   "source": "ref_task_anchor",
+   "valeurs_reelles": "3 lignes, cles DEJA propres : creation_date, contract_start_date, guarantee_end_date. SEUL consommateur : ref_task_type.task_anchor, NULL sur 12/12. Aucune donnee metier ne reference ce referentiel.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE ancre_tache AS ENUM ('creation_date','contract_start_date','guarantee_end_date')",
+   "attributs": "2 colonnes source. value -> code (inchange) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "3 valeurs, ferme, cles deja propres. Conserve en enum et NON abandonne, malgre 0 usage : les 3 ancres correspondent a des colonnes REELLES de mandatclose (created_at, date_debut, date_fin_garantie) et ref_task_type.relative_time est renseigne (valeurs -1, 0, 1, 15). Le systeme calcule donc « J+15 apres une ancre » : l'ancre est de la configuration PERDUE, pas un concept mort. L'abandonner rendrait la planification automatique des taches non reimplementable.",
+   "lignes_a_migrer": 0
+  },
+  {
+   "source": "ref_task_event",
+   "valeurs_reelles": "2 lignes, cles DEJA propres : mandate_clo_free, mandate_clo_cdi. SEUL consommateur : ref_task_type.task_event, NULL sur 12/12.",
+   "devenir": "enum_pg",
+   "valeur_interne_proposee": "CREATE TYPE evenement_tache AS ENUM ('mandate_clo_free','mandate_clo_cdi')",
+   "attributs": "2 colonnes source. value -> code (inchange) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "2 valeurs, ferme. Conserve, et surtout RECUPERABLE sans arbitrage : les 2 valeurs sont exactement les prefixes des 12 codes de ref_task_type (mandate_clo_free_onboarding, mandate_clo_cdi_invoice_cus...). Le rattachement task_type -> evenement, vide dans le miroir, se reconstruit a 100% par le prefixe. Contrairement a l'ancre, il n'y a rien a arbitrer ici.",
+   "lignes_a_migrer": 0,
+   "recuperation": "Derivation par prefixe du code task_type : 6 task_type en mandate_clo_free_*, 6 en mandate_clo_cdi_*."
+  },
+  {
+   "source": "ref_app_branding",
+   "valeurs_reelles": "1 seule ligne : « Pachamama ». Attributs renseignes : background_asset1, background_asset2, background_image, logo_url, logo_mini_url (5 URLs CDN Bubble), police « Host Grotesk », web_site « https://www.pachamama.pm ». AUCUN consommateur : aucune colonne du miroir ne reference ce referentiel.",
+   "devenir": "config_applicative",
+   "valeur_interne_proposee": "Sort du modele de donnees. table config_application(cle text PK, valeur jsonb, maj_le timestamptz) — une ligne par parametre, ou singleton config_branding avec CHECK (id = 1).",
+   "attributs": "9 colonnes source, toutes conservees comme parametres : value -> devient l'identite du singleton (pas une valeur enumeree) ; background_asset1, background_asset2, background_image, logo_url, logo_mini_url -> 5 parametres d'assets (URLs CDN Bubble a rapatrier) ; police -> parametre de typographie (« Host Grotesk ») ; web_site -> parametre d'URL publique ; sort_order -> ABANDONNE explicitement (un ordre n'a aucun sens sur une ligne unique).",
+   "justification": "1 ligne, 0 consommateur, 7 attributs heterogenes : ce n'est pas un referentiel, c'est la configuration de l'application deguisee en option set Bubble. La garder comme table ref_* laisserait croire qu'on peut avoir plusieurs marques. Si le multi-marque devient un besoin, ce sera une table marque, pas ce singleton.",
+   "abandon_explicite": "sort_order : sans objet sur une table a une ligne.",
+   "point_attention": "La police « Host Grotesk » correspond aux polices de marque deja installees localement. Les 5 URLs sont sur le CDN Bubble et doivent etre rapatriees avant la coupure."
+  },
+  {
+   "source": "ref_email_config",
+   "valeurs_reelles": "1 seule ligne : value « Emails Test », email_adresses « une adresse nominative, retirée du dépôt public ». AUCUN consommateur dans le miroir.",
+   "devenir": "config_applicative",
+   "valeur_interne_proposee": "Sort du modele de donnees : variable d'environnement (ex. ADRESSE_REDIRECTION_EMAILS_TEST) ou une ligne de config_application. PAS une table de reference.",
+   "attributs": "3 colonnes source. value -> nom du parametre ; email_adresses -> valeur du parametre ; sort_order -> ABANDONNE (une seule ligne).",
+   "justification": "1 ligne, 0 consommateur. C'est un interrupteur de securite d'envoi (rediriger les mails vers une adresse de test) : de la configuration d'execution, qui n'a rien a faire dans le modele metier. Le laisser en table invite a l'oublier lors d'un deploiement, avec un risque d'envoi reel a des candidats.",
+   "abandon_explicite": "sort_order : sans objet.",
+   "point_attention": "Contient une adresse email personnelle nominative. A traiter comme une donnee de configuration a acces restreint, pas comme un referentiel lisible par tous."
+  },
+  {
+   "source": "ref_image",
+   "valeurs_reelles": "1 seule ligne : value « mail_signature » (cle deja propre), file_url = PNG de signature sur le CDN Bubble. AUCUN consommateur dans le miroir.",
+   "devenir": "config_applicative",
+   "valeur_interne_proposee": "Sort du modele de donnees : registre d'assets applicatifs, table asset_application(cle text PK, url text) ou simple constante de build.",
+   "attributs": "3 colonnes source. value -> cle de l'asset ; file_url -> url ; sort_order -> ABANDONNE (une seule ligne).",
+   "justification": "1 ligne, 0 consommateur, 1 URL. Registre d'assets a une entree : c'est de la configuration de presentation. Une table ref_* pour un fichier est du bruit dans le modele.",
+   "abandon_explicite": "sort_order : sans objet.",
+   "point_attention": "URL sur le CDN Bubble : la signature de mail casse a la coupure de l'abonnement."
+  },
+  {
+   "source": "ref_sendgrid_template",
+   "valeurs_reelles": "6 lignes, 2 avec emoji : « 🙅🏻‍♀️ KO during process », « 🙅🏻‍♀️ KO applicant », « Free template », « Freelance - Nbre de jours travailles », « Proposition screening apres candidature », « Onboarding - Mandat close ». Attributs : id_sendgrid (identifiant technique d-xxxx renseigne sur 6/6) et visible_pour_mandat, chaine a delimiteur PIPE (« En cours », « Closé », « En cours|Closé »). AUCUN consommateur dans le miroir : aucune colonne ne reference ce referentiel.",
+   "devenir": "config_applicative",
+   "valeur_interne_proposee": "table d'integration sendgrid_template(code text PK, libelle_fr text, emoji text, template_id text, ordre int) + table de liaison sendgrid_template_statut_mandat(code, statut statut_mandat) pour remplacer la chaine a pipe.",
+   "attributs": "4 colonnes source. value -> code + libelle_fr + emoji ; id_sendgrid -> template_id ; visible_pour_mandat -> ECLATE en lignes de liaison (1 a 2 par template) ; sort_order -> ordre. Aucune perdue.",
+   "justification": "6 valeurs mais ce n'est pas un vocabulaire metier : c'est la table de correspondance vers un prestataire externe (SendGrid). Elle merite une table, pas un enum (les template_id changent sans que le modele change), mais elle sort du perimetre des referentiels metier et rejoint les tables d'integration.",
+   "point_attention": "visible_pour_mandat encode une liste dans une chaine avec un separateur pipe, et les elements de cette liste sont les LIBELLES de ref_mandate_status (« En cours », « Closé » — noter que « Closé » n'est meme pas le libelle exact du referentiel, qui dit « Closé par Pachamama »). C'est une relation N-N stockee en texte, avec en plus une correspondance de libelle approximative. A eclater en table de liaison, et le rapprochement avec statut_mandat doit etre valide manuellement sur les 6 lignes."
+  },
+  {
+   "source": "ref_slack_channel",
+   "valeurs_reelles": "2 lignes : « #notifs-jobs » et « #notifs-closing ». Chaque ligne porte webhook et webhook_test, renseignes sur 2/2, contenant des fragments de webhook Slack en clair (forme B0xxxxx/yyyyy). AUCUN consommateur dans le miroir.",
+   "devenir": "config_applicative",
+   "valeur_interne_proposee": "Sort du modele de donnees. Le code du canal va dans la configuration (enum canal_notification a 2 valeurs si un typage est utile) ; les 4 webhooks vont dans un COFFRE A SECRETS (Supabase Vault ou variables d'environnement), jamais dans une table lisible.",
+   "attributs": "4 colonnes source. value -> code du canal (notifs_jobs, notifs_closing) ; webhook et webhook_test -> DEPLACES hors base, en secret ; sort_order -> ABANDONNE (2 lignes, aucun ordre metier).",
+   "justification": "2 lignes, 0 consommateur. Ce n'est pas un referentiel, ce sont des identifiants d'authentification. Les garder dans une table publique du schema public est un probleme de securite, pas de modelisation : toute lecture de la table permet de poster dans le Slack de l'entreprise.",
+   "abandon_explicite": "sort_order : sans objet.",
+   "point_attention": "A traiter en priorite et independamment du chantier de modelisation : 4 secrets exposes dans une table de reference. La migration 20260826072934_revoquer_execution_publique.sql montre que le durcissement des droits est en cours ; ces webhooks doivent en faire partie."
+  },
+  {
+   "source": "ref_role_category",
+   "valeurs_reelles": "1 seule ligne : « recruiter ». SEUL consommateur : ref_role.role_category, NULL sur 5/5 lignes. Le referentiel n'est reference par AUCUNE donnee, ni metier ni referentielle.",
+   "devenir": "disparait",
+   "valeur_interne_proposee": "AUCUNE valeur interne creee. L'intention (regrouper les 2 roles recruteur) est portee par un attribut booleen est_recruteur dans ref_libelle pour les codes recruiter_core_team et recruiter_support_crew.",
+   "attributs": "2 colonnes source. value « recruiter » -> ABANDONNEE comme valeur enumeree, RECONSERVEE comme drapeau est_recruteur sur 2 codes de role_user ; sort_order -> ABANDONNE.",
+   "justification": "1 ligne, 0 usage reel. C'est le seul referentiel que je propose de faire disparaitre. Justification : une categorie a UNE seule valeur ne categorise rien, et le lien qui devait la porter (ref_role.role_category) est vide a 100%. Son unique information — « Recruiter Core Team et Recruiter Support Crew sont deux roles de recruteur » — est deja lisible dans les codes eux-memes et se reexprime en un booleen. Creer un enum a une valeur ou une table a une ligne pour cela serait de la ceremonie.",
+   "abandon_explicite": "Table entiere abandonnee. value et sort_order abandonnes. L'information n'est PAS perdue : elle devient le drapeau est_recruteur sur les 2 codes concernes de role_user. Si un jour une 2e categorie apparait (ex. 'client'), la reintroduire coutera une colonne, pas une reprise de donnees."
+  }
+ ],
+ "libelles_comme_valeurs": [
+  {
+   "referentiel": "ref_process_etape (DETRUIT)",
+   "nature_du_probleme": "La cle est un libelle d'affichage avec emoji, ET le referentiel a ete detruit a l'import. 7 213 lignes de process.etape portent des chaines comme « 🙅🏻‍♀️ KO by Pachamama » — dont un emoji compose de 4 points de code (visage + modificateur de teint 🏻 + jointeur ZWJ U+200D + symbole ♀ + selecteur de variante U+FE0F). Une cle primaire invisible a l'oeil, non tapable, et cassable par n'importe quelle normalisation Unicode.",
+   "valeur_interne": "code text : ko_pachamama, ko_client, ko_candidat, hired, applicant, to_contact, contacted, send_out, interview_1, interview_2, ko, final_interview, screen_pachamama, push_candidature",
+   "libelle": "libelle_fr = le libelle SANS l'emoji (« KO by Pachamama »), emoji = la sequence Unicode isolee dans sa propre colonne, libelle_public = le libelle vu par le candidat (contenu a re-extraire de Bubble).",
+   "correspondance_depuis_le_miroir": "Table de correspondance figee ref_correspondance(referentiel, libelle_miroir, code_cible), semee avec les 14 chaines EXACTES mesurees dans process.etape, octet pour octet, sans aucune normalisation (pas de NFC/NFD, pas de trim, pas de casefold). La reprise fait UPDATE ... FROM ref_correspondance ON libelle_miroir = process.etape. Verification de non-perte : le nombre de lignes mappees doit valoir exactement 7 213, et la table ne doit accepter aucun NULL residuel sur les lignes ou etape IS NOT NULL (30 lignes sont deja NULL a la source, elles restent NULL).",
+   "information_conservee": "Le libelle brut du miroir reste stocke dans ref_correspondance : meme si un libelle est reformule plus tard dans le cible, la chaine d'origine Bubble reste tracable. C'est la garantie d'auditabilite exigee."
+  },
+  {
+   "referentiel": "ref_tag_job (DETRUIT)",
+   "nature_du_probleme": "Cle = libelle d'affichage avec emoji, referentiel detruit. 830 lignes de mandat_tag_job sur 16 valeurs, 15 avec emoji en prefixe (« 🐓 Boite FR », « 🫰 Max de BSPCE », « 🔧 Cas d'usage concrets » — ce dernier avec une APOSTROPHE TYPOGRAPHIQUE U+2019, autre piege de normalisation).",
+   "valeur_interne": "code text : boite_fr, croissance_saine, cas_usage_concrets, stabilite_financiere, international, career_move, cible_users_sympa, boite_a_impact, product_led, full_remote, intrapreneuriat, lancement_produit, job_exclu, max_bspce, diversite, licorne",
+   "libelle": "libelle_fr sans emoji, emoji isole, icone_url conserve comme colonne mais vide (0/74 dans le miroir).",
+   "correspondance_depuis_le_miroir": "ref_correspondance semee avec les 16 chaines exactes mesurees dans mandat_tag_job (comptages : 152, 84, 82, 74, 74, 74, 69, 57, 37, 34, 25, 25, 18, 15, 9, 1). Total de controle : 830 lignes, aucune perte toleree.",
+   "information_conservee": "« Job exclu » (18 lignes) est conserve comme code job_exclu bien qu'il n'ait JAMAIS existe dans l'option set (preuve : la lettre J est absente des 74 caracteres exploses). Le marquer origine='hors_referentiel' plutot que le rejeter."
+  },
+  {
+   "referentiel": "ref_mindset",
+   "nature_du_probleme": "La cle est une PHRASE de formulaire a la premiere personne, jusqu'a 69 caracteres, avec emoji. Pire : la valeur la plus fréquente (1 672 lignes) est « Je suis deja en recherche active  🚀 » avec un DOUBLE espace avant l'emoji et un espace final. Toute correspondance ecrite a la main echouera.",
+   "valeur_interne": "code : pas_en_recherche, en_veille, recherche_6_mois, recherche_3_mois, recherche_active",
+   "libelle": "libelle_fr = la phrase complete conservee au caractere pres, emoji isole, ordre = intensite croissante d'intention de recherche (information metier portee par sort_order 1..5).",
+   "correspondance_depuis_le_miroir": "Semer ref_correspondance par COPIE PROGRAMMATIQUE des valeurs distinctes de candidat.mindset, jamais par retranscription manuelle. Controle : 2 275 lignes mappees, 5 valeurs distinctes, 0 NULL cree.",
+   "information_conservee": "Les anomalies d'espacement restent dans libelle_miroir. Le libelle_fr du cible peut etre nettoye SANS toucher a la correspondance."
+  },
+  {
+   "referentiel": "ref_form_41",
+   "nature_du_probleme": "Cle de 122 caracteres — la plus longue du lot — avec emoji, points de suspension et apostrophes. C'est une reponse a une question de questionnaire utilisee comme cle primaire.",
+   "valeur_interne": "code : pachamama_en_premier, plusieurs_agences_simultanees, autres_agences_recent, autres_agences_sans_resultat, autre",
+   "libelle": "libelle_fr = la phrase integrale, emoji isole quand il existe (3/5).",
+   "correspondance_depuis_le_miroir": "ref_correspondance sur les 5 chaines exactes de entreprise.agence. Controle : 58 lignes mappees.",
+   "information_conservee": "La formulation exacte de la question de 2024 reste tracable meme si le formulaire est reecrit."
+  },
+  {
+   "referentiel": "ref_contrat",
+   "nature_du_probleme": "Cle = « 🤝 CDI » et « ⚡️ Freelance ». L'emoji ⚡️ inclut un selecteur de variante U+FE0F invisible. La cle porte 10 451 lignes consommatrices sur 5 colonnes.",
+   "valeur_interne": "enum type_contrat : cdi, freelance, entrepreneur",
+   "libelle": "libelle_fr = « CDI » / « Freelance », emoji isole, couleur (#FFE8E0 / #E9E0FF) dans ref_libelle.",
+   "correspondance_depuis_le_miroir": "5 colonnes a remapper : job_reve_contrat (6 444), candidat_contrat (2 460), mandat.contrat (522), mandatclose.contrat (227), candidat.contrat_actuel (798). Controle par colonne, somme 10 451.",
+   "information_conservee": "L'orpheline « Entrepreneur » (38 lignes) recoit le code entrepreneur au lieu d'etre rejetee, en attente d'arbitrage."
+  },
+  {
+   "referentiel": "ref_contract_status",
+   "nature_du_probleme": "5 cles sur 5 portent un emoji, et DEUX cles partagent le meme emoji ✅ (« ✅ Contrat signe » et « ✅ Not required ») : le pictogramme ne discrimine plus. Melange francais/anglais dans la meme liste.",
+   "valeur_interne": "code : non_signe, envoye, signe, expire, non_requis",
+   "libelle": "libelle_fr sans emoji, emoji isole, couleur, signature_requise (attribut de logique, reste une colonne de la table statut_contrat).",
+   "correspondance_depuis_le_miroir": "3 colonnes : mandatclose.statut_contrat_freelance (221), mandatclose.statut_contrat_entreprise (221), entreprise.statut_contrat (194). Controle : 636 lignes.",
+   "information_conservee": "« Not required » garde son libelle anglais d'origine dans libelle_miroir ; le cible peut le franciser sans casser la reprise."
+  },
+  {
+   "referentiel": "ref_statut_candidat",
+   "nature_du_probleme": "3 cles sur 5 portent un emoji (« ⭐️ Nouveau », « ✅ Qualifie », « ❌ Non qualifie ») et 2 n'en portent pas (« Lead », « Client ») : le referentiel est incoherent avec lui-meme, ce qui prouve qu'il a ete etendu apres coup. Utilise par DEUX entites (candidat et entreprise).",
+   "valeur_interne": "enum statut_relation : nouveau, qualifie, non_qualifie, lead, client",
+   "libelle": "libelle_fr sans emoji, emoji isole (NULL pour lead et client).",
+   "correspondance_depuis_le_miroir": "2 colonnes : candidat.statut (3 347) et entreprise.statut (831). Controle : 4 178 lignes.",
+   "information_conservee": "L'absence d'emoji sur lead/client est conservee telle quelle (emoji NULL) : c'est un indice de l'historique du referentiel, pas une erreur a corriger."
+  },
+  {
+   "referentiel": "ref_niveau_anglais",
+   "nature_du_probleme": "Cas le plus demonstratif : la cle est une phrase du point de vue RECRUTEUR (« Maitriser l'ecrit, oral pas obligatoire ») tandis que l'attribut candidat_display porte une phrase du point de vue CANDIDAT (« Maitrise a l'ecrit seulement »). Une meme valeur, DEUX libelles selon qui regarde. Melange francais/anglais (« Mandatory all day every day »).",
+   "valeur_interne": "enum niveau_anglais : aucun, ecrit_seulement, courant_occasionnel, courant_quotidien",
+   "libelle": "ref_libelle.libelles = {\"recruteur\": <value>, \"candidat\": <candidat_display>} — deux registres pour un seul code. C'est impossible a exprimer quand la cle EST le libelle : il faudrait dupliquer la valeur.",
+   "correspondance_depuis_le_miroir": "2 colonnes : candidat.niveau_anglais (3 115), entreprise.niveau_anglais (63). Controle : 3 178 lignes. L'orpheline « Bon niveau global mais pas au quotidien » (59) recoit un code provisoire en attente d'arbitrage plutot qu'un NULL.",
+   "information_conservee": "Les deux registres de libelle sont conserves ; aujourd'hui candidat_display serait perdu si l'on migrait naivement la cle."
+  },
+  {
+   "referentiel": "ref_mandate_status",
+   "nature_du_probleme": "La cle « Closé par Pachamama » est un libelle long, et status_admin_label porte une version courte « Closé » : deux registres, comme pour niveau_anglais. La cle porte en plus des accents.",
+   "valeur_interne": "enum statut_mandat : nouveau, en_cours, termine, close_pachamama",
+   "libelle": "libelles = {\"fr\": \"Closé par Pachamama\", \"court\": \"Closé\"} + couleur + ordre.",
+   "correspondance_depuis_le_miroir": "1 colonne : mandat.statut (533 lignes, 4 valeurs). Controle : 533.",
+   "information_conservee": "Le libelle court survit ; il est aussi la cle utilisee par ref_sendgrid_template.visible_pour_mandat (« En cours|Closé »), ce qui rendait le systeme dependant d'une egalite de chaines entre deux referentiels."
+  },
+  {
+   "referentiel": "ref_formule / ref_form_42 / ref_source_marketing / ref_criteres / ref_metier / ref_secteur / ref_expertise / ref_product_type / ref_company_type / ref_remote / ref_cible / ref_background / ref_profile / ref_product / ref_niveau_analyse / ref_apporteur_affaires / ref_role / ref_univers / ref_contributor_type",
+   "nature_du_probleme": "Meme defaut, sans emoji : la cle est un libelle francais ou anglais avec espaces, accents, barres obliques ou caracteres speciaux hostiles a un identifiant. Exemples mesures : « Consulting / Services », « Blockchain / NFT », « API / Business-to-developer », « VC / Private Equity », « People & Finance », « Communaute metier (TechRocks, FrenchProduct...) » (47 car.), « C# », « C++ », « N/A », « UX/UI », « Consultant·e CRO » (point median U+00B7), « Equilibre vie pro-perso ». 222 des 238 valeurs de ref_metier contiennent un espace.",
+   "valeur_interne": "code text = slug ASCII minuscule genere puis FIGE une fois pour toutes (consulting_services, blockchain_nft, api_b2d, vc_private_equity, people_finance, communaute_metier, c_sharp, c_plus_plus, na, ux_ui, consultant_cro, equilibre_vie_pro_perso...). Le slug ne doit JAMAIS etre recalcule apres la mise en production, sinon il cesse d'etre stable.",
+   "libelle": "libelle_fr = la valeur d'origine conservee intacte, accents, barres obliques et point median compris.",
+   "correspondance_depuis_le_miroir": "Une seule table ref_correspondance couvre tous ces referentiels, remplie PROGRAMMATIQUEMENT depuis SELECT DISTINCT sur chaque colonne consommatrice (jamais a la main). Volumes de controle : ref_secteur 15 918 lignes sur 5 colonnes, ref_criteres 8 882, ref_expertise 10 285 sur 2 colonnes, ref_metier 13 768 sur 5 colonnes, ref_product 11 350, ref_profile 5 631, ref_background 5 218, ref_remote 6 956 sur 4 colonnes, ref_univers 16 890 sur 7 colonnes.",
+   "information_conservee": "Le libelle d'origine est conserve deux fois : comme libelle_fr dans le cible (editable) et comme libelle_miroir dans ref_correspondance (fige, pour l'audit de reprise)."
+  },
+  {
+   "referentiel": "ref_emoji",
+   "nature_du_probleme": "Cas INVERSE, a ne pas confondre avec les precedents : la valeur est un emoji seul (🔥 👍 👀 👎) et c'est LEGITIME, parce que l'appreciation du recruteur est reellement le pictogramme. Il n'y a pas de libelle a extraire.",
+   "valeur_interne": "enum emoji_statut : feu, pouce_haut, yeux, pouce_bas",
+   "libelle": "ref_libelle.emoji = le pictogramme, qui reste la forme affichee. libelle_fr optionnel (« Coup de coeur », « Positif », « A revoir », « Negatif ») a decider avec le metier.",
+   "correspondance_depuis_le_miroir": "1 colonne : candidat.emoji_statut (265 lignes). Controle : 265.",
+   "information_conservee": "On ajoute un code nommable sans retirer l'emoji : le gain est de pouvoir ecrire une requete ou un test lisible, pas de changer l'affichage."
+  },
+  {
+   "referentiel": "ref_fonction / ref_gender / ref_language / ref_mandate_visibility / ref_note_event / ref_note_event_type / ref_task_anchor / ref_task_event / ref_task_type / ref_image / ref_maturite_produit / ref_role_category",
+   "nature_du_probleme": "AUCUN : ces 12 referentiels portent DEJA une cle interne propre (career_agent, male, fr_fr, private, talent_only, info_salary, task_create, contract_start_date, mandate_clo_cdi_invoice_cus, mail_signature, A..E, recruiter). Ils sont listes ici pour que l'inventaire soit complet et pour montrer que la separation valeur/libelle existe deja dans le miroir — ref_fonction et ref_gender portent meme label_fr ET label_en a cote du code.",
+   "valeur_interne": "Le code EXISTANT est reutilise tel quel (seule normalisation : non-binary -> non_binary pour rester un identifiant SQL sans guillemets).",
+   "libelle": "label_fr / label_en / label / note_event_text / candidat_display selon la table, deplaces dans ref_libelle.libelles.",
+   "correspondance_depuis_le_miroir": "Correspondance a l'identite : aucune table de mapping necessaire, aucun risque de perte. Ce sont les seules reprises triviales du lot.",
+   "information_conservee": "Tout. Ces 12 referentiels sont le modele que les 35 autres doivent rejoindre."
+  },
+  {
+   "referentiel": "ref_metier_univers / ref_expertise_univers / ref_app_branding / ref_email_config / ref_slack_channel",
+   "nature_du_probleme": "HORS SUJET, listes pour que l'inventaire des 47 soit complet. ref_metier_univers (361 lignes) et ref_expertise_univers (49) ne portent aucun libelle : ce sont des tables de liaison dont les deux colonnes sont des references vers ref_metier, ref_expertise et ref_univers. Elles heritent donc du probleme de CES referentiels, resolu chez eux, et n'ont pas de valeur d'affichage propre. ref_app_branding, ref_email_config et ref_slack_channel sont des singletons de configuration a 1, 1 et 2 lignes : leur value est un nom de parametre (« Pachamama », « Emails Test », « #notifs-jobs »), pas un libelle affiche a un utilisateur.",
+   "valeur_interne": "Pour les 2 tables de liaison : des cles etrangeres (metier_id, expertise_id, univers_id) remplacent les cles textuelles metier_value / expertise_value / univers_value, ce qui fait disparaitre le probleme du libelle-comme-cle par construction. Pour les 3 configurations : une cle de parametre (branding, emails_test, notifs_jobs / notifs_closing).",
+   "libelle": "Aucun libelle a extraire. Les libelles des liaisons se lisent par jointure sur metier.libelle_fr, expertise.libelle_fr et univers.libelle_fr.",
+   "correspondance_depuis_le_miroir": "Pour les liaisons : resolution des 410 lignes (361 + 49) par le code des referentiels parents, apres que ceux-ci ont ete charges. Controle : 361 et 49 lignes, aucune non resolue — un echec de resolution signalerait une valeur absente du parent. Pour les 3 configurations : reprise manuelle de 4 lignes au total, hors chaine de reprise automatique.",
+   "information_conservee": "Tout. Le passage en cles etrangeres est un gain net : aujourd'hui un renommage de libelle de metier casserait les 361 lignes de rattachement."
+  }
+ ],
+ "mecanisme_valeur_interne_libelle": {
+  "principe": "Une valeur interne (code ASCII stable, jamais affiche, jamais reformule) et un libelle (affiche, reformulable a volonte). Le miroir Bubble confond les deux : sur 47 referentiels, 35 utilisent un libelle d'affichage comme cle primaire et 12 portent deja un code propre. Le cible generalise la pratique des 12 aux 35 autres.",
+  "table_de_libelles_unique": {
+   "nom": "ref_libelle",
+   "definition": "ref_libelle(domaine text, code text, libelles jsonb, emoji text, couleur text, icone_url text, ordre int, actif bool, PRIMARY KEY (domaine, code))",
+   "role": "Porte le libelle, l'emoji, la couleur, l'icone, l'ordre et le drapeau actif de TOUS les enums du cible. libelles est un jsonb a registres nommes : {\"fr\":..., \"en\":..., \"court\":..., \"long\":..., \"candidat\":..., \"recruteur\":..., \"public\":...}.",
+   "pourquoi": "C'est ce qui permet de passer de 47 tables a 13. Sans elle, chaque referentiel de 3 lignes portant une couleur ou un second libelle exigerait sa propre table — c'est exactement le mecanisme qui a produit 31 tables de 5 lignes ou moins. Avec elle, un attribut de PRESENTATION (libelle, emoji, couleur, icone, ordre, actif) ne justifie JAMAIS une table ; seul un attribut de LOGIQUE METIER (is_ko, signature_requise, is_live, relative_time, un gabarit de texte, une URL d'asset structurante) ou un vocabulaire ouvert le justifie.",
+   "consequence": "Reformuler un libelle marketing, changer une couleur ou traduire l'interface devient un UPDATE de donnees, plus une migration de schema. Aujourd'hui, reecrire « Je suis deja en recherche active 🚀 » casserait 1 672 lignes."
+  },
+  "table_de_correspondance": {
+   "nom": "ref_correspondance",
+   "definition": "ref_correspondance(referentiel text, libelle_miroir text, code_cible text, origine text, PRIMARY KEY (referentiel, libelle_miroir))",
+   "role": "Trace de reprise. Une ligne par valeur distincte reellement observee dans le miroir, y compris les valeurs orphelines. origine vaut 'referentiel' (la valeur existait dans le ref_*) ou 'hors_referentiel' (elle n'existait que dans les donnees).",
+   "regles": [
+    "Semer par SELECT DISTINCT programmatique sur chaque colonne consommatrice, JAMAIS par retranscription manuelle : les emoji composes, les doubles espaces et les apostrophes typographiques ne survivent pas a une recopie.",
+    "Aucune normalisation Unicode avant comparaison (pas de NFC/NFD, pas de trim, pas de casefold) : la cle du miroir est la chaine brute.",
+    "Une valeur non mappee ARRETE la reprise. Elle ne devient jamais NULL en silence : c'est la seule facon de garantir qu'aucune donnee ne disparait.",
+    "Conserver la table apres la migration : elle est la preuve auditable du rapprochement, et elle survit a toute reformulation ulterieure des libelles."
+   ],
+   "controle_de_non_perte": "Pour chaque colonne consommatrice, COUNT(*) WHERE colonne IS NOT NULL avant reprise doit egaler COUNT(*) WHERE code_cible IS NOT NULL apres. Volumes de reference mesures le 26/08 : process.etape 7 213, mandat_tag_job 830, experience_product 11 350, experience_secteur 10 342, experience_expertise 9 478, job_reve_critere 8 882, job_reve_contrat 6 444, experience_background 5 218, experience_profile 5 223, candidat.genre 5 566, user_role 4 601, job_reve_remote 4 469, candidat_contrat 2 460, candidat_remote 1 999, note.note_event 1 477, task.task_type 1 067."
+  }
+ },
+ "mesures_production": {
+  "date_mesure": "26/08/2026, lecture seule via PostgREST sur le projet de production, avec la cle de service lue depuis pachamama-os/.env.local",
+  "total_lignes_ref": 1093,
+  "verification": "La somme mesuree table par table vaut exactement 1 093, ce qui confirme le total annonce dans la commande et valide les 47 comptages individuels.",
+  "comptes_par_table": {
+   "ref_metier": 238,
+   "ref_metier_univers": 361,
+   "ref_tag_job": 74,
+   "ref_process_etape": 70,
+   "ref_secteur": 52,
+   "ref_expertise_univers": 49,
+   "ref_criteres": 32,
+   "ref_expertise": 31,
+   "ref_note_event": 24,
+   "ref_source_marketing": 12,
+   "ref_task_type": 12,
+   "ref_product_type": 9,
+   "ref_univers": 8,
+   "ref_form_42": 6,
+   "ref_product": 6,
+   "ref_sendgrid_template": 6,
+   "ref_company_type": 5,
+   "ref_contract_status": 5,
+   "ref_form_41": 5,
+   "ref_maturite_produit": 5,
+   "ref_mindset": 5,
+   "ref_note_event_type": 5,
+   "ref_role": 5,
+   "ref_statut_candidat": 5,
+   "ref_background": 4,
+   "ref_cible": 4,
+   "ref_emoji": 4,
+   "ref_formule": 4,
+   "ref_mandate_status": 4,
+   "ref_niveau_anglais": 4,
+   "ref_profile": 4,
+   "ref_remote": 4,
+   "ref_apporteur_affaires": 3,
+   "ref_gender": 3,
+   "ref_mandate_visibility": 3,
+   "ref_niveau_analyse": 3,
+   "ref_task_anchor": 3,
+   "ref_contrat": 2,
+   "ref_contributor_type": 2,
+   "ref_fonction": 2,
+   "ref_language": 2,
+   "ref_slack_channel": 2,
+   "ref_task_event": 2,
+   "ref_app_branding": 1,
+   "ref_email_config": 1,
+   "ref_image": 1,
+   "ref_role_category": 1
+  },
+  "tables_a_1_ligne": [
+   "ref_app_branding",
+   "ref_email_config",
+   "ref_image",
+   "ref_role_category"
+  ],
+  "ecart_avec_la_commande": "La commande annonce 31 tables a 5 lignes ou moins ; j'en mesure 30 (la 31e serait ref_form_42 ou ref_product ou ref_sendgrid_template, a 6 lignes). Les 4 tables a une seule ligne et le total de 1 093 sont confirmes exactement. Je signale l'ecart plutot que de l'ajuster.",
+  "derive_du_miroir": "Mes mesures du 26/08 en fin de journee sont legerement superieures a celles de la commande : process.etape 7 213 valeurs non nulles contre 7 206 candidatures, « KO by client » 1 471 contre 1 470, « KO by candidat » 468 contre 467, « Applicant » 208 contre 205, mandat.visibilite public 35 contre 34, mandat.statut « En cours » 39 contre 38. Le miroir continue de recevoir des donnees : tout controle de non-perte doit se faire sur un instantane fige, pas sur deux lectures a deux heures d'ecart."
+ },
+ "bilan": {
+  "avant": "47 tables ref_*, 1 093 lignes, dont 30 tables de 5 lignes ou moins et 4 d'une seule ligne. 2 tables detruites a l'import. 35 tables utilisent un libelle d'affichage comme cle primaire.",
+  "apres": "13 tables de reference, 28 types enumeres, 5 objets de configuration sortis du modele metier, 1 abandon explicite. Plus 2 tables transverses (ref_libelle, ref_correspondance).",
+  "reduction": "De 47 tables a 15 tables (13 referentiels + 2 transverses), sans perdre une seule valeur ni un seul attribut.",
+  "colonnes_source": "Les colonnes des 47 tables sont toutes attribuees dans le champ attributs de chaque entree. Les seuls abandons explicites sont : sort_order sur les 4 tables a une ligne (aucun ordre n'a de sens sur une ligne unique) ; ref_role.role_category (100% NULL, reexprime en drapeau est_recruteur) ; ref_role_category.value et .sort_order (table abandonnee, information reportee sur le drapeau).",
+  "attributs_conserves_mais_vides": "3 attributs sont conserves comme colonnes du cible alors que leur contenu est perdu ou vide dans le miroir : ref_process_etape (7 attributs detruits), ref_tag_job.icone_url (0/74), ref_task_type.task_anchor (0/12). Les conserver vides et documentes vaut mieux que les supprimer : la colonne dit ce qui manque."
+ },
+ "points_de_decision": [
+  "ref_process_etape : 7 attributs sont irrecuperables depuis le miroir (les 2 couleurs kanban, libelle_public, is_active, is_public, les 2 drapeaux de visibilite kanban). Ils doivent etre re-extraits de l'option set Bubble Process_Etape_OS AVANT la coupure de l'abonnement, ou re-decides. Le jeu de caracteres detruit contient un « e accent aigu » absent des 14 libelles : des libelles publics francais existaient bel et bien.",
+  "ref_tag_job : icone_url perdu pour les 16 tags (0/74 renseigne). Meme fenetre de recuperation Bubble.",
+  "ref_task_type.task_anchor : vide sur 12/12 alors que relative_time est renseigne. Sans l'ancre, la regle « J+15 apres quoi » est incomplete et la planification automatique des taches n'est pas reimplementable. task_event, lui, se rederive du prefixe du code sans arbitrage.",
+  "ref_remote : 526 lignes portent 3 valeurs d'un vocabulaire anterieur (Teletravail 398, Indifferent 77, Presentiel 51) non traduisibles dans la grille actuelle Hybride/Full Remote. Les mapper serait inventer une donnee. Decision metier : conserver en codes obsoletes, ou lancer une reprise de saisie.",
+  "ref_statut_candidat : le referentiel melange un axe de qualification (Nouveau/Qualifie/Non qualifie) et un axe commercial (Lead/Client), sur deux entites differentes. 4 178 lignes en dependent, avec des non-sens mesures (4 entreprises « Non qualifie », 3 candidats « Client »). Scinder en deux enums est probablement juste, mais ce n'est pas a moi de le trancher.",
+  "ref_contrat : l'orpheline « Entrepreneur » (38 lignes) est-elle un 3e type de contrat, ou 38 confusions avec ref_profile.Entrepreneur (831 lignes) ? Le meme mot vit dans deux referentiels avec deux sens.",
+  "ref_niveau_anglais : « Bon niveau global mais pas au quotidien » (59 lignes) est-il une ancienne formulation de « Utile a l'ecrit, pas tous les jours » ? Fusionner ecraserait 59 declarations de candidats.",
+  "ref_expertise : « UX/UI » (29 lignes) doit-il devenir 2 rattachements vers UX et UI qui existent tous les deux, ou une 3e valeur ?",
+  "ref_metier : 16 intitules orphelins (52 lignes) a integrer au referentiel ou a rattacher a un metier existant (Engineering Director vs un Head of Engineering deja present, Senior DevOps vs DevOps, Lead ML / Senior ML vs Machine Learning Engineer).",
+  "Collisions entre referentiels a trancher avant de figer les enums : ref_profile (IC, Manager) contre ref_contributor_type (ic, manager_c_level) ; ref_cible (B2B/B2B2C/B2C) contre ref_product (B2B/B2C/B2B2C/SaaS/Marketplace/API) contre ref_product_type (SaaS B2B/Marketplace-B2B2C/B2C) ; ref_form_42 contre ref_source_marketing pour l'origine d'un lead.",
+  "user.langue et user.user_lang portent exactement la meme information sur 2 052 lignes. Une seule colonne doit survivre.",
+  "ref_slack_channel expose 4 webhooks Slack en clair dans le schema public : a deplacer dans un coffre a secrets, independamment du chantier de modelisation.",
+  "13 URLs d'assets pointent sur le CDN Bubble (5 dans ref_app_branding, 5 dans ref_univers, 3 dans ref_mandate_visibility, plus ref_image et les 5 de ref_maturite_produit) : elles meurent avec l'abonnement. A rapatrier avant coupure.",
+  "ref_maturite_produit n'a AUCUN libelle : le sens des niveaux A a E n'existe que dans 5 images Bubble et dans la tete de l'equipe. A documenter avant la coupure, sinon l'information est definitivement perdue.",
+  "3 referentiels sont a 0 usage (ref_company_type 0/850, ref_source_marketing 0/534, ref_apporteur_affaires 0/534). Je propose de les conserver en enums a cout nul plutot que de les abandonner, mais si le cible ne prevoit pas de les remplir, l'abandon devient legitime : c'est un choix de perimetre produit."
+ ]
+}

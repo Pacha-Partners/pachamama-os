@@ -6,7 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "verifier:j1": "node --env-file=.env.local tests/j1-job-board.mjs",
+    "verifier:j2": "node --env-file=.env.local tests/j2-authentification.mjs",
+    "verifier:j3": "node --env-file=.env.local tests/j3-portail-entreprise.mjs",
+    "verifier:j3-ecrans": "node --env-file=.env.local tests/j3-portail-entreprise-ecrans.mjs",
+    "verifier:j4": "node --env-file=.env.local tests/j4-espace-talent.mjs",
+    "verifier:j4-ecrans": "node --env-file=.env.local tests/j4-espace-talent-ecrans.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -18,7 +26,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^1.33.0",
-    "next": "16.3.1",
+    "next": "^16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "shadcn": "^4.18.0",

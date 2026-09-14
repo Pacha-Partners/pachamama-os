@@ -63,6 +63,11 @@
   --fond-carte: var(--white);
   --fond-entete: #fffbf0;           /* la barre du haut, crème plus chaud */
   --fond-inerte: var(--encre-050);
+  /* Les grandes taches décoratives posées derrière une page (voir Decor.tsx).
+     Plus jaune et plus saturé que --cream, qui est la surface : ces formes
+     doivent se détacher du fond sans jamais devenir un aplat de contenu.
+     Relevé sur le Figma du job board, où les deux calques la partagent. */
+  --fond-decor: #fff8e5;
 
   /* ==========================================================================
      4. STATUTS DE PROCESS — le vocabulaire métier
@@ -90,6 +95,11 @@
      composants. Rayons réels relevés : bouton 6px, bouton icône 4px, tags 8px.
      J'avais compté des artefacts d'outil ; le lot 3 l'a réfuté, vérifié 35/35. */
   --r-md: 8px;      /* le rayon d'interface par défaut : champs, tags, cartes */
+  /* 12px n'est pas une interpolation entre 8 et 16 : c'est le rayon des blocs
+     de la fiche d'offre, relevé 5 fois dans Job_board_détails.md et 5 fois
+     dans sa version mobile, sur les mêmes blocs. Un rayon qui tient d'une
+     maquette à l'autre est une décision, pas un arrondi de dessinateur.     */
+  --r-ml: 12px;     /* les blocs de la fiche d'offre */
   --r-lg: 16px;     /* modales, panneaux */
   --r-full: 9999px; /* pastilles de statut, éléments de menu */
 
@@ -149,6 +159,55 @@
   --panneau-largeur: 264px;
   --contenu-largeur-max: 1440px;
 
+  /* --------------------------------------------------------------------------
+     8 bis. GABARITS DES SURFACES APPLICATIVES
+     --------------------------------------------------------------------------
+     ⚠ AUCUNE SOURCE FIGMA. Le Figma relevé couvre le job board : il ne contient
+     ni tableau de données, ni dialogue centré, ni toast, ni kanban. Ces six
+     valeurs sont donc des CHOIX, pas des relevés, et elles sont ici plutôt
+     qu'en dur dans six composants pour qu'un futur relevé n'ait qu'un endroit
+     à corriger. Chacune est justifiée, et rien de plus :
+
+     · l'en-tête de tableau reprend la hauteur de la ligne compacte — un en-tête
+       plus haut que ses lignes déséquilibre une grille dense ;
+     · les trois largeurs de dialogue sont bornées par la mesure du texte :
+       ~55 caractères en `sm` (une question), ~72 en `md` (un formulaire court),
+       et `lg` pour ce qui porte un tableau ou un aperçu ;
+     · le toast est plus étroit qu'un dialogue parce qu'il se lit du coin de
+       l'œil, sur une ou deux lignes ;
+     · la colonne de kanban tient une `CarteCandidat` en densité complète
+       (256px de contenu + 2 × 16px de retrait) sans la comprimer.          */
+  --h-entete-tableau: 36px;
+  --largeur-dialogue-sm: 420px;
+  --largeur-dialogue-md: 560px;
+  --largeur-dialogue-lg: 760px;
+  --largeur-toast: 360px;
+  --largeur-colonne-kanban: 288px;
+
+  /* --------------------------------------------------------------------------
+     8 ter. GABARITS DES SURFACES DE SAISIE DE SOI
+     --------------------------------------------------------------------------
+     ⚠ AUCUNE SOURCE FIGMA non plus. Le Figma relevé ne contient ni jauge, ni
+     zone de dépôt de fichier, ni panneau de recherche. Quatre valeurs, quatre
+     raisons :
+
+     · les deux hauteurs de jauge se lisent contre l'échelle typographique :
+       6px est l'épaisseur d'un filet appuyé, sous une ligne de `t-caption`
+       (16px) ; 10px est le seuil à partir duquel un remplissage à 5 % reste
+       visible, ce qu'une barre de 6px ne garantit plus ;
+     · la zone de dépôt fait 132px parce qu'elle doit tenir sa pile complète
+       (icône 24 + titre 19 + contrainte 16 + deux gouttières de 4 + retraits
+       de 20) sans jamais rogner la ligne de contrainte, qui est celle qui
+       évite le fichier refusé ;
+     · le panneau de recherche monte à 280px là où le déroulant du Figma
+       s'arrête à 156px : 156px valent quatre lignes, format juste pour une
+       liste fermée de cinq options, faux pour un résultat de recherche parmi
+       238 métiers. 280px en montrent sept, assez pour comparer.              */
+  --h-jauge-sm: 6px;
+  --h-jauge-md: 10px;
+  --h-zone-depot: 132px;
+  --h-panneau-recherche: 280px;
+
   /* ==========================================================================
      9. FOCUS CLAVIER
      ==========================================================================
@@ -173,6 +232,11 @@
   .t-h2-comp   { font-family: var(--font-serif);   font-weight: 400; font-size: 24px; line-height: 31px; color: var(--black); font-style: normal; }
   .t-h3        { font-family: var(--font-display); font-weight: 700; font-size: 18px; line-height: 22px; color: var(--black); }
 
+  /* `Title/Text highlight` du Figma — Bricolage 600, 16/19. L'échelle sautait
+     de t-h3 (18px) à t-body (14px) : ce cran manquait, et la fiche d'offre
+     l'emploie pour les intitulés de ses deux encarts sombres. */
+  .t-titre-hl  { font-family: var(--font-display); font-weight: 600; font-size: 16px; line-height: 19px; color: var(--black); }
+
   .t-body      { font-family: var(--font-body); font-weight: 400; font-size: 14px; line-height: 19px; }
   .t-body-hl   { font-family: var(--font-body); font-weight: 500; font-size: 14px; line-height: 19px; }
   .t-body-bold { font-family: var(--font-body); font-weight: 700; font-size: 14px; line-height: 19px; }
@@ -190,6 +254,24 @@
   .t-caption-bold { font-family: var(--font-body); font-weight: 700; font-size: 12px; line-height: 16px; }
 }
 
+/* ============================================================================
+   LE SEUL MOUVEMENT DU SYSTÈME
+   ============================================================================
+   Le DS ne définit aucun langage de mouvement, et rien ici ne l'ouvre : cette
+   animation unique existe parce qu'un état INDÉTERMINÉ n'a rien d'autre à
+   montrer. Une jauge dont on ne connaît pas l'avancement ne peut ni remplir une
+   proportion ni afficher un chiffre ; seul le mouvement distingue « ça
+   travaille » de « c'est bloqué ». Toute autre animation doit rester hors
+   d'ici.
+
+   La bande couvre un tiers de la piste et la traverse : de -100 % (entièrement
+   à gauche, hors cadre) à 300 % (hors cadre à droite). `Jauge` la coupe sous
+   `prefers-reduced-motion`, où elle reste posée au départ.                    */
+@keyframes jauge-balayage {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(300%); }
+}
+
 @layer base {
   /* Règle 1 de la marque : fond crème, jamais blanc. */
   body {
@@ -199,6 +281,51 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 19px;
+  }
+
+  /* Une zone qui défile sans afficher sa barre.
+     Réservé aux rangées dont le débordement est LUI-MÊME l'indice : la rangée
+     de filtres du job board est coupée en pleine pastille, ce qui dit qu'il en
+     reste, sans qu'une barre système vienne barrer la maquette. Ne pas
+     l'employer sur un contenu dont rien ne signale qu'il continue. */
+  .defilement-discret {
+    scrollbar-width: none;
+  }
+  .defilement-discret::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* LE CURSEUR MAIN SUR CE QUI SE CLIQUE.
+     Tailwind v4 a retiré la règle `button { cursor: pointer }` que portait la
+     v3, pour coller au défaut des navigateurs — lesquels donnent la flèche sur
+     un `<button>`. Rien dans le design system ne la rétablissait : toute l'app
+     rendait donc la flèche sur ses boutons, ses sélecteurs et ses onglets.
+     Les liens `<a href>` n'étaient pas concernés, la feuille du navigateur leur
+     donnant déjà la main — d'où une incohérence entre deux contrôles voisins.
+
+     En couche `base` et non en utilitaire : une classe `cursor-*` posée sur un
+     composant continue ainsi de l'emporter. C'est ce qui préserve les
+     `cursor-not-allowed` des états désactivés, déclarés dans dix composants.
+
+     L'exclusion porte sur les TROIS façons d'être désactivé, et pas seulement
+     sur l'attribut `disabled` : les contrôles Radix restent focalisables et
+     déclarent leur état dans `aria-disabled` ou `data-disabled`. Mesuré sur la
+     page du design system, un `<button aria-disabled>` — la croix de retrait
+     d'un tag dans un champ désactivé — recevait la main tant que la garde ne
+     couvrait que `:disabled`. */
+  button,
+  summary,
+  label[for],
+  select,
+  input[type='checkbox'],
+  input[type='radio'],
+  [role='button'],
+  [role='option'],
+  [role='menuitem'],
+  [role='tab'] {
+    &:not(:disabled, [aria-disabled='true'], [data-disabled]) {
+      cursor: pointer;
+    }
   }
 
   /* L'anneau de focus est visible partout, jamais supprimé. */

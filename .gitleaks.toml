@@ -1,0 +1,33 @@
+# ════════════════════════════════════════════════════════════════════════
+# Ce que gitleaks doit ignorer — nommément, jamais en bloc.
+#
+# Le dépôt est PUBLIC : la règle est de tout refuser par défaut. Chaque
+# exception vit ici avec son motif et sa mesure. Une exclusion large — « tout
+# le dossier docs », « tout ce fichier » — rendrait le contrôle inutile le jour
+# où un vrai secret y tomberait.
+# ════════════════════════════════════════════════════════════════════════
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = """
+Faux positif mesuré le 14/09/2026 sur
+backend/database/modele_cible/correspondance.json.
+
+La règle `linkedin-client-id` cherche une valeur de 14 caractères à proximité
+du mot « linkedin ». Ce fichier est la table de correspondance de la reprise
+Bubble ; il contient des lignes comme
+
+    "destination": "core.talent.url_linkedin",
+    "transformation": "renommee"
+
+et c'est le mot `transformation` — une CLÉ JSON — qui a été pris pour un
+identifiant d'application.
+
+⚠ ON VISE LA VALEUR, PAS LE FICHIER. Exclure le chemin entier aurait fonctionné
+aussi, mais aurait aveuglé gitleaks sur ce fichier pour TOUTES ses règles. Ici,
+seule la chaîne littérale « transformation » est ignorée : un vrai secret dans
+ce même fichier serait toujours signalé.
+"""
+regexes = ['''^transformation$''']

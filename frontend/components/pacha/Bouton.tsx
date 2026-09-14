@@ -145,8 +145,32 @@ export function Bouton({
   disabled,
   children,
   type = 'button',
+  href,
+  cible,
   ...reste
-}: React.ComponentProps<'button'> & {
+}: Omit<React.ComponentProps<'button'>, 'href'> & {
+  /**
+   * Rend un `<a>` au lieu d'un `<button>`, à l'apparence près.
+   *
+   * Une navigation doit être un lien, pas un bouton qui appelle
+   * `location.href` : le clic du milieu, « ouvrir dans un onglet », le survol
+   * qui montre la cible et l'indexation en dépendent tous. Sans cette prop, la
+   * seule issue était de recopier les classes du bouton dans un `<a>`, et donc
+   * de créer une seconde vérité sur son apparence.
+   *
+   * Un lien désactivé n'existe pas en HTML : `disabled` ou `apparence="inerte"`
+   * l'emporte et fait retomber sur un `<button>` réellement inerte.
+   */
+  href?: string;
+  /**
+   * Ouvre le lien ailleurs. Ajout du 09/09/2026 : un portail client renvoie
+   * vers des pièces hébergées hors application (CV, site du client). Sans ces
+   * deux attributs, le client QUITTE le portail dans le même onglet et perd sa
+   * place. `rel` est posé d'office avec `target` — `noopener` ferme l'accès à
+   * `window.opener`, `noreferrer` évite de dire d'où l'on vient.
+   * Ignoré quand le composant retombe sur un `<button>`.
+   */
+  cible?: '_blank';
   /* Union fermée : un `(string & {})` laisserait passer une faute de frappe
      (`'contour-ombré'`) qui compilerait et rendrait silencieusement un bouton
      plein. Le typage est le seul garde-fou de ce composant. */
@@ -173,11 +197,13 @@ export function Bouton({
   // déduit. `apparence` garde toujours la main sur le régime d'ombre.
   const famille = couleur ? familleDeCouleur[couleur] : aContour ? 'blanc' : 'noir';
   const desactive = disabled || app === 'inerte';
+  const Balise = href && !desactive ? 'a' : 'button';
 
   return (
-    <button
-      type={type}
-      disabled={desactive}
+    <Balise
+      {...(Balise === 'a'
+        ? { href, ...(cible ? { target: cible, rel: 'noopener noreferrer' } : {}) }
+        : { type, disabled: desactive })}
       className={cn(
         'inline-flex shrink-0 items-center justify-center whitespace-nowrap',
         // Le DS ne définit aucun langage de mouvement : on transitionne la
@@ -196,12 +222,12 @@ export function Bouton({
               ),
         className,
       )}
-      {...reste}
+      {...(reste as Record<string, unknown>)}
     >
       {iconeAvant && <SlotIcone>{iconeAvant}</SlotIcone>}
       {children}
       {iconeApres && <SlotIcone>{iconeApres}</SlotIcone>}
-    </button>
+    </Balise>
   );
 }
 

@@ -1,0 +1,10 @@
+-- Aucune donnée d'amorçage, et c'est délibéré.
+--
+-- `config.toml` déclare ce fichier ([db.seed]) : il doit exister, sinon
+-- `supabase start` cherche un chemin absent.
+--
+-- Ce projet ne s'amorce pas par un seed : les données viennent de la reprise
+-- Bubble, rejouée par `backend/database/`, et le projet de développement est
+-- peuplé par `backend/database/anonymisation/peupler_dev.py`. Une base locale
+-- neuve sert à VALIDER LE SCHÉMA — que les 127 migrations s'appliquent dans
+-- l'ordre sur du vide — pas à travailler avec des données.

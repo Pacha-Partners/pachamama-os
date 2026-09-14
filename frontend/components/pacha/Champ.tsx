@@ -158,7 +158,16 @@ export function CadreChamp({
   children,
 }: {
   id?: string;
-  libelle?: string;
+  /**
+   * ÉLARGI LE 09/09/2026 de `string` à `React.ReactNode`, sans rien changer
+   * d'autre. Motif : `ChampNombre` affiche son unité DANS le boîtier (« 62 K€ »)
+   * et doit la faire entrer dans le nom accessible du champ sans la répéter à
+   * l'écran — ce qui demande un `<span className="sr-only">` dans le libellé.
+   * L'élargissement est rétrocompatible : tous les appels existants passent une
+   * chaîne, le DOM rendu pour une chaîne est identique au caractère près, et
+   * aucun code ne lit ce type en attendant un `string`.
+   */
+  libelle?: React.ReactNode;
   erreur?: string;
   aide?: string;
   className?: string;
@@ -166,7 +175,9 @@ export function CadreChamp({
 }) {
   return (
     <div className={cn('flex w-full flex-col gap-1', className)}>
-      {libelle && <Libelle htmlFor={id}>{libelle}</Libelle>}
+      {/* `!= null` et non `libelle &&` : depuis l'élargissement à `ReactNode`,
+          un `0` passé par erreur serait rendu tel quel, hors du `<label>`. */}
+      {libelle != null && libelle !== '' && <Libelle htmlFor={id}>{libelle}</Libelle>}
       {children}
       {aide && !erreur && (
         <p id={id ? `${id}-aide` : undefined} className="t-caption text-[var(--encre-500)]">
