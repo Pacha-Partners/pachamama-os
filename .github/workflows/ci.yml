@@ -29,7 +29,7 @@ jobs:
     name: Typage, lint, tests, build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -54,7 +54,7 @@ jobs:
     name: Les migrations rejouent sur une base vierge
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: supabase/setup-cli@v1
         with:
           version: latest
@@ -75,7 +75,7 @@ jobs:
     name: Aucun secret dans le diff
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       # La protection au push de GitHub couvre ~69 formats de jetons connus.

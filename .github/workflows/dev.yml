@@ -29,7 +29,7 @@ jobs:
     name: Migrations → projet dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: supabase/setup-cli@v1
         with: { version: latest }
       # ⚠ UN AIGUILLAGE À TROIS ISSUES, ET LA NUANCE COMPTE.
@@ -77,7 +77,7 @@ jobs:
     needs: migrations
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
         with:
           node-version: 24

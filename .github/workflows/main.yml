@@ -33,7 +33,7 @@ jobs:
     name: Migrations → projet LIVE
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: supabase/setup-cli@v1
         with: { version: latest }
       # ⚠ UN ÉCHEC QUI SE LIT. Sans ce garde, un secret absent produit une
