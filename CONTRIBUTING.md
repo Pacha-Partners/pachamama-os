@@ -135,6 +135,32 @@ pas le schéma.
 - `ci.yml` rejoue les 127 migrations sur une base neuve à chaque pull request.
   C'est le seul contrôle qui attrape une collision.
 
+### ⚠⚠ Règle 1 bis — LA PRODUCTION EST DÉSACCORDÉE, ET ELLE LE RESTE
+
+Mesuré le 14/09 : `supabase migration list` sur le projet **live** rend **2**
+migrations connues, la dernière du 26/08. Le dépôt en compte **127**.
+
+La production n'a jamais été construite par ces migrations — elle vient de la
+reprise, exécutée autrement. Son historique
+`supabase_migrations.schema_migrations` ne reflète donc pas son schéma réel, et
+un `db push` y tenterait d'appliquer 125 migrations, dont toute la reprise
+Bubble, l'amorçage, les comptes de test et les fixtures. Sur 30 829 personnes
+physiques.
+
+**`main.yml` porte un garde du NOMBRE** : au-delà de 20 migrations pour une
+livraison, il refuse et le dit. Une livraison normale en porte zéro à quelques
+unes ; 125 n'est pas une livraison, c'est un historique désaccordé.
+
+**Avant la première mise en ligne**, il faut réconcilier : pour chaque migration
+déjà reflétée dans le schéma de la production,
+
+```bash
+supabase migration repair --status applied <version>
+```
+
+Ce travail n'est pas fait. Tant qu'il ne l'est pas, ne fusionnez pas
+`recette → main`.
+
 ### ⚠ Règle 2 — on étend, on ne retire pas dans la même livraison
 
 Entre la poussée du schéma et le déploiement du code il s'écoule du temps :
@@ -205,10 +231,18 @@ migration** sauf nécessité démontrée (voir règle 2).
 | Secret | Employé par |
 |---|---|
 | `SUPABASE_ACCESS_TOKEN` | `dev.yml`, `main.yml` |
-| `SUPABASE_PROJECT_REF_DEV`, `SUPABASE_DB_PASSWORD_DEV` | `dev.yml` |
+| `SUPABASE_PROJECT_REF_DEV` | `dev.yml` |
 | `SUPABASE_URL_DEV`, `SUPABASE_ANON_KEY_DEV`, `SUPABASE_SERVICE_ROLE_KEY_DEV` | `dev.yml` |
 | `TEST_MDP`, `TEST_ENTREPRISE_EMAIL`, `TEST_TALENT_EMAIL`, `TEST_RECRUTEUR_EMAIL` | `dev.yml` |
-| `SUPABASE_PROJECT_REF_LIVE`, `SUPABASE_DB_PASSWORD_LIVE` | `main.yml` |
+| `SUPABASE_PROJECT_REF_LIVE` | `main.yml` |
+
+⚠ **Aucun mot de passe Postgres.** Mesuré le 14/09 sur un dossier neuf : le CLI
+Supabase se connecte avec le seul jeton d'accès, `link` et `db push` compris.
+En exiger un obligerait à le réinitialiser — Supabase ne le montre qu'à la
+création du projet — pour une valeur qui ne sert à rien.
+
+`bash outils/secrets_ci.sh` les pose toutes : neuf viennent de vos fichiers
+locaux, le jeton vient du trousseau macOS.
 
 `ci.yml` n'en emploie **aucun** : il tourne sur toute pull request, y compris
 d'un dépôt tiers.

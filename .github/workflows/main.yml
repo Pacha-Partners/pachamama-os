@@ -42,7 +42,7 @@ jobs:
       - name: Les secrets attendus sont-ils posés ?
         run: |
           manque=""
-          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_LIVE SUPABASE_DB_PASSWORD_LIVE; do
+          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_LIVE; do
             [ -z "${!v:-}" ] && manque="$manque $v"
           done
           if [ -n "$manque" ]; then
@@ -54,23 +54,56 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF_LIVE: ${{ secrets.SUPABASE_PROJECT_REF_LIVE }}
-          SUPABASE_DB_PASSWORD_LIVE: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
       - run: supabase link --project-ref "$PROJET"
         env:
           PROJET: ${{ secrets.SUPABASE_PROJECT_REF_LIVE }}
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
-      # On LIT d'abord ce qui va s'appliquer. Le journal du job garde la trace
-      # de ce qui a touché la production, et c'est la seule trace qu'on aura.
-      - run: supabase db push --dry-run
+      # ⚠⚠ LE GARDE DU NOMBRE. MESURÉ LE 14/09, ET IL AURAIT ÉVITÉ UN DÉSASTRE.
+      #
+      # `supabase migration list` sur le projet LIVE rend **2** migrations
+      # connues, la dernière datant du 26/08. Le dépôt en compte **127**. Un
+      # `db push` vers la production aurait donc tenté d'en appliquer 125 —
+      # dont toute la reprise Bubble (`reprise_socle`, `reprise_contacts`,
+      # `reprise_fiche_talent`…), l'amorçage, les comptes de test et les
+      # fixtures — sur une base de 30 829 personnes physiques.
+      #
+      # La cause : la production n'a JAMAIS été construite par ces migrations.
+      # Elle vient de la reprise, exécutée autrement. Son historique
+      # `supabase_migrations.schema_migrations` ne reflète pas son schéma réel.
+      # Tant que ce n'est pas réconcilié — `supabase migration repair
+      # --status applied <version>` pour chacune de celles qui sont DÉJÀ dans
+      # son schéma — aucune poussée automatique ne doit l'atteindre.
+      #
+      # Une livraison normale porte zéro à quelques migrations. Au-delà du
+      # seuil, ce n'est pas une livraison : c'est un historique désaccordé, et
+      # ça demande un humain.
+      - name: Combien de migrations toucheraient la PRODUCTION ?
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
+          SEUIL: ${{ vars.SEUIL_MIGRATIONS_LIVE || 20 }}
+        run: |
+          supabase db push --dry-run --output json > /tmp/simulation.json 2>&1 || true
+          cat /tmp/simulation.json
+          # `jq` est préinstallé sur les runners Ubuntu. On isole l'objet JSON
+          # du reste (le CLI y mêle ses avis de mise à jour) et on compte.
+          n=$(grep -o '{"upToDate".*}' /tmp/simulation.json | tail -1 | jq '.migrations | length' 2>/dev/null || echo -1)
+          echo "::notice::$n migration(s) seraient appliquées à la production."
+          if [ "$n" = "-1" ] || [ -z "$n" ]; then
+            echo "::error::Simulation illisible — on ne pousse pas à l'aveugle."
+            exit 1
+          fi
+          if [ "$n" -gt "$SEUIL" ]; then
+            echo "::error::$n migrations pour une seule livraison, au-delà du seuil de $SEUIL."
+            echo "Ce n'est pas une livraison : c'est un historique désaccordé."
+            echo "Réconcilier d'abord — supabase migration repair --status applied <version> —"
+            echo "puis relancer. Voir CONTRIBUTING.md section 4."
+            exit 1
+          fi
+
       # Sans `--include-all` : voir dev.yml. Le garde reste armé.
       - run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_LIVE }}
 
   version:
     name: La version, calculée depuis les commits

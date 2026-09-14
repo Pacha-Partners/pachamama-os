@@ -43,7 +43,7 @@ jobs:
         id: secrets
         run: |
           poses=0; manque=""
-          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_DEV SUPABASE_DB_PASSWORD_DEV; do
+          for v in SUPABASE_ACCESS_TOKEN SUPABASE_PROJECT_REF_DEV; do
             if [ -n "${!v:-}" ]; then poses=$((poses+1)); else manque="$manque $v"; fi
           done
           if [ "$poses" = 0 ]; then
@@ -59,18 +59,15 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF_DEV: ${{ secrets.SUPABASE_PROJECT_REF_DEV }}
-          SUPABASE_DB_PASSWORD_DEV: ${{ secrets.SUPABASE_DB_PASSWORD_DEV }}
       - if: steps.secrets.outputs.pret == 'true'
         run: supabase link --project-ref "$PROJET"
         env:
           PROJET: ${{ secrets.SUPABASE_PROJECT_REF_DEV }}
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_DEV }}
       - if: steps.secrets.outputs.pret == 'true'
         run: supabase db push
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD_DEV }}
 
   harnais:
     name: Les six harnais contre le projet dev

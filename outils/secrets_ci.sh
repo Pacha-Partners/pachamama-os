@@ -21,8 +21,12 @@
 #
 # ⚠ TROIS VALEURS NE SONT DANS AUCUN FICHIER et sont demandées à la saisie :
 #   · SUPABASE_ACCESS_TOKEN      supabase.com/dashboard/account/tokens
-#   · SUPABASE_DB_PASSWORD_DEV   tableau de bord → Settings → Database
-#   · SUPABASE_DB_PASSWORD_LIVE  idem, sur le projet de production
+#
+# ⚠ LE MOT DE PASSE POSTGRES N'EST PAS DEMANDÉ, ET C'EST MESURÉ. Le CLI
+# Supabase se connecte avec le SEUL jeton d'accès : vérifié le 14/09 sur un
+# dossier neuf, sans `.temp`, pour les deux projets — `link` puis `db push`
+# aboutissent. Demander un mot de passe qu'on n'emploie pas serait exiger une
+# réinitialisation inutile : Supabase ne le montre qu'à la création du projet.
 # ════════════════════════════════════════════════════════════════════════
 set -euo pipefail
 
@@ -85,10 +89,9 @@ fi
 
 echo
 echo "── À saisir ──"
+echo "  (rien, sauf si le jeton du CLI n'a pas été trouvé au-dessus)"
 for couple in \
-  "${A_SAISIR[@]}" \
-  "SUPABASE_DB_PASSWORD_DEV|mot de passe Postgres du projet DEV" \
-  "SUPABASE_DB_PASSWORD_LIVE|mot de passe Postgres du projet LIVE"
+  "${A_SAISIR[@]}"
 do
   [ -z "$couple" ] && continue
   nom="${couple%%|*}"; aide="${couple#*|}"
