@@ -14,14 +14,24 @@
 # ════════════════════════════════════════════════════════════════════════
 name: Contrôle
 
+# ⚠ SUR LA PULL REQUEST SEULEMENT, PAS SUR LA POUSSÉE DE BRANCHE.
+# Les deux déclencheurs coexistaient : une branche portant une pull request
+# ouverte faisait tourner CHAQUE contrôle deux fois. Mesuré sur la #2 —
+# « Aucun secret dans le diff » et le rejeu des migrations apparaissaient en
+# double. Des minutes payées deux fois, et deux verdicts à lire pour un seul
+# fait.
+#
+# On garde la pull request, parce que c'est le seul moment qui compte : rien
+# n'entre dans `dev`, `recette` ou `main` autrement — les protections
+# l'imposent. `workflow_dispatch` reste pour lancer la CI à la main sur une
+# branche qui n'a pas encore de pull request.
 on:
   pull_request:
     branches: [dev, recette, main]
-  push:
-    branches-ignore: [dev, recette, main]
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
