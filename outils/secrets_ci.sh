@@ -64,13 +64,33 @@ poser TEST_ENTREPRISE_EMAIL "$(lire "$LOCAL" TEST_ENTREPRISE_EMAIL)"
 poser TEST_TALENT_EMAIL     "$(lire "$LOCAL" TEST_TALENT_EMAIL)"
 poser TEST_RECRUTEUR_EMAIL  "$(lire "$LOCAL" TEST_RECRUTEUR_EMAIL)"
 
+# ── Le jeton du CLI est DÉJÀ dans le trousseau macOS.
+# `supabase login` l'y a rangé sous le service « Supabase CLI ». Inutile d'en
+# générer un nouveau : en créer un second multiplie les jetons vivants, donc la
+# surface à révoquer le jour où l'un fuit. macOS demandera l'autorisation de
+# lire l'entrée — c'est normal, et c'est vous qui l'accordez.
 echo
-echo "── À saisir (aucun fichier ne les porte) ──"
+echo "── Depuis le trousseau macOS ──"
+if jeton="$(security find-generic-password -s 'Supabase CLI' -a supabase -w 2>/dev/null)" && [ -n "$jeton" ]; then
+  poser SUPABASE_ACCESS_TOKEN "$jeton"
+  unset jeton
+  # ⚠ UNE ENTRÉE VIDE, PAS UN TABLEAU VIDE. macOS livre bash 3.2, où
+  # `"${tableau[@]}"` sur un tableau vide échoue sous `set -u` (« unbound
+  # variable »). La boucle saute l'entrée vide juste en dessous.
+  A_SAISIR=( "" )
+else
+  echo "  jeton du CLI introuvable — il sera demandé à la saisie"
+  A_SAISIR=( "SUPABASE_ACCESS_TOKEN|jeton personnel Supabase (dashboard → account → tokens)" )
+fi
+
+echo
+echo "── À saisir ──"
 for couple in \
-  "SUPABASE_ACCESS_TOKEN|jeton personnel Supabase (dashboard → account → tokens)" \
+  "${A_SAISIR[@]}" \
   "SUPABASE_DB_PASSWORD_DEV|mot de passe Postgres du projet DEV" \
   "SUPABASE_DB_PASSWORD_LIVE|mot de passe Postgres du projet LIVE"
 do
+  [ -z "$couple" ] && continue
   nom="${couple%%|*}"; aide="${couple#*|}"
   printf '  %s\n    %s\n    (Entrée seule pour passer) > ' "$nom" "$aide"
   read -rs valeur; echo
