@@ -62,7 +62,13 @@ jobs:
       # NEUVE. C'est le seul contrôle qui attrape une collision de schéma que
       # git fusionne proprement — deux branches recréant la même vue, par
       # exemple : le dépôt en compte déjà cinq sur `api.mandat_client`.
-      - run: supabase start
+      # ⚠ ON N'EXCLUT NI `storage-api` NI `gotrue`, ET C'EST MESURÉ.
+      # Deux migrations écrivent dans `storage.buckets` et posent des policies
+      # sur `storage.objects` ; d'autres s'appuient sur `auth.users` et
+      # `auth.uid()`. Exclure ces deux services retirerait les schémas qu'elles
+      # visent, et le rejeu échouerait pour une raison qui n'a rien à voir avec
+      # les migrations. On n'écarte que l'interface et les services de bord.
+      - run: supabase start -x studio,edge-runtime,logflare,vector,imgproxy,mailpit,supavisor
       - run: supabase db lint --level warning
 
   secrets:

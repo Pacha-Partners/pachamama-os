@@ -9,6 +9,23 @@ Apprenant : **Claude Menye**. Août 2026.
 
 ---
 
+## Travailler sur ce dépôt
+
+Le modèle de branches, la convention de commit, les règles de migration et la
+procédure de correctif d'urgence sont dans **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+En un coup d'œil :
+
+```
+main        ce qui tourne en ligne · protégée · tags v1.0.0, v1.1.0…
+recette     l'état validé, candidat à la mise en ligne · URL de beta
+dev         l'intégration — tout s'y retrouve
+  └─ talent/…  entreprise/…  public/…   branches courtes, supprimées à la fusion
+```
+
+`dev` n'atteint jamais `main` toute seule.
+
+---
+
 ## 1. À lire d'abord : ce dépôt ne peut pas être exécuté en l'état, et c'est voulu
 
 **Aucun identifiant n'est fourni, ni ici ni dans l'archive de rendu.**
