@@ -10,10 +10,23 @@ le robinet. **Celui-ci dit comment on vérifie.**
 
 ## 1. Les quatre étages, et ce que chacun peut dire
 
-Un étage ne remplace jamais celui du dessus. Chacun attrape une famille de
-défauts que les autres ne voient pas — c'est mesuré, pas théorique : chacun de
-ces quatre étages a trouvé au moins un défaut réel que les trois autres avaient
-laissé passer.
+Un étage ne remplace jamais celui du dessus. **Chacun se définit par ce qu'il ne
+peut PAS voir** — c'est cette complémentarité des angles morts qui oblige à les
+avoir tous les quatre, pas le nombre de tests.
+
+Ce n'est pas théorique. Trois de ces quatre étages ont attrapé, sur ce chantier,
+un défaut que les autres avaient laissé passer :
+
+| étage | ce qu'il a trouvé | les autres |
+|---|---|---|
+| **intégration** | la zone de dépôt retirée avait supprimé **le seul `input[type=file]`** de l'écran : la page s'affichait, plus personne ne pouvait déposer son CV | verts |
+| **schéma** | **trois migrations de fixtures rendaient l'historique non rejouable** — la base ne pouvait pas être reconstruite depuis zéro | verts |
+| **humain** | sur téléphone, les cartes rendaient « undefined » et le bouton Menu était à **x = −122**, hors écran | verts |
+
+⚠ **L'étage unitaire, lui, n'a rien attrapé pendant ce chantier.** Ses 270 cas
+sont restés verts de bout en bout : ils ont *tenu*, ils n'ont pas *trouvé*. La
+nuance compte — un test qui ne tombe jamais est soit une protection, soit un
+décor, et rien dans son silence ne permet de trancher.
 
 | étage | quoi | combien | quand | ce qu'il attrape |
 |---|---|---|---|---|
