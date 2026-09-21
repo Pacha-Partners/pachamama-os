@@ -148,6 +148,13 @@ D'où deux règles :
 2. **Remplir et basculer sont le même geste**, à quelques heures près — pas
    quelques semaines.
 
+## Comment on vérifie
+
+Ce document dit ce que sont les phases. **`PROTOCOLE_DE_TEST.md` dit comment on
+les éprouve** : les quatre étages (270 cas unitaires, 319 contrôles
+d'intégration, le rejeu du schéma, le test humain), ce qui doit être vert et
+quand, les parcours à jouer par phase, et les cinq angles morts.
+
 ## L'outil de mesure
 
 ```bash
