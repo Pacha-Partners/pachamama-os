@@ -8,8 +8,10 @@ blanc n'est pas un trou, c'en est une.
 
 ## Les définitions
 
-> **Alpha — purement interne, sur données fabriquées.**
+> **Alpha — purement interne.**
 > **Beta — ouverte, sur de vraies personnes.**
+
+Ce qui sépare les deux, c'est **qui entre**, pas la nature des données.
 
 La frontière n'est pas dans l'avancement (« 60 % fait », « 90 % fait ») : le
 jour venu, personne ne sait dire si on est à 85 ou à 91, et la discussion tourne
@@ -20,7 +22,7 @@ jour venu, personne ne sait dire si on est à 85 ou à 91, et la discussion tour
 | | alpha | beta |
 |---|---|---|
 | **qui entre** | le cabinet, et personne d'autre | des clients et des talents réels, choisis, prévenus |
-| **quelles données** | **fabriquées** — `peupler_dev.py` | **les leurs** |
+| **quelles données** | celles du projet **dev** — voir ci-dessous | **les leurs** |
 | **on peut remettre à zéro ?** | oui, autant qu'on veut | **jamais** |
 | **ce qu'on teste** | est-ce que ça **marche** ? | est-ce que ça **sert**, à leur volume ? |
 | **ce qu'on promet** | rien | « ça fonctionne, dites-nous ce qui cloche » |
@@ -40,8 +42,8 @@ le cloisonnement, les parcours.
 **Elle ne répond pas à** : est-ce qu'un client trouve son pipeline lisible. Le
 cabinet n'est l'utilisateur ni du portail talent ni du portail entreprise.
 
-**On y entre quand** le dev est repeuplé en données fabriquées, les six harnais
-passent, et les comptes du cabinet ont un `app.acces` actif.
+**On y entre quand** les six harnais passent et que les comptes du cabinet ont
+un `app.acces` actif.
 **On en sort quand** aucun défaut bloquant n'est ouvert sur les deux portails.
 
 ### Alpha 2 — les vues internes
@@ -86,12 +88,29 @@ au dernier moment, **client par client**.
 
 | | adresse | base | données |
 |---|---|---|---|
-| **alpha** | `pachamama-os-git-recette-…` | projet **dev** | fabriquées |
+| **alpha** | `pachamama-os-git-recette-…` | projet **dev** | voir ci-dessous |
 | **beta**, **v1.0** | le domaine de production | projet **live** | réelles |
 
 ⚠ `recette` écrit dans le projet **dev**. Un utilisateur réel qui y travaillerait
 perdrait son travail. **Un vrai utilisateur est forcément sur la production** —
 `recette` sert à vérifier avant de livrer, pas à héberger des gens.
+
+### ⚠ Les données du dev restent réelles, et c'est délibéré
+
+`peupler_dev.py` sait pseudonymiser le dev depuis la production. **On ne le
+lance pas**, et la raison est mesurée : pendant la répétition du 14/09, les deux
+courriels invalides qui bloquent la reprise — un nom, une URL LinkedIn — auraient
+été remplacés par des adresses valides en `@exemple.test`. **Le blocage serait
+resté invisible jusqu'à la production.**
+
+Des données fabriquées cachent précisément les défauts qu'on cherche. L'alpha
+tourne donc sur le dev tel qu'il est : une copie de la production, identités
+réelles depuis le 08/09.
+
+**Ce que ça implique, et qu'il faut garder en tête** : les clés du projet dev
+deviennent des secrets de CI sur un dépôt public, et ce projet porte des
+identités réelles. `peupler_dev.py` reste disponible le jour où l'arbitrage
+changera.
 
 ## Les versions
 
