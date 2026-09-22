@@ -1,5 +1,9 @@
 # Le protocole de test
 
+> **Les critères de sortie de chaque phase sont dans `JALONS.md`**, avec les
+> jalons qu'elle ouvre. Ici : les quatre étages, et les parcours à jouer.
+
+
 Ce que l'on éprouve, **qui** l'éprouve, et à quoi l'on reconnaît qu'une phase
 est passée.
 
@@ -31,16 +35,18 @@ décor, et rien dans son silence ne permet de trancher.
 | étage | quoi | combien | quand | ce qu'il attrape |
 |---|---|---|---|---|
 | **1. Unitaire** | `vitest` | **270 cas** sur 8 fichiers | chaque pull request | une règle de domaine fausse |
-| **2. Intégration** | 6 harnais `j1`…`j4` | **319 contrôles** | après fusion dans `dev` | un cloisonnement percé, une vue qui ne rend rien |
+| **2. Intégration** | 6 harnais `j1`…`j4` | **313 appels** | à la poussée dans `dev` | un cloisonnement percé, une vue qui ne rend rien |
 | **3. Schéma** | rejeu des 127 migrations sur base vierge | 1 job | chaque pull request | deux branches qui recréent la même vue |
 | **4. Humain** | alpha, puis beta | — | par phase | ce qu'aucune assertion ne sait formuler |
 
 ### Étage 1 — unitaire
 
 ```
-talent.test.ts        53 cas      entreprise.test.ts    44
-saisie.test.ts        42 + 34     saisie.test.tsx       34
-offre.test.ts         26          fiche.test.ts         17
+domaine/entreprise.test.ts   53      domaine/talent.test.ts   53
+talent/saisie.test.ts        42      entreprise/saisie.test.ts 36
+pacha/saisie.test.tsx        34      domaine/offre.test.ts     26
+domaine/fiche.test.ts        17      suite.test.ts              9
+                                     ─────────────────────── 270
 ```
 
 Aucune base, aucun réseau. Ils tournent partout, y compris sur une proposition
@@ -88,14 +94,26 @@ Le seul qui réponde à « est-ce que c'est **utilisable** ». Voir §3.
 
 ```
 proposition de modification   étage 1 + étage 3 + gitleaks     ci.yml
-fusion dans dev               étage 2 (les 6 harnais)          dev.yml
-fusion dans recette           les mêmes, plus la relecture     — 
-fusion dans main              les mêmes, plus l'approbation    main.yml
+poussée dans dev              étage 2 (les 6 harnais)          dev.yml
+fusion dans recette           relecture humaine                aucun workflow
+fusion dans main              migrations + version             main.yml
 ```
+
+⚠ **Corrigé le 22/09 : `main.yml` ne joue AUCUN harnais.** Il monte les
+migrations vers la production et pose la version, rien d'autre. L'étage 2 ne
+tourne qu'à la poussée dans `dev`, et il n'est donc **pas** rejoué avant la mise
+en ligne — c'est la relecture avant `recette` qui en tient lieu. À savoir avant
+de s'y fier.
+
+⚠ **Et aujourd'hui, l'étage 2 ne tourne pas du tout.** Le dépôt porte **0
+secret** : `dev.yml` saute la montée des migrations *et* les six harnais à chaque
+poussée, avec un avertissement. Les 313 appels ne sont joués qu'à la main,
+jusqu'à `bash outils/secrets_ci.sh`.
 
 Sur `main`, deux serrures supplémentaires, décrites dans `CONTRIBUTING.md` : le
 garde du nombre de migrations, et l'approbation humaine par l'environnement
-`base-de-production`.
+`base-de-production`. **Elles n'existeront qu'à la première fusion
+`recette` → `main`** : `main` est figée au 20/08 et ne porte pas `.github/`.
 
 **Aucune exception.** Un contrôle qu'on contourne une fois cesse d'être un
 contrôle.
@@ -127,7 +145,7 @@ le moins rapporté spontanément.
 lisible. Le cabinet n'est l'utilisateur d'aucun de ces deux portails. L'alpha 1
 éprouve la **mécanique**, pas l'**usage**.
 
-**Sortie** : aucun défaut bloquant ouvert, et les six harnais au vert.
+**Sortie** : voir `JALONS.md` §4 — c'est le seul endroit où elle est écrite.
 
 ### Alpha 2 — les vues internes
 
@@ -136,8 +154,7 @@ la différence avec l'alpha 1, et elle rend cette phase beaucoup plus
 informative : ici, « est-ce que ça marche » et « est-ce que ça sert » ont le
 même juge.
 
-**Sortie** : un recruteur peut conduire un mandat de bout en bout sans ouvrir
-Bubble.
+**Sortie** : voir `JALONS.md` §4.
 
 ### Beta — de vraies personnes
 
@@ -154,8 +171,8 @@ au volume et à la forme réelle :
 **Une alpha verte ne garantit donc pas une beta calme.** C'est normal, et c'est
 à ça qu'elle sert.
 
-**Sortie — v1.0** : aucun défaut signalé en beta n'est ouvert, et on
-accepterait d'ouvrir à tous sans prévenir personne.
+**Sortie — v1.0** : voir `JALONS.md` §4. ⚠ La beta est la seule phase dont la
+sortie ne tolère **aucun** défaut ouvert, de quelque gravité que ce soit.
 
 ---
 

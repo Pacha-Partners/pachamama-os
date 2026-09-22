@@ -9,6 +9,15 @@ Apprenant : **Claude Menye**. Août 2026.
 
 ---
 
+## Où en est le produit
+
+| question | document |
+|---|---|
+| qu'est-ce qu'il faut avoir construit, et ce qui permet de sortir d'une phase | [`docs/JALONS.md`](docs/JALONS.md) |
+| qui entre dans une phase, et sur quelles données | [`docs/PHASES.md`](docs/PHASES.md) |
+| comment on éprouve — les quatre étages de test | [`docs/PROTOCOLE_DE_TEST.md`](docs/PROTOCOLE_DE_TEST.md) |
+| les défauts trouvés à la main, et leur état | [`docs/DEFAUTS.md`](docs/DEFAUTS.md) |
+
 ## Travailler sur ce dépôt
 
 Le modèle de branches, la convention de commit, les règles de migration et la

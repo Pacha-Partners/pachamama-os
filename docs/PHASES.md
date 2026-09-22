@@ -1,5 +1,9 @@
 # Alpha, beta, v1.0 — ce que chaque phase veut dire ici
 
+> **Ce que chaque phase exige d'avoir construit, et ce qui permet d'en sortir,
+> est dans `JALONS.md`.** Ici : qui entre, sur quelles données, et le robinet.
+
+
 Arrêté le 21/09/2026. Ce document dit **ce qui est décidé**, et marque
 explicitement **ce qui ne l'est pas** — une décision différée écrite noir sur
 blanc n'est pas un trou, c'en est une.
@@ -34,7 +38,8 @@ jour venu, personne ne sait dire si on est à 85 ou à 91, et la discussion tour
 
 ### Alpha 1 — l'existant
 
-Les deux portails clients et le job board, tels qu'ils sont : 10 écrans côté
+Les deux portails clients et le job board, tels qu'ils sont : 7 écrans réels
+(plus 3 redirections) côté
 talent, 7 côté entreprise, 23 actions d'écriture.
 
 **Elle répond à** : est-ce que la mécanique tient ? Les écrans, les écritures,
@@ -44,13 +49,14 @@ cabinet n'est l'utilisateur ni du portail talent ni du portail entreprise.
 
 **On y entre quand** les six harnais passent et que les comptes du cabinet ont
 un `app.acces` actif.
-**On en sort quand** aucun défaut bloquant n'est ouvert sur les deux portails.
+**On en sort quand** — voir `JALONS.md` §4. Le critère n'est écrit que là.
 
 ### Alpha 2 — les vues internes
 
 `recruteur` et `backoffice`, aujourd'hui deux ébauches de 21 lignes.
 
-**On y entre quand** elles sont navigables de bout en bout. Elles se
+**On y entre quand** elles sont navigables de bout en bout.
+**On en sort quand** — voir `JALONS.md` §4. Elles se
 développent **pendant** l'alpha 1, sur `dev`, fermées en production — leur ligne
 `app.acces` n'existe pas, donc personne ne peut y entrer même une fois le code
 déployé.
@@ -59,11 +65,12 @@ déployé.
 
 **On y entre quand** le périmètre de la v1.0 est **gelé** et qu'on ouvre à des
 personnes nommées.
+**On en sort quand** — voir `JALONS.md` §4.
 
 ### v1.0
 
-**Quand** aucun défaut signalé en beta n'est ouvert, et qu'on accepterait
-d'ouvrir à tous sans prévenir personne.
+**Quand** la beta se ferme — voir `JALONS.md` §4. La v1.0 n'a pas de critère
+propre : elle est déclenchée par la sortie de beta, jamais planifiée.
 
 ---
 
@@ -151,7 +158,7 @@ D'où deux règles :
 ## Comment on vérifie
 
 Ce document dit ce que sont les phases. **`PROTOCOLE_DE_TEST.md` dit comment on
-les éprouve** : les quatre étages (270 cas unitaires, 319 contrôles
+les éprouve** : les quatre étages (270 cas unitaires, 313 appels
 d'intégration, le rejeu du schéma, le test humain), ce qui doit être vert et
 quand, les parcours à jouer par phase, et les cinq angles morts.
 

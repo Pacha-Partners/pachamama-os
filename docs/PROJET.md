@@ -1,5 +1,13 @@
 # Pachamama OS — structure du projet
 
+> ## ⚠ DÉCOUPAGE PÉRIMÉ — 22/09/2026
+>
+> Les tâches `T1` à `T5` et le tableau d'état par surface ne sont plus la maille
+> du projet. **La maille unique est `J1`–`J7`**, tenue par `JALONS.md`, qui porte
+> l'état mesuré. Le reste de ce document — le cadrage, les objectifs — reste
+> valable.
+
+
 > Nom de code : **cash-cash**. Document de référence : il dit ce qu'est le
 > projet, où il en est, et ce qui vient ensuite. Toute décision de périmètre
 > se tranche ici avant d'être codée.

@@ -12,7 +12,7 @@ Il n'y en a que **trois qui durent**. Toutes les autres vivent quelques jours.
 | Branche | Ce qu'elle désigne | Base | Déploiement |
 |---|---|---|---|
 | `main` | ce qui tourne en ligne | projet **live** | production |
-| `recette` | l'état validé, candidat à la mise en ligne | projet **dev** | URL de beta |
+| `recette` | l'état validé, candidat à la mise en ligne | projet **dev** | URL de pré-production |
 | `dev` | l'intégration — tout s'y retrouve | projet **dev** | environnement dev |
 
 ```

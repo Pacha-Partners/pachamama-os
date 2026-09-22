@@ -1,5 +1,11 @@
 # J2 — Authentification, rôles et rattachement des comptes
 
+> **Scindé le 22/09/2026.** Le critère « un administrateur rattache, promeut ou
+> désactive un compte depuis `/(prive)/backoffice` » est parti dans **J7** : il
+> exigeait un écran de vue interne, ce qui faisait dépendre l'alpha 1 de
+> l'alpha 2. En alpha 1, les comptes du cabinet sont rattachés en SQL.
+> Voir `docs/JALONS.md` §6.
+
 🎯 **Problème**
 Aucune page privée ne peut lire quoi que ce soit avant ce maillon : la chaîne part de `auth.uid()` et s'arrête immédiatement. La colonne prévue au schéma pour joindre les comptes d'authentification aux données métier, `public.user.auth_id`, est **vide sur 4 596 lignes sur 4 596**. De plus, cette table appartient au miroir, que le sync réécrit en continu (16 exécutions, curseur avancé le 24/08 à 09:54) : y placer une règle de sécurité l'expose à disparaître sans aucun signal. Enfin, aucun des 7 comptes d'authentification existants ne porte de rôle dans `app_metadata` : la fonction `rolesDe()` renvoie une liste vide pour tous, et l'orientation par rôle après connexion ne fonctionne pas. Les 3 comptes de démonstration annoncés n'existent pas.
 
@@ -13,7 +19,6 @@ Créer `api.compte` (clé primaire `auth_id`, plus `role`, `entreprise_id`, `can
 * [ ]  Quand un compte authentifié n'a aucune ligne dans `api.compte`, alors toutes les fonctions renvoient NULL et toutes les requêtes renvoient zéro ligne.
 * [ ]  Quand le rapport de rattachement est produit, alors le nombre de résolus additionné au nombre de non-résolus égale 4 596, et les non-résolus sont listés nominativement.
 * [ ]  Quand le sync n8n s'exécute, alors `api.compte` n'est pas modifiée.
-* [ ]  Quand un administrateur rattache, promeut ou désactive un compte depuis `/(prive)/backoffice`, alors l'effet est immédiat et vérifié sur ce que ce compte peut lire.
 * [ ]  Quand un compte est désactivé, alors il obtient zéro ligne sur toutes les routes privées.
 * [ ]  Quand le harnais du jalon 1 est rejoué, alors il reste vert.
 
@@ -22,6 +27,6 @@ Créer `api.compte` (clé primaire `auth_id`, plus `role`, `entreprise_id`, `can
 * Base : `api.compte`, trois fonctions de résolution, `GRANT` sur le schéma `api` à `authenticated`.
 * Frontend : `app/connexion/`, orientation post-connexion par rôle, `middleware.ts` réactivé depuis `lib/session-refresh/middleware.reference.ts`.
 * Administration : création des 3 comptes de démonstration avec leur rôle dans `app_metadata`.
-* Frontend `/(prive)/backoffice/` : premier écran réel — rattacher, promouvoir, désactiver un compte. Cette brique vient ici et non plus tard, parce que sans elle chaque rattachement passe par un script lancé à la main, dès le jalon 3.
+* ~~Frontend `/(prive)/backoffice/` : premier écran réel~~ — **parti dans J7 le 22/09/2026.** En alpha 1, chaque rattachement passe par un script lancé à la main, et c'est assumé : le cabinet est seul à entrer, et faire dépendre l'alpha 1 d'une vue interne aurait couplé les deux phases.
 * Dépend de : J1 (le schéma `api` et le harnais existent).
 * Effet de bord : deux vocabulaires de rôles coexistent — `public.user_role` porte Candidat 4 207, Entreprise 344, Admin 10, Recruiter Core Team 13, Recruiter Support Crew 18 ; les documents attendent `talent` / `entreprise` / `recruteur`. Une table de correspondance explicite est nécessaire.

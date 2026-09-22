@@ -15,13 +15,15 @@ Remonter à l'écran les instruments déjà écrits, plutôt que d'en inventer d
 * [ ]  Quand un administrateur modifie un référentiel (`api.etape`, `api.tag_job`), alors le changement est journalisé avec son auteur, et les écrans qui en dépendent le reflètent.
 * [ ]  Quand une demande d'accès ou d'effacement est reçue pour une personne, alors une page rassemble tout ce que la plateforme détient sur elle, dans les deux schémas.
 * [ ]  Quand un utilisateur du rôle Support Crew ouvre le back-office, alors les opérations sensibles lui sont refusées.
+* [ ]  Quand un administrateur rattache, promeut ou désactive un compte depuis `/(prive)/backoffice`, alors l'effet est immédiat et vérifié sur ce que ce compte peut lire. *(repris de J2 le 22/09/2026)*
 * [ ]  Quand le harnais des jalons précédents est rejoué, alors il reste vert.
 
 🗺️ **Zones touchées**
 
 * Frontend : `app/(prive)/backoffice/` — écrans de qualité de donnée, de synchronisation, des référentiels, de traçabilité.
 * Base : vues de lecture pour les tables de surveillance existantes, journal des modifications de référentiel.
-* Dépend de : J2 (administration des comptes, déjà livrée), J5 (référentiels reconstruits à administrer), J6 (tableau de divergence à afficher).
+* Dépend de : J2 (rattachement et fonctions de résolution), J5 (référentiels reconstruits à administrer), J6 (tableau de divergence à afficher).
+* **Porte l'administration des comptes depuis le 22/09/2026** — reprise de J2, et elle n'est pas livrée : `frontend/app/(prive)/backoffice/page.tsx` fait 21 lignes et ne rend rien.
 * Effet de bord : ce jalon ne crée presque aucune donnée nouvelle. Il rend visible ce qui existe déjà et n'est jamais regardé. Sa valeur est proportionnelle à la fréquence à laquelle il est consulté, pas à la richesse de ses écrans.
 
 **Bonus**

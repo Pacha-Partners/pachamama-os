@@ -1,5 +1,9 @@
 # Découpage de la Phase 2 — l'application
 
+> **L'état des sept jalons n'est pas ici** — ce document les définit, `JALONS.md`
+> dit lesquels sont construits et quelle phase chacun ouvre.
+
+
 > Produit le 24/08/2026 à partir de quatre découpages indépendants (valeur métier,
 > dépendances techniques, démontrabilité, risque), confrontés et arbitrés par la
 > mesure en production. Chaque chiffre de ce document a été vérifié, pas supposé.
@@ -35,12 +39,12 @@ résultat qu'une base vide. C'est la forme qu'ont prise les six incidents de per
 données de ce projet. Le test doit aussi vérifier que le nombre de lignes attendu est
 **différent de zéro**, sinon il passerait au vert alors que la base est injoignable.
 
-## Les six jalons
+## Les sept jalons
 
 | | Jalon | Résultat visible | Effort |
 |---|---|---|---|
 | **J1** | Job Board public sur données réelles | Le job board affiche 12 vrais mandats, sans nom de client sur une offre anonyme | moyen |
-| **J2** | Authentification, rôles et rattachement des comptes | Trois comptes se connectent et arrivent chacun sur sa vue ; un administrateur rattache et désactive un compte depuis le back-office | moyen |
+| **J2** | Authentification, rôles et rattachement des comptes | Trois comptes se connectent et arrivent chacun sur sa vue *(l'administration des comptes depuis le back-office est partie dans J7 le 22/09)* | moyen |
 | **J3** | Portail Entreprise | Un client suit ses mandats et ses candidats sans accéder à aucune identité, et enregistre sa décision | long |
 | **J4** | Espace Talent | Un talent voit son profil, ses attentes et ses candidatures, et modifie ses attentes | moyen |
 | **J5** | Poste Recruteur : consultation | La page vide devient un écran de priorisation, un kanban réel et une fiche talent complète | long |

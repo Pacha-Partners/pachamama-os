@@ -1,5 +1,15 @@
 # Plan de construction des portails — Entreprise, Talent, tranche Recruteur
 
+> ## ⚠ PÉRIMÉ — 22/09/2026
+>
+> Les `LOT 0` à `LOT 3` ne sont plus la maille du projet. **La maille unique est
+> `J1`–`J7`**, tenue par `JALONS.md`. Ce fichier est conservé pour l'historique
+> et pour ses mesures du 09/09, mais son état est faux depuis : il annonce que
+> « les quatre pages privées sont vides » et qu'« il n'existe aucun chemin
+> d'écriture », alors que les portails talent et entreprise portent aujourd'hui
+> 14 écrans et 23 actions d'écriture.
+
+
 > Établi le 09/09/2026 à partir de `docs/Cadrage des features - P0 3844f3790e1c801a94e0cd9ce844884f.md`,
 > et **ancré sur l'état mesuré du dépôt et du projet dev** (`xavnvkpgbpczblmwlaxk`), pas sur les tickets J3/J4
 > qui emploient encore le vocabulaire d'avant la refonte `core`/`app` et sont périmés.
