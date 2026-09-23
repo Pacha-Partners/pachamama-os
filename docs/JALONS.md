@@ -48,29 +48,19 @@ par lassitude : on en sort quand les deux grilles passent.
 
 ## 3. La grille technique
 
-Elle dit quand un jalon est **prêt pour le test**, puis elle est rejouée avant
-la validation. Huit points, tous mesurables par une commande. **Aucun ne
-s'interprète.**
+Trois étages, décrits dans `PROTOCOLE_DE_TEST.md` : **unitaire** (270 cas),
+**intégration** (313 appels sur 6 harnais, dont le contrôle d'isolation) et
+**schéma** (rejeu des 127 migrations sur base vierge).
 
-| | ce qu'on vérifie | comment |
-|---|---|---|
-| 1 | **Les critères d'acceptation du jalon sont confrontés au code**, un par un, et cochés dans son ticket | à la main, et c'est le point le plus lourd |
-| 2 | **Le harnais du jalon est au vert** | `npm --prefix frontend run verifier:jN` |
-| 3 | **Aucune régression** : les harnais des jalons précédents restent verts | `verifier:j1` … `jN-1` |
-| 4 | **Les tests unitaires passent** | `npm --prefix frontend run test` |
-| 5 | **Le schéma se reconstruit depuis zéro** | `supabase start` — rejeu des 127 migrations sur base vierge |
-| 6 | **Le cloisonnement est mesuré avec un vrai jeton utilisateur** — jamais la clé de service, qui contourne la RLS | dans le harnais du jalon |
-| 7 | **L'écran rend sans erreur** : console propre, aucune requête en échec, et **vérifié à 375 px** | deux défauts déjà trouvés ainsi, aucun test ne les avait vus |
-| 8 | **Aucun secret, aucune donnée nominative** dans ce qui est commité | `gitleaks`, et la relecture du diff |
+S'y ajoutent, pour le jalon lui-même :
 
-⚠ **Un critère qui ne peut pas être coché n'est pas un critère à contourner.**
-Il est arrivé qu'un critère vise une API qui n'a jamais existé — `J2` nomme
-`api.auth_entreprise_id()` et `api.auth_talent_id()`, absentes du dépôt. Dans ce
-cas le critère se **réécrit** contre ce qui existe, il ne se raye pas.
+- **ses critères d'acceptation sont confrontés au code**, un par un, et cochés
+  dans son ticket ;
+- **les harnais des jalons précédents restent verts** ;
+- **l'écran est vérifié à 375 px**, console propre.
 
-⚠ **Deux points de la grille ne tournent nulle part aujourd'hui** : le dépôt ne
-porte aucun secret de CI, donc les harnais (points 2, 3 et 6) ne sont joués
-qu'à la main. C'est à régler avant le premier passage de grille.
+Un critère qui vise une API inexistante se **réécrit** contre ce qui existe. Il
+ne se raye pas.
 
 ## 4. La grille produit — à définir avec le PM
 

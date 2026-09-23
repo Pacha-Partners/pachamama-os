@@ -3,7 +3,7 @@
 --
 -- DÉFAUT, reproduit avec la clé publique avant d'écrire cette migration :
 --
---   POST /rest/v1/rpc/masquer_client  {"texte":"Advanthink",
+--   POST /rest/v1/rpc/masquer_client  {"texte":"<nom du client>",
 --                                      "p_mandat_id":"b13112db-…"}
 --   → 200, corps « null »
 --

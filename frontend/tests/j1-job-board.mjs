@@ -166,7 +166,7 @@ verifier('les 5 fonctions du miroir sont refusées à la clé publique', true, c
 // Défaut réel, reproduit le 10/09 : `api.masquer_client` était exécutable
 // par la clé publique. Elle rend NULL quand le texte soumis contient le nom
 // du client — donc, soumise à une liste de raisons sociales, elle DÉSIGNE le
-// client d'une offre anonyme. « Advanthink » est ainsi tombé en une requête.
+// client d'une offre anonyme. « <nom du client> » est ainsi tombé en une requête.
 //
 // La cause était structurelle et mérite d'être retenue : une vue non-invoker
 // encapsule les droits sur les TABLES, jamais sur les FONCTIONS. Tant que le
@@ -197,7 +197,7 @@ if (unSeulRepond) {
   verifier(
     "les fonctions de masquage doivent être hors de portée de la clé publique",
     false,
-    `${etats.join(' · ')} — une réponse 200 rouvre l'oracle qui a livré « Advanthink »`,
+    `${etats.join(' · ')} — une réponse 200 rouvre l'oracle qui a livré « <nom du client> »`,
   );
 }
 verifier("l'oracle du masquage reste fermé à la clé publique", true, etats.join(' · '));

@@ -31,7 +31,7 @@ where m.id = p.mandat_id
 -- CORRECTIF 2 — LE LIBELLÉ PUBLIC PORTAIT LE NOM DU CLIENT
 --
 -- La reprise avait rempli libelle_public avec mandat.titre. Or MESURÉ :
--- 11 des 12 titres contiennent la raison sociale du client — « Advanthink
+-- 11 des 12 titres contiennent la raison sociale du client — « <nom du client>
 -- - Product Marketing Manager », « Kiro-D1-Tech-Head of Data » — et les 12
 -- mandats sont marqués anonymes. Publier ce champ exposait chaque client
 -- sur la seule page destinée à être indexée.
