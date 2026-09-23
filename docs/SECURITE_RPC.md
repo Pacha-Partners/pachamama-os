@@ -134,7 +134,7 @@ Reproduit avec la clé publique, en deux requêtes, sur une offre déclarée ano
 ```
 POST /rest/v1/rpc/masquer_client {"texte":"ZZZ-Inexistante","p_mandat_id":"b13112db-…"}
   → 200  "ZZZ-Inexistante"      (le texte revient : ce n'est pas le client)
-POST /rest/v1/rpc/masquer_client {"texte":"Advanthink","p_mandat_id":"b13112db-…"}
+POST /rest/v1/rpc/masquer_client {"texte":"<nom du client>","p_mandat_id":"b13112db-…"}
   → 200  null                    (le texte est annulé : C'EST le client)
 ```
 
