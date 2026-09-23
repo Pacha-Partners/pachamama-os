@@ -1,5 +1,12 @@
 # Le protocole de test
 
+> ## ⚠ Ce n'est plus le critère de passage — 23/09/2026
+>
+> Les quatre étages décrits ici gardent leur valeur descriptive, mais c'est la
+> **grille technique de `JALONS.md` §3** qui dit désormais quand un jalon est
+> prêt. Les phases alpha/beta/v1.0 sont abandonnées.
+
+
 > **Les critères de sortie de chaque phase sont dans `JALONS.md`**, avec les
 > jalons qu'elle ouvre. Ici : les quatre étages, et les parcours à jouer.
 

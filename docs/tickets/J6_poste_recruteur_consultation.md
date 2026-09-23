@@ -1,4 +1,4 @@
-# J5 — Poste Recruteur : consultation
+# J6 — Poste Recruteur : consultation
 
 🎯 **Problème**
 `app/(prive)/recruteur/page.tsx` fait 10 lignes : un titre et une phrase. Le travail se perd sans que personne ne le voie — **811 tâches ouvertes dont 682 en retard**, et l'ancienneté d'une candidature n'est affichée nulle part. Par ailleurs deux tables de référentiel sont détruites en production : `ref_process_etape` contient 70 lignes dont la colonne `value` vaut `{`, `"`, `d`, `i`, `s`, `p`, `l`, `a`, `y` — une chaîne JSON découpée caractère par caractère lors du chargement — et `is_public` est vraie sur zéro ligne. C'est pourtant cette table qui doit déterminer quelles étapes un client peut voir. `ref_tag_job` est cassée de la même façon (74 lignes de caractères isolés) alors que `mandat_tag_job` compte 818 lignes.

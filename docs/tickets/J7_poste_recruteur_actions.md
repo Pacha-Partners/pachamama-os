@@ -1,4 +1,8 @@
-# J6 — Poste Recruteur : actions, et préparation du Chasseur
+# J7 — Poste Recruteur : actions
+
+> **Renuméroté le 23/09/2026** (ex-J6). La clause « et préparation du
+> Chasseur » est retirée : le Chasseur est devenu **J5**, un jalon à part
+> entière, et il ne se prépare plus ici.
 
 🎯 **Problème**
 Sans écriture, le poste recruteur reste un tableau de bord consulté **en plus** de l'ATS : un écran de plus, pas un écran de moins. Trois gestes suffisent à faire basculer l'usage quotidien. Par ailleurs la Phase 3 impose deux contraintes à la Phase 2, et les ajouter après coup obligerait à reprendre l'interface : les **6 274 motifs de KO** sont aujourd'hui repliés dans une colonne de texte libre, alors que la boucle d'apprentissage du Chasseur ne peut rien tirer d'un texte libre ; et le brief de mandat doit être structuré, alors que les colonnes existent déjà (`delivery`, `discovery`, `strategie`, `ops`, `management`, `cible`, `min_xp`, fourchettes de salaire et de TJM).

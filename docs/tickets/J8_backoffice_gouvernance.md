@@ -1,4 +1,4 @@
-# J7 — Back-office de gouvernance
+# J8 — Back-office de gouvernance
 
 🎯 **Problème**
 Tous les instruments de surveillance du projet existent aujourd'hui sous forme de scripts lancés à la main : réconciliation du miroir, contrôle de péremption, audit de préséance, vérification d'anonymat, journal de quarantaine. Personne ne les lance sauf en cas d'incident — donc les six pertes de données de ce projet ont toutes été découvertes tardivement, par hasard. Par ailleurs deux tables de référentiel sont détruites en production (`ref_process_etape` et `ref_tag_job`, remplies de caractères isolés) et rien ne l'avait signalé ; `pivot.sync_etat` montre la source `ats` encore en statut « jamais lancé » ; et le cabinet n'a aucun écran pour arbitrer les cas que la donnée ne tranche pas — 104 comptes sans rattachement, 6 200 fantômes du miroir, 1 227 conflits de préséance.

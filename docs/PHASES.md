@@ -1,5 +1,13 @@
 # Alpha, beta, v1.0 — ce que chaque phase veut dire ici
 
+> ## ⚠ ABANDONNÉ — 23/09/2026
+>
+> Les phases alpha 1, alpha 2, beta et v1.0 ne pilotent plus le projet. **La
+> maille est le jalon**, et son cycle de vie est dans `JALONS.md`. Ce fichier
+> est conservé pour l'historique et pour le fait mécanique sur `core`, qui reste
+> vrai.
+
+
 > **Ce que chaque phase exige d'avoir construit, et ce qui permet d'en sortir,
 > est dans `JALONS.md`.** Ici : qui entre, sur quelles données, et le robinet.
 
